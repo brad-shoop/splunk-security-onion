@@ -1,0 +1,169 @@
+<view autoCancelInterval="90" onunloadCancelJobs="true" template="dashboard.html">
+    <label>PADS</label>
+    <module name="AccountBar" layoutPanel="appHeader"/>
+    <module name="AppBar" layoutPanel="appHeader"/>
+    <module name="Message" layoutPanel="messaging">
+        <param name="filter">*</param>
+        <param name="clearOnJobDispatch">False</param>
+        <param name="maxSize">2</param>
+    </module>
+    <module name="TitleBar" layoutPanel="viewHeader">
+    </module>
+          
+    <module name="StaticSelect" layoutPanel="panel_row1_col1">
+        <param name="settingToCreate">mine_setting</param>
+        <param name="label">Mine by:</param>
+        <param name="staticFieldsToDisplay">
+            <list>
+                <param name="value">name</param>
+                <param name="label">Name</param>
+            </list>
+            <list>
+                <param name="value">classification</param>
+                <param name="label">Classification</param>
+            </list>      
+            <list>      
+                <param name="value">src_ip</param>        
+                <param name="label">Source IP</param>        
+            </list>
+            <list>      
+                <param name="value">src_port</param>        
+                <param name="label">Source Port</param>        
+            </list>
+            <list>
+                <param name="value">dest_ip</param>
+                <param name="label">Destination IP</param>
+            </list>      
+            <list>
+                <param name="value">dest_port</param>        
+                <param name="label">Destination Port</param>
+            </list>
+            <list>
+                <param name="value">proto</param>
+                <param name="label">Protocol</param>
+            </list>
+            <list>      
+                <param name="value">severity</param>                        
+                <param name="label">Severity</param>        
+            </list>
+        </param>            
+        <module name="ConvertToIntention">
+            <param name="settingToConvert">mine_setting</param>
+            <param name="intention">
+                <param name="name">stringreplace</param>
+                <param name="arg">
+                    <param name="mine_value">
+                        <param name="value">$target$</param>
+                    </param>
+                </param>
+            </param>
+            <module name="TimeRangePicker" layoutPanel="panel_row1_col1">
+                <param name="searchWhenChanged">True</param>
+                <param name="selected">Last 60 minutes</param>
+                <module name="HiddenSearch" layoutPanel="panel_row1_col1" group="PADS" autoRun="True">
+                    <param name="search">sourcetype=sguild eventtype=PADS | fields classification name src_ip src_port dest_ip dest_port proto severity | chart sparkline(count) AS "Event Trend" count AS "Total" by $mine_value$</param>
+                    <param name="groupLabel">PADS</param>                        
+                    <module name="JobProgressIndicator"/>
+                    <module name="Paginator">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <param name="maxPages">10</param>
+                        <module name="SimpleResultsTable">
+                            <param name="drilldown">row</param>
+                            <param name="displayRowNumbers">False</param>
+                            <param name="entityName">results</param>
+                            <module name="ConvertToDrilldownSearch">
+                                <module name="JobProgressIndicator"/>
+                                <module name="SimpleResultsHeader">
+                                    <param name="headerFormat">The drilldown search has $count$ events</param>
+                                    <param name="entityName">events</param>
+                                </module>
+                                <module name="Paginator">
+                                    <param name="count">20</param>
+                                    <param name="entityName">results</param>
+                                    <param name="maxPages">10</param>
+                                    <module name="HiddenFieldPicker">
+                                        <param name="fields">src_ip src_port dest_ip dest_port classification name proto severity</param>
+                                        <module name="SimpleResultsTable">
+                                            <param name="drilldown">all</param>
+                                            <param name="entityName">results</param>
+                                            <param name="displayRowNumbers">False</param>
+                                            <module name="ConvertToDrilldownSearch">
+                                                <module name="ViewRedirector">
+                                                    <param name="viewTarget">flashtimeline</param>
+                                                </module>
+                                            </module>
+                                        </module>
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module>
+        </module>  
+        <module name="ConvertToIntention">
+            <param name="settingToConvert">mine_setting</param>
+            <param name="intention">
+                <param name="name">stringreplace</param>
+                <param name="arg">
+                    <param name="mine_value">
+                        <param name="value">$target$</param>
+                    </param>
+                </param>
+            </param>
+            <module name="TimeRangePicker" layoutPanel="panel_row2_col1">
+                <param name="searchWhenChanged">True</param>
+                <param name="selected">Last 60 minutes</param>
+                <module name="HiddenSearch" layoutPanel="panel_row2_col1" group="PADS Timechart" autoRun="True">
+                    <param name="search">sourcetype=sguild eventtype=PADS | timechart count by $mine_value$</param>                    
+                    <param name="groupLabel">PADS Timechart</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="EnablePreview">
+                        <param name="enable">True</param>
+                        <param name="display">False</param>
+                        <module name="HiddenChartFormatter">
+                            <param name="charting.legend.placement">bottom</param>
+                            <param name="charting.chart">area</param>
+                            <module name="JSChart">
+                                <param name="width">100%</param>
+                                <module name="Gimp"/>
+                                <module name="ConvertToDrilldownSearch">
+                                    <module name="JobProgressIndicator"/>
+                                    <module name="SimpleResultsHeader">
+                                        <param name="headerFormat">The drilldown search has $count$ events</param>
+                                        <param name="entityName">events</param>
+                                    </module>
+                                    <module name="Paginator">
+                                        <param name="count">20</param>
+                                        <param name="entityName">results</param>
+                                        <param name="maxPages">10</param>
+                                        <module name="HiddenFieldPicker">
+                                            <param name="fields">src_ip src_port dest_ip dest_port classification name proto severity</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="drilldown">all</param>
+                                                <param name="entityName">results</param>
+                                                <param name="displayRowNumbers">False</param>
+                                                <module name="ConvertToDrilldownSearch">
+                                                    <module name="ViewRedirector">
+                                                        <param name="viewTarget">flashtimeline</param>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                            <module name="ViewRedirectorLink">
+                                                <param name="viewTarget">flashtimeline</param>
+                                            </module>
+                                        </module>
+                                    </module>
+                                </module>                  
+                            </module>                  
+                        </module>
+                    </module>
+                </module>    
+            </module>
+        </module>
+    </module>      
+</view>  

@@ -1,0 +1,392 @@
+Security Onion:
+Security Onion (http://securityonion.blogspot.com/) is a Linux 
+distribution for intrusion detection and network security 
+monitoring. Security Onion for Splunk is designed to run 
+on a Security Onion server, providing an alternative method 
+for correlating events and incorporating field extractions 
+and reporting for Sguil, Bro IDS and OSSEC.
+
+
+Overview:
+Splunk for Security Onion provides several dashboards and search 
+interfaces for correlating Sguil, OSSEC and Bro IDS log events.
+
+
+Required Splunk Apps:
+Sideview Utils
+http://splunk-base.splunk.com/apps/36405/sideview-utils
+
+Splunk for OSSEC – Splunk v4 version
+http://splunk-base.splunk.com/apps/22285/splunk-for-ossec-splunk-v4-version
+
+Geo Location Lookup Script (powered by MAXMIND)
+http://splunk-base.splunk.com/apps/22282/geo-location-lookup-script-powered-by-maxmind
+
+Google Maps
+http://splunk-base.splunk.com/apps/22365/google-maps
+
+Splunk Visualizations
+http://splunk-base.splunk.com/apps/22283/splunk-visualizations
+
+Prerequisites:
+A Security Onion server and a Splunk 5.x installation. 
+(Note: when installing Splunk on a Security Onion system there 
+will likely be a port conflict for the Splunk web server. 
+Port 81 as an alternate port should be a safe alternative.)
+
+
+Setup Splunk:
+Download from www.splunk.com. Install via terminal command:
+        sudo dpkg -i splunk-5*.deb
+
+When install completes, we need to start Splunk for the first time:
+        cd /opt/splunk/bin
+        sudo ./splunk start
+
+After accepting the agreement, you’ll have to pick an alternate 
+port for the Splunk web interface since the default is in use. 
+You’ll see the following and when prompted to change, choose yes, 
+then specify port 81:
+
+        Checking prerequisites...
+                Checking http port [8000]: already bound
+	ERROR: The http port [8000] is already bound.  Splunk needs to use this port.
+	Would you like to change ports? [y/n]: y
+	Enter a new http port: 81
+	Setting http to port: 81
+                Checking http port [81]: open
+                Checking mgmt port [8089]: open
+                Checking configuration...  Done.
+
+Splunk's built-in way to run at boot time is (as root): 
+
+$SPLUNK_HOME/bin/splunk enable boot-start 
+
+with an optional user=foo at the end to run as a certain user. 
+It installs proper boot scripts for your OS so you don't need 
+to worry about editing /etc/rc.* files:
+
+/opt/splunk/bin/splunk enable boot-start
+
+
+Install Required Splunkbase Apps:
+Open Firefox and browse to  http://localhost:81 (or if you used 
+an alternate port change accordingly). Change your password, then 
+click App > Find More Apps from the menu in the upper right corner. 
+Find the following apps and install them.
+
+Install Sideview Utils
+Install Splunk for OSSEC - Splunk v4 version
+Install Geo Location Lookup Script (powered by MAXMIND)
+Install Google Maps
+Install Splunk Visualizations
+Install Security Onion for Splunk
+
+
+Configure Bro IDS Inputs:
+Depending on how much traffic your sensor monitors, you may need 
+to leave some of the Bro inputs disabled to avoid maxing out your 
+license. The following are the sourcetypes configured for each 
+Bro IDS log data input:
+ 
+	bro_communication - Bro sensor communications
+	bro_conn - Connections
+	bro_dns - DNS requests
+        bro_dpd - Dynamic Protocol Detection
+	bro_ftp - FTP activity
+        bro_http - HTTP traffic
+	bro_irc - IRC activity
+        bro_known_certs - Certificates seen
+        bro_known_hosts - Hosts seen
+        bro_known_services - Services detected
+        bro_notice - You definitely want this one enabled
+        bro_smtp - SMTP activity
+        bro_smtp_entities - SMTP
+        bro_software - Software versions detected (incl. vulnerable versions)
+        bro_ssh - SSH activity
+        bro_ssl - SSL activity 
+        bro_syslog - Syslog activity
+        bro_weird - Anomalous events
+
+
+Using Splunk for Security Onion:
+I've standardized the source and destination IP fields in the Bro 
+IDS and Sguil log field extractions so "src_ip" and "dest_ip" are 
+consistent across events.
+
+Log file data inputs are file specific (as opposed to monitoring 
+the entire /nsm/bro/logs/current/ directory) primarily for granular 
+control over what gets splunked. Depending on your licensing you 
+may need to scale back certain logs and this provides an easy way to 
+do so. 
+
+
+SOstat Monitoring:
+The SOstat monitoring scripts are configured to run at various 
+intervals (in seconds). The default settings are very conservative, 
+executing most scripts once a day and status scripts 3 times a day. 
+The default configuration is:
+
+Sourcetype			Script									Interval (seconds)
+sostat_disk			/opt/splunk/etc/apps/securityonion/bin/disk.sh 				86400	
+sostat_ifconfig			/opt/splunk/etc/apps/securityonion/bin/ifconfig.sh 			86400	
+sostat_nsm_log_archive 		/opt/splunk/etc/apps/securityonion/bin/nsm_log_archive.sh 		86400	
+sostat_nsm_sensor_ps-status	/opt/splunk/etc/apps/securityonion/bin/nsm_sensor_ps-status.sh 		21600	
+sostat_nsm_server_ps-status	/opt/splunk/etc/apps/securityonion/bin/nsm_server_ps-status.sh 		21600 	
+sostat_nsm_sguil_uncategorized	/opt/splunk/etc/apps/securityonion/bin/nsm_sguil_uncategorized.sh 	86400
+sostat_top			/opt/splunk/etc/apps/securityonion/bin/top.sh 				21600
+
+The default settings can be modified via Splunk Manager > Data 
+Inputs > Scripts. Click on the script name in the "Command" column 
+to increase/decrease the interval. You can also disable/enable scripts.
+
+
+Notable Changes:
+2.0 - Supports Security Onion 12.04 distribution. If you are running 
+Security Onion 10.04 please continue to use version 1.1.7. 
+- Splunk 5.0 tested and developed.
+- Major updates to Overview and IR Search dashboards.
+- Introducing "Bro(wser)" for perusing Bro logs.
+- SOstat SO dashboard updated and now consuming snort.stats for Snort 
+monitoring.
+- Workflows: VirusTotal MD5, DShield.org and IR Search workflow lookups added.
+- Lots of other updates and improvements, including new Connections mining.
+
+1.1.7 - Tweaked Sguil indexing to prevent Bro URL data from being duplicated 
+into Splunk via sguild.log. 
+- Monitors dashboard field name drop down selections added to all panels. 
+- General Mining dashboard added panels for Bro SSH logs and Bro HTTP TLDs 
+(top level domains). Also added drop down options for Bro FTP and IRC panels. 
+- Squil Mining has been updated and improved. 
+- Syslog Mining dashboard added for Bro Syslog. 
+- An Event Workflow was added for searching Splunk for events by src_ip.
+…and last but not least:
+- CIF Dashboards!
+
+For the CIF integration to work you need access to a CIF (Collective Intelligence 
+Framework - http://code.google.com/p/collective-intelligence-framework/) server 
+in order to export query results to a .csv file for the external lookups.
+
+The CIF integration leverages three files created by exporting CIF query results 
+to .csv format. If you don't have access to a CIF server but want a sense of how 
+the app works, I've provided three sample files in the lookups folder. Visit 
+http://testmyids.com via a browser and you should see results in the CIF dashboards.
+
+IMPORTANT - By including these 3 sample files (that contain NO actual CIF data; 
+just fields and a test/sample entry) we prevent Splunk from throwing lookup 
+table errors for those who won't use the CIF capability. The drawback is updating 
+the Security Onion app will overwrite existing .csv files, so remember to backup 
+the lookups/*.csv files prior to future updates or plan to recreate new CIF .csv 
+files.
+ 
+The three CIF queries used for development and testing were:
+
+cif -q infrastructure -s medium -c 85 -p csv -O infrastructure.csv
+cif -q url -s medium -c 85 -p csv -O url.csv
+cif -q domain -s medium -c 65 -p csv -O domain.csv
+
+Once you've created these files you have to do two things:
+
+1) Edit each file removing the "# " (hash followed by space) from the first row of 
+each file.
+2) Copy the files to /opt/splunk/etc/apps/securityonion_cif/lookups/
+
+I highly recommend scripting the CIF export, file manipulation and copy/move process.
+
+CIF Lookups:
+In the first release there are two dashboards:
+- IP Correlation checks dest_ip addresses from the Bro Connection logs indexed 
+against the CIF infrastructure.csv export.
+- Domain/MD5 Malware Correlation checks Bro HTTP domains and executable files 
+downloaded MD5 hashes against CIF.
+
+Both dashboards work the same in that you'll first see a list of IP addresses 
+with an event count. Clicking on an IP will provide CIF
+related details around the match as well as a list of all activity to the dest_ip 
+address. From there you can use the Event workflow menu to splunk deeper.
+
+
+1.1.6 - Added time charts to Sguil Mining for activity by all 
+source types for source/destination IPs
+1.1.5 - Performance improvements to SOstat and a minor bug fix to 
+Sguil Mining.
+1.1.4 - Minor bug fix to IDS rule reference full document lookup.
+1.1.3 - Added SOstat IDS Rules: indexes /etc/nsm/rules/*.rules and 
+provides an easy to use interface for referencing rules for tuning. 
+Sort by classtype, category, enabled status, and/or rule source and 
+drilldown on a rule to see it's activity history and the full rule 
+entry complete with Splunk event workflow lookups by BugtraqID, CVE 
+ID and URL. 
+
+The IDS Rule inputs are disabled by default. You can enable/disable 
+them in:
+
+     /opt/splunk/etc/apps/securityonion/local/inputs.conf
+
+or through Manager > Data Inputs in the GUI. You can manually copy 
+the *.rules files from /etc/nsm/rules/ to 
+/opt/splunk/etc/apps/securityonion/local/rules. In 
+/opt/splunk/etc/apps/securityonion/bin there's a couple very 
+basic examples (ids_rules_*.sh) on how you can automate the Snort 
+rules and rule reference copy/download (requires an Oinkcode for 
+the rule reference files). 
+
+Enable it for tuning or if you have Splunk capacity you can index 
+the rules on a schedule. For audit purposes and rule status tracking 
+over time you can change the ids_rule monitor path to monitor 
+/etc/nsm/rules/*.rules.
+
+If you're running Snort registered rules with an Oinkcode, I'd 
+strongly recommend at least indexing the rule reference files 
+(ids_rules_doc) at least once so you'll have the workflow lookup 
+reference capability.
+
+Keep in mind this does not "apply" or manage rules. It simply indexes 
+the rules that have been downloaded and allows you to view their 
+enabled/disabled state (among other things). It's a reference tool 
+for a Snort install using PulledPork for rule management, not a 
+replacement for PulledPork!
+
+It is recommended to enable this on Security Onion servers but not 
+sensors. If you're interested in a more distributed approach, contact 
+me and I can provide some suggestions/guidance. 
+
+- Added VRT reference workflow lookup. For Sguil events with a sig_id, 
+you can now use the Events view workflow menu to view the Snort 
+signature reference document in a new window, when available.
+
+- Added SOstat ability to sort by sensor to provide                                             
+better monitoring of a distributed deployment.
+
+1.1.2 - Workflow field and event search items added for CIF, DShield 
+and Robtex. Most panel drilldowns have been changed from table views 
+to event listing views. The primary reason (while less aesthetic) is 
+accessibility to the workflow queries, which will allow you to 
+efficiently query domains, IPs, and hashes without disrupting your 
+workflow and visiblity (i.e., results spawn in new windows/tabs).
+
+1.1 - I've added an input for Bro's capture_loss.log which now 
+displays on the SOstat Security Onion monitor in a time chart 
+paired with Snort packet loss. To enable this log in Bro edit:
+     /usr/local/share/bro/site/local.bro
+and add the following:
+     @load misc/capture-loss
+You'll have to check and install Bro for the change to get loaded.
+     sudo broctl
+     check
+     install
+     exit
+and you're done. It takes a few before the first logged event will 
+show so give it a bit before you worry if it's working.
+
+I also tweaked the sguild inputs to exclude "{URL" events. This 
+data is already being consumed via bro_http so it should cut down 
+on the licensing volume.
+
+Monitors Dashboard
+- Returned misc-activity to the Sguil panel. 
+- Added date/time and raw event to drill down display for the FTP 
+Args panel.
+
+GeoIP
+- A drop down list has been added to GeoIP allowing you to search 
+GeoIP by sourcetype which should reduce query times for more 
+targeted views. The map also now includes drill down capabilities 
+with results appearing below the map when selected.
+
+Mining
+- Added drill down to the time chart panels for HTTP and SMTP mining
+- Added a PADS dashboard (similar to HTTP and SMTP mining) searchable 
+by Name, Classification, 
+Source IP, Source Port, Destination IP, Destination Port, Protocol, 
+and Severity.
+- Added a Known Knowns dashboard. Includes: Known Services; Known 
+Software searchable by Name and 
+Type; and Known Certs searchable by Country, Common Name, Certificate 
+Issuer Subject, Location, 
+Organization, Organizational Unit, Port Number, State, and Certificate 
+Subject.
+
+PADS
+- Created an event type for PADS in addition to the PADS Mining 
+dashboard.
+
+SOstat
+- Updated SOstat SO to include Bro capture loss in addition to Snort 
+packet loss.
+
+
+1.0 - Version 1.0 introduces a visualization of Security Onion data 
+flows using the Splunk Visualizations app (available at 
+http://splunk-base.splunk.com/apps/22283/splunk-visualizations).
+It can be resource intensive on the viewing browser. Visit 
+http://metasplunk.com/projects/particle for details on the experiment 
+and which browsers might provide better support. If an Adobe Flash 
+update is required, you can install it via Applications>Ubuntu 
+Software Center. Search for "Adobe Flash" and click the More Info 
+button next to Adobe Flash Plugin, then click install.
+
+Also of note in version 1.0, is a .csv driven dropdown list search 
+for bro_http uris matching defined regex values. Dropdown items are 
+stored in:
+
+/opt/splunk/etc/apps/securityonion/lookups/mining_uri_values.csv
+
+The .csv file has two fields, value and label, where value is a regex 
+value that will be searched for in uris and label is the name you want 
+to appear in the drop down. The idea is to provide an easier way for 
+users to customize historical searching against recently identified 
+uri values to find out who may have hit them before Snort/ET were 
+detecting it.
+
+Minor Enhancements:
+Overview - Sguil Events now by classification
+
+Monitors - Sguil Events by name with sparkline and excluding OSSEC 
+and misc-activity events to reduce clutter.
+
+General Mining - HTTP/SMTP Filenames panel now includes a drop down 
+list to search by extension type. The Interesting URI Values panel 
+includes a drop down list to search by extension or other regex 
+values. Drop down items are stored in 
+
+/opt/splunk/etc/apps/securityonion/lookups/mining_uri_values.csv. 
+
+The .csv file has two fields, value and label, where value is a 
+regex value that will be searched for in uris and label is the 
+name you want to appear in the drop down. Idea is for historical 
+searching against newer active malicious uris to identify 
+potential victims retroactively.
+
+HTTP and SMTP mining - Changed to drop down list panels with a 
+sparkline table and time chart.
+
+SOstat - Now three dashboards: 
+SOstat Security Onion - SO services, sguil events, Snort/Snorby 
+details
+SOstat *nix - OS specific data, disk, top, ifconfig
+Security Onion Data Flow - More of a wow bang than anything, 
+this requires the Splunk 
+Visualizations app and will show a real time flow of data 
+from SO through Splunk. 
+
+Lastly, added header labels to all the dashboards/views to 
+aid in navigational awareness.
+
+0.8 - added CIF (Collective Intelligence Framework) query 
+capability to the field and event menus in Splunk. For the 
+links to work you will need to update the workflow actions 
+for your CIF server and a valid API key. Edit the workflow 
+via Splunk Manager > Fields > Workflow action from the 
+Security Onion app context and you should see two CIF entries.
+
+Comments or Questions:
+For comments, suggestions or questions, feel free to drop 
+me an e-mail: brad@eyeis.net
+
+
+Hope you enjoy the app!
+
+Brad Shoop
+http://eyeis.net
+@bradshoop

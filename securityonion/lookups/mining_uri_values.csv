@@ -1,0 +1,17 @@
+"value","label"
+\.exe,.exe
+\.bat,.bat
+\.bin,.bin
+\.cmd,.cmd
+\.doc,.doc
+\.jar,.jar
+\.pdf,.pdf
+\.rtf,.rtf
+\.sh,.sh
+\.swf,.swf
+\.xls,.xls
+\/+[a-z]\.php\?\w=,/[a-Z].php?[a-Z]=
+\/stat+\d+\.php\?\w=,/stat[0-9].php?[a-z]=
+\/index.php\?+\w+\=,/index.php?[a-z]=
+\/install_flash,/install_flash
+\/main.php\?page=\d,/main.php?page=[0-9]

@@ -1,0 +1,571 @@
+<view template="dashboard.html">
+    <label>Monitors</label>
+    <module name="AccountBar" layoutPanel="appHeader"/>
+    <module name="AppBar" layoutPanel="navigationHeader"/>
+    <module name="Message" layoutPanel="messaging">
+        <param name="filter">*</param>
+        <param name="clearOnJobDispatch">False</param>
+        <param name="maxSize">1</param>
+    </module>
+    <module name="TitleBar" layoutPanel="viewHeader">
+    </module>
+    
+    <module name="StaticSelect" layoutPanel="panel_row1_col1">
+        <param name="settingToCreate">field_select</param>
+        <param name="label">Field:</param>
+        <param name="staticFieldsToDisplay">
+            <list>
+                <param name="value">name</param>
+                <param name="label">Name</param>
+            </list>      
+            <list>
+                <param name="value">classification</param>
+                <param name="label">Classification</param>
+            </list>      
+            <list>
+                <param name="value">src_ip</param>        
+                <param name="label">Source IP</param>
+            </list>
+            <list>
+                <param name="value">dest_ip</param>
+                <param name="label">Destination IP</param>
+            </list>
+            <list>
+                <param name="value">dest_port</param>
+                <param name="label">Destination Port</param>
+            </list>
+            <list>
+                <param name="value">severity</param>
+                <param name="label">Severity</param>
+            </list>
+            <list>
+                <param name="value">detection_engine</param>
+                <param name="label">Detection Engine</param>
+            </list>
+        </param>           
+        <module name="ConvertToIntention">
+            <param name="settingToConvert">field_select</param>
+            <param name="intention">
+                <param name="name">stringreplace</param>
+                <param name="arg">
+                    <param name="field_select">
+                        <param name="value">$target$</param>
+                    </param>
+                </param>
+            </param>
+            <module name="TimeRangePicker" layoutPanel="panel_row1_col1" group="Sguil Events">
+                <param name="searchWhenChanged">True</param>
+                <param name="selected">Last 60 minutes</param>                
+                <module name="HiddenSearch" layoutPanel="panel_row1_col1" group="Sguil Events (excluding OSSEC)" autoRun="True">
+                    <param name="search">sourcetype="sguild" classification!="{}" name!="URL*" | fields sig_id src_ip dest_ip dest_port proto classification severity name detection_engine | iconify severity | chart sparkline(count) AS "Event Trend" count AS "Total" by $field_select$</param>
+                    <param name="groupLabel">Sguil Events</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="Paginator">
+                        <param name="entityName">results</param>
+                        <param name="maxPages">10</param>
+                        <module name="SimpleResultsTable">
+                            <param name="drilldown">row</param>
+                            <param name="entityName">results</param>
+                            <param name="dataOverlayMode">none</param>
+                            <param name="displayRowNumbers">False</param>
+                            <module name="ConvertToDrilldownSearch">
+                                <module name="JobProgressIndicator"/>
+                                <module name="SimpleResultsHeader">
+                                    <param name="headerFormat">The drilldown search has $count$ events</param>
+                                    <param name="entityName">events</param>
+                                </module>
+                                <module name="Paginator">
+                                    <param name="count">5</param>
+                                    <param name="entityName">results</param>
+                                    <param name="maxPages">10</param>
+                                    <module name="HiddenFieldPicker">
+                                        <param name="fields">src_ip dest_ip classification proto sig_id severity</param>
+                                        <module name="EventsViewer">
+                                            <param name="enableEventActions">True</param>
+                                            <param name="enableFieldActions">True</param>
+                                        </module>
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module>
+        </module>
+    </module>
+
+<!-- Bro Weird Events -->    
+    <module name="StaticSelect" layoutPanel="panel_row1_col2">
+        <param name="settingToCreate">field_select</param>
+        <param name="label">Field:</param>
+        <param name="staticFieldsToDisplay">
+            <list>
+                <param name="value">name</param>
+                <param name="label">Name</param>
+            </list>      
+            <list>
+                <param name="value">src_ip</param>
+                <param name="label">Source IP</param>
+            </list>      
+            <list>
+                <param name="value">dest_ip</param>        
+                <param name="label">Destination IP</param>
+            </list>
+            <list>
+                <param name="value">dest_port</param>
+                <param name="label">Destination Port</param>
+            </list>
+        </param>
+        <module name="ConvertToIntention">
+            <param name="settingToConvert">field_select</param>
+            <param name="intention">
+                <param name="name">stringreplace</param>
+                <param name="arg">
+                    <param name="field_select">
+                        <param name="value">$target$</param>
+                    </param>
+                </param>
+            </param>
+            <module name="TimeRangePicker" layoutPanel="panel_row1_col2" group="Bro Weird Events">
+                <param name="searchWhenChanged">True</param>
+                <param name="selected">Last 60 minutes</param>                
+                <module name="HiddenSearch" layoutPanel="panel_row1_col2" group="Bro Weird Events" autoRun="True">
+                    <param name="search">sourcetype="bro_weird" | fields src_ip dest_ip dest_port name uid | chart sparkline(count) AS "Event Trend" count AS "Total" by $field_select$</param>
+                    <param name="groupLabel">Bro Weird Events</param>
+                    <module name="JobProgressIndicator"></module>
+                    <module name="Paginator">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <param name="maxPages">10</param>
+                        <module name="SimpleResultsTable">
+                            <param name="displayRowNumbers">False</param>
+                            <param name="drilldown">row</param>
+                            <param name="entityName">results</param>     
+                            <module name="ConvertToDrilldownSearch">        
+                                <module name="JobProgressIndicator"></module>        
+                                <module name="SimpleResultsHeader">
+                                    <param name="headerFormat">The drilldown search has $count$ events</param>
+                                    <param name="entityName">events</param>
+                                </module>
+                                <module name="Paginator">
+                                    <param name="count">20</param>
+                                    <param name="entityName">results</param>
+                                    <param name="maxPages">10</param>
+                                    <module name="HiddenFieldPicker">
+                                        <param name="fields">src_ip dest_ip dest_port uid name</param>
+                                        <module name="EventsViewer">
+                                            <param name="enableEventActions">True</param>
+                                            <param name="enableFieldActions">True</param>
+                                        </module>
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>	  
+                                    </module>	        	      
+                                </module>
+                            </module>
+                        </module>
+                    </module>    
+                </module>
+            </module>
+        </module>
+    </module>
+    
+<!-- Bro SSL -->  
+    <module name="StaticSelect" layoutPanel="panel_row2_col1">
+        <param name="settingToCreate">field_select</param>
+        <param name="label">Field:</param>
+        <param name="staticFieldsToDisplay">
+            <list>
+                <param name="value">validation_status</param>
+                <param name="label">Validation Status</param>
+            </list>       
+            <list>
+                <param name="value">cipher</param>
+                <param name="label">Cipher</param>
+            </list> 
+            <list>
+                <param name="value">not_valid_before</param>
+                <param name="label">Not Valid Before</param>
+            </list> 
+            <list>
+                <param name="value">not_valid_after</param>
+                <param name="label">Not Valid After</param>
+            </list> 
+            <list>
+                <param name="value">src_ip</param>
+                <param name="label">Source IP</param>
+            </list> 
+            <list>
+                <param name="value">dest_ip</param>
+                <param name="label">Destination IP</param>
+            </list> 
+            <list>
+                <param name="value">dest_port</param>
+                <param name="label">Destination Port</param>
+            </list> 
+            <list>
+                <param name="value">CN</param>
+                <param name="label">Common Name</param>
+            </list>        
+            <list>
+                <param name="value">C</param>
+                <param name="label">Country</param>
+            </list>          
+            <list>
+                <param name="value">L</param>
+                <param name="label">Location</param>
+            </list>      
+            <list>
+                <param name="value">ST</param>
+                <param name="label">State</param>
+            </list>      
+            <list>
+                <param name="value">O</param>
+                <param name="label">Organization</param>
+            </list>          
+            <list>
+                <param name="value">OU</param>
+                <param name="label">OU</param>
+            </list>          
+            <list>
+                <param name="value">subject</param>
+                <param name="label">Subject</param>
+            </list>        
+            <list>
+                <param name="value">version</param>
+                <param name="label">Version</param>
+            </list>    
+            <list>
+                <param name="value">server_name</param>
+                <param name="label">Server Name</param>
+            </list>  
+        </param>             
+        <module name="ConvertToIntention">
+            <param name="settingToConvert">field_select</param>
+            <param name="intention">
+                <param name="name">stringreplace</param>
+                <param name="arg">
+                    <param name="field_select">
+                        <param name="value">$target$</param>
+                    </param>               
+                </param>
+            </param>
+            <module name="TimeRangePicker">
+                <param name="searchWhenChanged">True</param>
+                <param name="selected">Last 60 minutes</param>
+                <module name="HiddenSearch" layoutPanel="panel_row2_col1" group="Bro SSL" autoRun="True">
+                    <param name="search">sourcetype="bro_ssl"| fields src_ip dest_ip dest_port server_name subject version cipher OU O ST L C CN validation_status not_valid_before not_valid_after | chart sparkline(count) AS "Event Trend" count AS "Total" by $field_select$</param>
+                    <param name="groupLabel">Bro SSL</param>
+                    <module name="JobProgressIndicator"></module>
+                    <module name="Paginator">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <param name="maxPages">10</param> 
+                        <module name="SimpleResultsTable">
+                            <param name="displayRowNumbers">False</param>
+                            <param name="drilldown">row</param>
+                            <param name="entityName">results</param>     
+                            <module name="ConvertToDrilldownSearch">        
+                                <module name="JobProgressIndicator"></module>        
+                                <module name="SimpleResultsHeader">
+                                    <param name="headerFormat">The drilldown search has $count$ events</param>
+                                    <param name="entityName">events</param>
+                                </module>
+                                <module name="Paginator">
+                                    <param name="count">20</param>
+                                    <param name="entityName">results</param>
+                                    <param name="maxPages">10</param>
+                                    <module name="HiddenFieldPicker">
+                                        <param name="fields">src_ip dest_ip server_name subject version cipher uid validation_status</param>  
+                                        <module name="EventsViewer">
+                                            <param name="enableEventActions">True</param>
+                                            <param name="enableFieldActions">True</param>
+                                        </module>
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>  
+            </module>
+        </module>
+    </module>
+    
+<!-- Bro HTTP -->  
+    <module name="StaticSelect" layoutPanel="panel_row2_col2">
+        <param name="settingToCreate">field_select</param>
+        <param name="label">Field:</param>
+        <param name="staticFieldsToDisplay">
+            <list>
+                <param name="value">status_msg</param>
+                <param name="label">Status Messages</param>
+            </list>      
+            <list>
+                <param name="value">user_agent</param>        
+                <param name="label">User Agents</param>
+            </list>
+            <list>
+                <param name="value">mime_type</param>
+                <param name="label">MIME_Types</param>
+            </list>      
+            <list>
+                <param name="value">filename</param>
+                <param name="label">Filenames</param>
+            </list>     
+            <list>
+                <param name="value">domain</param>
+                <param name="label">Domain</param>
+            </list>
+            <list>
+                <param name="value">src_ip</param>
+                <param name="label">Source IP</param>
+            </list>
+            <list>      
+                <param name="value">dest_ip</param>        
+                <param name="label">Destination IP</param>        
+            </list>
+        </param>     
+        <module name="ConvertToIntention">
+            <param name="settingToConvert">field_select</param>
+            <param name="intention">
+                <param name="name">stringreplace</param>
+                <param name="arg">
+                    <param name="field_select">
+                        <param name="value">$target$</param>
+                    </param>
+                </param>
+            </param>
+            <module name="TimeRangePicker" layoutPanel="panel_row2_col2" group="Bro HTTP">
+                <param name="searchWhenChanged">True</param>
+                <param name="selected">Last 60 minutes</param>
+                <module name="HiddenSearch" layoutPanel="panel_row2_col2" group="Bro HTTP" autoRun="True">
+                    <param name="search">sourcetype="bro_http" | fields src_ip dest_ip domain filename info_msg method mime_type user_agent uri uid status_msg | chart sparkline(count) AS "Event Trend" count AS "Total" by $field_select$</param>
+                    <param name="groupLabel">Bro HTTP</param>
+                    <module name="JobProgressIndicator"></module>
+                    <module name="Paginator">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <param name="maxPages">10</param>
+                        <module name="SimpleResultsTable">
+                            <param name="displayRowNumbers">False</param>
+                            <param name="drilldown">row</param>
+                            <param name="entityName">results</param>     
+                            <module name="ConvertToDrilldownSearch">
+                                <module name="JobProgressIndicator"></module>        
+                                <module name="SimpleResultsHeader">
+                                    <param name="headerFormat">The drilldown search has $count$ events</param>
+                                    <param name="entityName">events</param>
+                                </module>
+                                <module name="Paginator">
+                                    <param name="count">20</param>
+                                    <param name="entityName">results</param>
+                                    <param name="maxPages">10</param>          
+                                    <module name="HiddenFieldPicker">
+                                        <param name="fields">src_ip dest_ip domain uri filename mime_type info_msg method user_agent uid</param> 
+                                        <module name="EventsViewer">
+                                            <param name="enableEventActions">True</param>
+                                            <param name="enableFieldActions">True</param>
+                                        </module>
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>    
+                    </module>
+                </module>
+            </module>
+        </module>
+    </module>      
+
+<!-- Bro DPD -->  
+    <module name="StaticSelect" layoutPanel="panel_row3_col1">
+        <param name="settingToCreate">field_select</param>
+        <param name="label">Field:</param>
+        <param name="staticFieldsToDisplay">
+            <list>
+                <param name="value">failure_reason</param>
+                <param name="label">Failure Reason</param>
+            </list>      
+            <list>
+                <param name="value">analyzer</param>
+                <param name="label">Analyzer</param>
+            </list>     
+            <list>
+                <param name="value">proto</param>
+                <param name="label">Protocol</param>
+            </list>     
+            <list>
+        <param name="value">src_ip</param>
+        <param name="label">Source IP</param>
+      </list>      
+      <list>
+        <param name="value">dest_ip</param>        
+        <param name="label">Destination IP</param>
+      </list>
+      <list>
+        <param name="value">dest_port</param>
+        <param name="label">Destination Port</param>
+      </list>
+      </param>     
+      <module name="ConvertToIntention">
+          <param name="settingToConvert">field_select</param>
+          <param name="intention">
+              <param name="name">stringreplace</param>
+              <param name="arg">
+                  <param name="field_select">
+                      <param name="value">$target$</param>
+                  </param>
+              </param>
+          </param>
+          <module name="TimeRangePicker" layoutPanel="panel_row3_col1" group="Bro Dynamic Protocol Detection">
+              <param name="searchWhenChanged">True</param>
+              <param name="selected">Last 60 minutes</param>
+              <module name="HiddenSearch" layoutPanel="panel_row3_col1" group="Bro Dynamic Protocol Detection" autoRun="True">
+                  <param name="search">sourcetype="bro_dpd" | fields src_ip dest_ip dest_port failure_reason analyzer proto | chart sparkline(count) AS "Event Trend" count AS "Total" by $field_select$</param>
+                  <param name="groupLabel">Bro Dynamic Protocol Detection Eventss</param>
+                  <module name="JobProgressIndicator"></module>
+                  <module name="Paginator">
+                      <param name="count">10</param>
+                      <param name="entityName">results</param>
+                      <param name="maxPages">10</param>
+                      <module name="SimpleResultsTable">
+                          <param name="displayRowNumbers">False</param>
+                          <param name="drilldown">row</param>
+                          <param name="entityName">results</param>     
+                          <module name="ConvertToDrilldownSearch">        
+                              <module name="JobProgressIndicator"></module>        
+                              <module name="SimpleResultsHeader">
+                                  <param name="headerFormat">The drilldown search has $count$ events</param>
+                                  <param name="entityName">events</param>
+                              </module>
+                              <module name="Paginator">
+                                  <param name="count">20</param>
+                                  <param name="entityName">results</param>
+                                  <param name="maxPages">10</param>
+                                  <module name="HiddenFieldPicker">
+                                      <param name="fields">src_ip dest_ip dest_port failure_reason analyzer proto</param>
+                                      <module name="EventsViewer">
+                                          <param name="enableEventActions">True</param>
+                                          <param name="enableFieldActions">True</param>
+                                      </module>
+                                      <module name="ViewRedirectorLink">
+                                          <param name="viewTarget">flashtimeline</param>
+                                      </module>
+                                  </module>
+                              </module>
+                          </module>
+                      </module>    
+                  </module>
+              </module>    
+          </module>
+        </module> 
+    </module>
+  
+<!-- Bro FTP Args -->  
+    <module name="StaticSelect" layoutPanel="panel_row3_col2">
+        <param name="settingToCreate">field_select</param>
+        <param name="label">Field:</param>
+        <param name="staticFieldsToDisplay">
+            <list>
+                <param name="value">arg</param>
+                <param name="label">Arguments</param>
+            </list>      
+            <list>
+                <param name="value">reply_msg</param>        
+                <param name="label">Reply Message</param>
+            </list>
+            <list>
+                <param name="value">mime_type</param>
+                <param name="label">MIME_Types</param>
+            </list>      
+            <list>
+                <param name="value">mime_desc</param>
+                <param name="label">MIME Description</param>
+            </list>  
+            <list>
+                <param name="value">file_size</param>
+                <param name="label">File Size</param>
+            </list>      
+            <list>
+                <param name="value">extraction_file</param>
+                <param name="label">Extraction File</param>
+            </list>
+            <list>
+                <param name="value">src_ip</param>
+                <param name="label">Source IP</param>
+            </list>
+            <list>      
+                <param name="value">dest_ip</param>        
+                <param name="label">Destination IP</param>        
+            </list>
+            <list>      
+                <param name="value">dest_port</param>        
+                <param name="label">Destination Port</param>        
+            </list>
+            <list>      
+                <param name="value">user</param>        
+                <param name="label">User</param>        
+            </list>
+        </param>   
+        <module name="ConvertToIntention">
+            <param name="settingToConvert">field_select</param>
+            <param name="intention">
+                <param name="name">stringreplace</param>
+                <param name="arg">
+                    <param name="field_select">
+                        <param name="value">$target$</param>
+                    </param>
+                </param>
+            </param>
+            <module name="TimeRangePicker" layoutPanel="panel_row3_col2" group="Bro FTP">
+                <param name="searchWhenChanged">True</param>
+                <param name="selected">Last 60 minutes</param>  
+                <module name="HiddenSearch" layoutPanel="panel_row3_col2" group="Bro FTP" autoRun="True">
+                    <param name="search">sourcetype="bro_ftp" | fields src_ip dest_ip dest_port arg command extraction_file file_size mime_desc mime_type reply_msg user | chart sparkline(count) AS "Event Trend" count AS "Total" by $field_select$</param>
+                    <param name="groupLabel">Bro FTP</param>
+                    <module name="JobProgressIndicator"></module>
+                    <module name="Paginator">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <param name="maxPages">10</param>
+                        <module name="SimpleResultsTable">
+                            <param name="displayRowNumbers">False</param>
+                            <param name="drilldown">row</param>
+                            <param name="entityName">results</param>     
+                            <module name="ConvertToDrilldownSearch">        
+                                <module name="JobProgressIndicator"></module>        
+                                <module name="SimpleResultsHeader">
+                                    <param name="headerFormat">The drilldown search has $count$ events</param>
+                                    <param name="entityName">events</param>
+                                </module>
+                                <module name="Paginator">
+                                    <param name="count">20</param>
+                                    <param name="entityName">results</param>
+                                    <param name="maxPages">10</param>
+                                    <module name="HiddenFieldPicker">
+                                        <param name="fields">src_ip dest_ip dest_port arg command extraction_file file_size mime_desc mime_type reply_msg user</param>
+                                        <module name="EventsViewer">
+                                            <param name="enableEventActions">True</param>
+                                            <param name="enableFieldActions">True</param>
+                                        </module>
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module>
+        </module>
+    </module>
+</view>

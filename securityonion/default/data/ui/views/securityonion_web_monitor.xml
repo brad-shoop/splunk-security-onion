@@ -1,0 +1,259 @@
+<view template="dashboard.html">
+    <label>Web Monitor</label>
+    <module name="AccountBar" layoutPanel="appHeader"/>
+    <module name="AppBar" layoutPanel="navigationHeader"/>
+    <module name="Message" layoutPanel="messaging">
+        <param name="filter">*</param>
+        <param name="clearOnJobDispatch">False</param>
+        <param name="maxSize">1</param>
+    </module>
+    <module name="TitleBar" layoutPanel="viewHeader">
+    </module>
+    <module name="HiddenSearch" layoutPanel="panel_row1_col1_grp1" autoRun="True">
+        <param name="search">sourcetype="bro_http" | fields src_ip dest_ip domain uri status_msg filename mime_type dest_ip_country_name | geoip dest_ip | stats count by src_ip, dest_ip, domain, dest_ip_country_name</param>      
+<!-- Web Activity by Source -->
+    <module name="HiddenPostProcess" layoutPanel="panel_row1_col1" group="Web Activity by Source" autoRun="True">
+        <param name="search">stats count by src_ip</param>
+        <param name="groupLabel">Web Activity by Source</param>
+        <module name="TimeRangePicker">
+            <param name="selected">Last 60 minutes</param>
+            <param name="searchWhenChanged">True</param>    
+            <module name="JobProgressIndicator">
+                <module name="EnablePreview">
+                    <param name="enable">True</param>
+                    <param name="display">False</param>
+                    <module name="HiddenChartFormatter">
+                        <param name="charting.legend.placement">bottom</param>
+                        <param name="charting.chart">pie</param>
+                        <module name="JSChart">
+                            <param name="height">300px</param>
+                            <module name="ConvertToDrilldownSearch">
+                                <module name="JobProgressIndicator"/>
+                                <module name="SimpleResultsHeader">
+                                    <param name="headerFormat">The drilldown search has $count$ events</param>
+                                    <param name="entityName">events</param>
+                                </module>
+                                <module name="Paginator">
+                                    <param name="count">5</param>
+                                    <param name="entityName">results</param>
+                                    <param name="maxPages">10</param>
+                                    <module name="HiddenFieldPicker">
+                                        <param name="fields">src_ip dest_ip domain uri status_msg filename mime_type</param>
+                                        <module name="SimpleResultsTable">
+                                            <param name="drilldown">all</param>
+                                            <param name="entityName">results</param>
+                                            <param name="displayRowNumbers">False</param>
+                                            <module name="ConvertToDrilldownSearch">
+                                                <module name="ViewRedirector">
+                                                    <param name="viewTarget">flashtimeline</param>
+                                                </module>
+                                            </module>
+                                        </module>
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module>
+        </module>
+    </module>
+<!-- Activity by GeoIP -->
+    <module name="HiddenPostProcess" layoutPanel="panel_row1_col2" group="Web Activity by GeoIP" autoRun="True">
+        <param name="search">fields src_ip dest_ip domain uri filename | geoip dest_ip | top dest_ip_country_name</param>
+        <param name="groupLabel">Web Activity by GeoIP</param>      
+        <module name="TimeRangePicker">
+            <param name="selected">Last 60 minutes</param>
+            <param name="searchWhenChanged">True</param>    
+            <module name="JobProgressIndicator">
+                <module name="EnablePreview">
+                    <param name="enable">True</param>
+                    <param name="display">False</param>
+                    <module name="HiddenChartFormatter">
+                        <param name="charting.legend.placement">bottom</param>
+                        <param name="charting.chart">pie</param>
+                        <module name="JSChart">
+                            <param name="height">300px</param>
+                            <module name="ConvertToDrilldownSearch">
+                                <module name="JobProgressIndicator"/>
+                                <module name="SimpleResultsHeader">
+                                    <param name="headerFormat">The drilldown search has $count$ events</param>
+                                    <param name="entityName">events</param>
+                                </module>
+                                <module name="Paginator">
+                                    <param name="count">5</param>
+                                    <param name="entityName">results</param>
+                                    <param name="maxPages">10</param>
+                                    <module name="HiddenFieldPicker">
+                                        <param name="fields">src_ip dest_ip domain uri filename</param>
+                                        <module name="SimpleResultsTable">
+                                            <param name="drilldown">all</param>
+                                            <param name="entityName">results</param>
+                                            <param name="displayRowNumbers">False</param>
+                                            <module name="ConvertToDrilldownSearch">
+                                                <module name="ViewRedirector">
+                                                    <param name="viewTarget">flashtimeline</param>
+                                                </module>
+                                            </module>
+                                        </module>
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module>
+        </module>
+    </module>  
+<!-- Top Source IPs -->  
+    <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="Top Source IPs" autoRun="True">
+        <param name="search">top src_ip</param>
+        <param name="groupLabel">Top Source IPs</param>
+        <module name="TimeRangePicker">
+            <param name="selected">Last 60 minutes</param>
+            <param name="searchWhenChanged">True</param>    
+            <module name="JobProgressIndicator"></module>
+            <module name="Paginator">
+                <param name="count">20</param>
+                <param name="entityName">results</param>
+                <param name="maxPages">10</param>
+                <module name="SimpleResultsTable">
+                    <param name="displayRowNumbers">False</param>
+                    <param name="drilldown">row</param>
+                    <param name="entityName">results</param>     
+                    <module name="ConvertToDrilldownSearch">        
+                        <module name="JobProgressIndicator"></module>        
+                        <module name="SimpleResultsHeader">
+                            <param name="headerFormat">The drilldown search has $count$ events</param>
+                            <param name="entityName">events</param>
+                        </module>
+                        <module name="Paginator">
+                            <param name="count">20</param>
+                            <param name="entityName">results</param>
+                            <param name="maxPages">10</param>
+                            <module name="HiddenFieldPicker">
+                                <param name="fields">src_ip dest_ip domain uri user_agent method status_msg filename mime_type referrer</param>
+                                <module name="SimpleResultsTable">
+                                    <param name="drilldown">all</param>
+                                    <param name="entityName">results</param>
+                                    <param name="displayRowNumbers">False</param>
+                                    <module name="ConvertToDrilldownSearch">
+                                        <module name="ViewRedirector">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                                <module name="ViewRedirectorLink">
+                                    <param name="viewTarget">flashtimeline</param>
+                                </module>
+                            </module>      
+                        </module>
+                    </module>
+                </module>
+            </module>    
+        </module>
+    </module>  
+<!-- Top Destination IPs -->  
+    <module name="HiddenPostProcess" layoutPanel="panel_row2_col2" group="Top Destination IPs" autoRun="True">
+        <param name="search">top dest_ip</param>
+        <param name="groupLabel">Top Destination IPs</param>
+        <module name="TimeRangePicker">
+            <param name="selected">Last 60 minutes</param>
+            <param name="searchWhenChanged">True</param>    
+            <module name="JobProgressIndicator"></module>
+            <module name="Paginator">
+                <param name="count">20</param>
+                <param name="entityName">results</param>
+                <param name="maxPages">10</param>
+                <module name="SimpleResultsTable">
+                    <param name="displayRowNumbers">False</param>
+                    <param name="drilldown">row</param>
+                    <param name="entityName">results</param>     
+                    <module name="ConvertToDrilldownSearch">        
+                        <module name="JobProgressIndicator"></module>        
+                        <module name="SimpleResultsHeader">
+                            <param name="headerFormat">The drilldown search has $count$ events</param>
+                            <param name="entityName">events</param>
+                        </module>
+                        <module name="Paginator">
+                            <param name="count">20</param>
+                            <param name="entityName">results</param>
+                            <param name="maxPages">10</param>
+                            <module name="HiddenFieldPicker">
+                                <param name="fields">src_ip dest_ip domain uri user_agent method status_msg filename mime_type referrer</param>
+                                <module name="SimpleResultsTable">
+                                    <param name="drilldown">all</param>
+                                    <param name="entityName">results</param>
+                                    <param name="displayRowNumbers">False</param>
+                                    <module name="ConvertToDrilldownSearch">
+                                        <module name="ViewRedirector">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                                <module name="ViewRedirectorLink">
+                                    <param name="viewTarget">flashtimeline</param>
+                                </module>
+                            </module>      
+                        </module>
+                    </module>
+                </module>
+            </module>    
+        </module> 
+    </module>   
+<!-- Top Domains -->  
+    <module name="HiddenPostProcess" layoutPanel="panel_row2_col3" group="Top Domains" autoRun="True">
+        <param name="search">top domain</param>
+        <param name="groupLabel">Top Domains</param>
+        <module name="TimeRangePicker">
+            <param name="selected">Last 60 minutes</param>
+            <param name="searchWhenChanged">True</param>    
+            <module name="JobProgressIndicator"></module>
+            <module name="Paginator">
+                <param name="count">20</param>
+                <param name="entityName">results</param>
+                <param name="maxPages">10</param>
+                <module name="SimpleResultsTable">
+                    <param name="displayRowNumbers">False</param>
+                    <param name="drilldown">row</param>
+                    <param name="entityName">results</param>     
+                    <module name="ConvertToDrilldownSearch">        
+                        <module name="JobProgressIndicator"></module>        
+                        <module name="SimpleResultsHeader">
+                            <param name="headerFormat">The drilldown search has $count$ events</param>
+                            <param name="entityName">events</param>
+                        </module>
+                        <module name="Paginator">
+                            <param name="count">20</param>
+                            <param name="entityName">results</param>
+                            <param name="maxPages">10</param>
+                            <module name="HiddenFieldPicker">
+                                <param name="fields">src_ip dest_ip domain uri user_agent method status_msg filename mime_type referrer</param>
+                                <module name="SimpleResultsTable">
+                                    <param name="drilldown">all</param>
+                                    <param name="entityName">results</param>
+                                    <param name="displayRowNumbers">False</param>
+                                    <module name="ConvertToDrilldownSearch">
+                                        <module name="ViewRedirector">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                                <module name="ViewRedirectorLink">
+                                    <param name="viewTarget">flashtimeline</param>
+                                </module>
+                            </module>      
+                        </module>
+                    </module>
+                </module>
+            </module>    
+        </module>
+    </module>
+    </module>
+</view>

@@ -1,0 +1,152 @@
+<view autoCancelInterval="90" onunloadCancelJobs="true" template="dashboard.html">
+    <label>SMTP Mining</label>
+    <module name="AccountBar" layoutPanel="appHeader"/>
+    <module name="AppBar" layoutPanel="appHeader"/>
+    <module name="Message" layoutPanel="messaging">
+        <param name="filter">*</param>
+        <param name="clearOnJobDispatch">False</param>
+        <param name="maxSize">2</param>
+    </module>
+    <module name="TitleBar" layoutPanel="viewHeader">
+    </module>
+      
+    <module name="StaticSelect" layoutPanel="panel_row1_col1">
+        <param name="settingToCreate">mine_setting</param>
+        <param name="label">Mine for:</param>
+        <param name="staticFieldsToDisplay">
+            <list>
+                <param name="value">filename</param>
+                <param name="label">Filenames</param>
+            </list>      
+            <list>
+                <param name="value">mime_type</param>
+                <param name="label">MIME_Types</param>
+            </list>      
+            <list>
+                <param name="value">user_agent</param>        
+                <param name="label">User_Agents</param>
+            </list>
+            <list>
+                <param name="value">helo</param>
+                <param name="label">Helo Count</param>
+            </list>
+            <list>
+                <param name="value">from</param>
+                <param name="label">Senders</param>
+            </list>
+            <list>
+                <param name="value">to</param>
+                <param name="label">Recipients</param>
+            </list>
+            <list>      
+                <param name="value">subject</param>        
+                <param name="label">Subjects</param>        
+            </list>
+        </param>
+        <module name="ConvertToIntention">
+            <param name="settingToConvert">mine_setting</param>
+            <param name="intention">
+                <param name="name">stringreplace</param>
+                <param name="arg">
+                    <param name="mine_value">
+                        <param name="value">$target$</param>
+                    </param>
+                </param>
+            </param>
+            <module name="TimeRangePicker" layoutPanel="panel_row1_col1">
+                <param name="searchWhenChanged">True</param>
+                <param name="selected">Last 60 minutes</param>
+                <module name="HiddenSearch" layoutPanel="panel_row1_col1" autoRun="True" group="SMTP Mining">
+                    <param name="search">sourcetype=bro_smtp_entities OR sourcetype=bro_smtp | fields src_ip dest_ip $mine_value$ | chart sparkline(count) AS "Event Trend" count AS "Total" by $mine_value$</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="Paginator">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <param name="maxPages">10</param>
+                        <module name="SimpleResultsTable">
+                            <param name="drilldown">row</param>
+                            <param name="displayRowNumbers">False</param>
+                            <param name="entityName">results</param>
+                            <module name="ConvertToDrilldownSearch">
+                                <module name="JobProgressIndicator"/>
+                                <module name="SimpleResultsHeader">
+                                    <param name="headerFormat">The drilldown search has $count$ events</param>
+                                    <param name="entityName">events</param>
+                                </module>
+                                <module name="Paginator">
+                                    <param name="count">5</param>
+                                    <param name="entityName">results</param>
+                                    <param name="maxPages">10</param>
+                                    <module name="HiddenFieldPicker">
+                                        <param name="fields">src_ip dest_ip</param>
+                                        <module name="EventsViewer">
+                                            <param name="enableEventActions">True</param>
+                                            <param name="enableFieldActions">True</param>
+                                        </module>
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module>
+        </module>  
+        <module name="ConvertToIntention">
+            <param name="settingToConvert">mine_setting</param>
+            <param name="intention">
+                <param name="name">stringreplace</param>
+                <param name="arg">
+                    <param name="mine_value">
+                        <param name="value">$target$</param>
+                    </param>
+                </param>
+            </param>
+            <module name="TimeRangePicker" layoutPanel="panel_row2_col1">
+                <param name="searchWhenChanged">True</param>
+                <param name="selected">Last 60 minutes</param>
+                <module name="HiddenSearch" layoutPanel="panel_row2_col1" group="SMTP Mining Timechart" autoRun="True">
+                    <param name="search">sourcetype=bro_smtp_entities OR sourcetype=bro_smtp | fields src_ip dest_ip $mine_value$ | timechart count by $mine_value$</param>
+                    <param name="groupLabel">SMTP Mining Timechart</param>
+                    <module name="JobProgressIndicator"/>                     
+                    <module name="EnablePreview">
+                        <param name="enable">True</param>
+                        <param name="display">False</param>
+                        <module name="HiddenChartFormatter">
+                            <param name="charting.legend.placement">bottom</param>
+                            <param name="charting.chart">area</param>
+                            <module name="JSChart">
+                                <param name="width">100%</param>
+                                <module name="Gimp"/>
+                                <module name="ConvertToDrilldownSearch">
+                                    <module name="JobProgressIndicator"/>
+                                    <module name="SimpleResultsHeader">
+                                        <param name="headerFormat">The drilldown search has $count$ events</param>
+                                        <param name="entityName">events</param>
+                                    </module>
+                                    <module name="Paginator">
+                                        <param name="count">5</param>
+                                        <param name="entityName">results</param>
+                                        <param name="maxPages">10</param>
+                                        <module name="HiddenFieldPicker">
+                                            <param name="fields">src_ip dest_ip</param>
+                                            <module name="EventsViewer">
+                                                <param name="enableEventActions">True</param>
+                                                <param name="enableFieldActions">True</param>
+                                            </module>
+                                            <module name="ViewRedirectorLink">
+                                                <param name="viewTarget">flashtimeline</param>
+                                            </module>
+                                        </module>
+                                    </module>
+                                </module>                  
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module>
+        </module>
+    </module>  
+</view>  

@@ -1,0 +1,36 @@
+<view autoCancelInterval="100" isPersistable="true" isSticky="true" isVisible="true" objectMode="viewconf" onunloadCancelJobs="false" template="search.html">
+    <label>Security Onion Data Flow</label>
+    <module name="AccountBar" layoutPanel="appHeader"/>
+    <module name="AppBar" layoutPanel="navigationHeader"/>
+    <module name="TitleBar" layoutPanel="viewHeader">
+    </module>
+    <module name="SearchBar" layoutPanel="splSearchControls-inline" autoRun="true">
+        <param name="q">sourcetype=*</param>
+        <param name="useOwnSubmitButton">False</param>
+        <param name="useTypeahead">true</param>
+        <param name="useAssistant">true</param>
+        <module name="TimeRangePicker">
+            <param name="searchWhenChanged">True</param>
+            <param name="selected">30 second window</param>
+            <module name="SubmitButton">
+                <param name="allowSoftSubmit">True</param>
+                <module name="Message" layoutPanel="graphArea">
+                    <param name="filter">splunk.search.job</param>
+                    <param name="clearOnJobDispatch">True</param>
+                    <param name="maxSize">2</param>
+                    <module name="JobStatus">
+                        <param name="resultsLink">
+                            <param name="popup">True</param>
+                            <param name="viewTarget">report_builder_define_data</param>
+                            <param name="transformedResultsViewTarget">report_builder_format_report</param>
+                        </param>
+                        <module name="FlashParticlesBeta">
+                            <param name="particles.foregroundColor">0x000000</param>
+                            <param name="height">550px</param>
+                        </module>
+                    </module>
+                </module>
+            </module>
+        </module>
+    </module>
+</view>

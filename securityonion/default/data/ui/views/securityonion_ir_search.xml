@@ -1,0 +1,994 @@
+<view autoCancelInterval="90" decomposeIntentions="false" isPersistable="true" isSticky="false" isVisible="true" objectMode="viewconf" onunloadCancelJobs="true" template="dashboard.html">
+    <label>IR Search</label>
+    <module name="AccountBar" layoutPanel="appHeader"/>
+    <module name="AppBar" layoutPanel="appHeader"/>
+    <module name="SideviewUtils" layoutPanel="appHeader"/>
+    <module name="Message" layoutPanel="messaging">
+        <param name="clearOnJobDispatch">False</param>
+        <param name="filter">*</param>
+        <param name="maxSize">2</param>
+    </module>
+    <module name="TitleBar" layoutPanel="viewHeader"/>
+
+    <module name="TextField" layoutPanel="panel_row1_col1" autoRun="False">
+        <param name="label">IP Address:</param>
+        <param name="default"></param>
+        <param name="name">search_ip</param>
+        <param name="template">$value$</param>
+        <param name="float">left</param>
+        <module name="TimeRangePicker" layoutPanel="panel_row1_col1">
+            <param name="searchWhenChanged">True</param>
+            <param name="selected">Last 60 minutes</param>
+
+<!-- Profile TabSwitcher -->            
+            <module name="TabSwitcher" layoutPanel="panel_row2_col1" group="Profile">
+                <param name="mode">independent</param>
+                <param name="groupLabel">Notable Events</param>
+
+<!-- Sguil Events -->
+                <module name="Pulldown" layoutPanel="panel_row2_col1_grp1" autoRun="False">
+                    <param name="groupLabel">Sguil Events (Snort/Suricata/PADS)</param>  
+                    <param name="name">sguild_chart_by</param>
+                    <param name="label">Sort Results by:</param>                            
+                    <param name="staticFieldsToDisplay">
+                        <list>
+                            <param name="value">values(classification) as classification by name</param>
+                            <param name="label">Name</param>
+                        </list>
+                        <list>
+                            <param name="value">values(name) as name by classification</param>
+                            <param name="label">Classification</param>
+                        </list>
+                    </param>
+
+                    <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                        <param name="search">sourcetype="sguild" (src_ip="$search_ip$" OR dest_ip="$search_ip$") | geoip dest_ip | chart count dc(src_ip) as src_count dc(dest_ip) as dest_count values(dest_ip_country_name) as dest_ip_country_name values(severity) as severity $sguild_chart_by$ | sort count + desc</param>
+                        <module name="Pager">
+                            <param name="count">10</param>
+                            <param name="entityName">results</param>
+                            <module name="EnablePreview">
+                                <param name="enable">True</param>
+                                <param name="display">False</param>
+                                <module name="SimpleResultsTable">
+                                    <param name="fieldFormats">
+                                        <param name="sparkline">
+                                            <list>
+                                            <param name="options">
+                                                <param name="height">10</param>
+                                                <param name="barColor">green</param>
+                                                <param name="type">line</param>
+                                            </param>
+                                            <param name="type">sparkline</param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <param name="displayRowNumbers">false</param>
+                                <module name="Gimp"/>                  
+                                <module name="GenericHeader" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="label">Selected Event Details by Source IP</param>
+                                </module>
+                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="search">sourcetype="sguild" (src_ip="$search_ip$" OR dest_ip="$search_ip$") name="$click.fields.name$" | geoip dest_ip | stats values(dest_port) as dest_port sparkline count values(dest_ip_country_name) as dest_ip_country_name values(severity) as severity values(proto) as proto by src_ip dest_ip</param>                                    
+                                    <module name="JobProgressIndicator"/>
+                                    <module name="Paginator">
+                                        <param name="count">10</param>
+                                        <param name="entityName">results</param>
+                                        <module name="EnablePreview">
+                                            <param name="enable">True</param>
+                                            <param name="display">False</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="options">
+                                                                <param name="height">10</param>
+                                                                <param name="barColor">green</param>
+                                                                <param name="type">line</param>
+                                                            </param>
+                                                            <param name="type">sparkline</param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <param name="entityName">results</param>
+                                                <param name="displayRowNumbers">false</param>
+                                                <module name="Gimp"/>                                                 
+                                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                                    <param name="search">sourcetype="sguild" (src_ip="$click.fields.src_ip$" AND dest_ip="$click.fields.dest_ip$") name="$click.fields.name$" | geoip dest_ip | chart values(dest_ip) as dest_ip sparkline count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name values(severity) as severity values(proto) as proto by src_ip</param>
+                                                    <module name="JobProgressIndicator"/>
+                                                    <module name="Events">
+                                                        <param name="height">350px</param>
+                                                        <param name="resizeMode">fixed</param>
+                                                        <param name="allowTermClicks">False</param>
+                                                        <param name="fields">src_ip dest_ip</param>
+                                                    </module>                                                            
+                                                    <module name="ViewRedirectorLink">
+                                                        <param name="viewTarget">flashtimeline</param>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>                      
+                                    </module>
+                                </module>                       
+                            </module>                    
+                        </module>                    
+                    </module>                
+                    </module>                                   
+                </module><!-- End Squil Events -->
+
+<!-- Connection Bytes Events -->
+                <module name="Pulldown" layoutPanel="panel_row2_col1_grp1" autoRun="False">
+                    <param name="groupLabel">Connection Byte Counts</param>  
+                    <param name="name">bytes_sort_by</param>
+                    <param name="label">Sort by:</param>
+                    <param name="staticFieldsToDisplay">
+                        <list>
+                            <param name="value">service</param>
+                            <param name="label">Service</param>
+                        </list>
+                        <list>
+                            <param name="value">dest_ip</param>
+                            <param name="label">Destination IP</param>
+                        </list>
+                        <list>
+                            <param name="value">src_ip</param>
+                            <param name="label">Source IP</param>
+                        </list>
+                        <list>
+                            <param name="value">src_port</param>
+                            <param name="label">Source Port</param>
+                        </list>
+                        <list>
+                            <param name="value">dest_port</param>
+                            <param name="label">Destination Port</param>
+                        </list>
+                        <list>
+                            <param name="value">orig_cc</param>
+                            <param name="label">Originating Country Code</param>
+                        </list>
+                        <list>
+                            <param name="value">resp_cc</param>
+                            <param name="label">Response Country Code</param>
+                        </list>
+                        <list>
+                            <param name="value">conn_desc</param>
+                            <param name="label">Connection Description</param>
+                        </list>
+                        <list>
+                            <param name="value">proto</param>
+                            <param name="label">Protocol</param>
+                        </list>
+                    </param>
+                    <module name="Pulldown" layoutPanel="panel_row2_col1_grp1" autoRun="False">
+                        <param name="groupLabel">Connection Byte Counts</param>  
+                        <param name="name">bytes_by</param>
+                        <param name="label">Bytes by:</param>                            
+                        <param name="staticFieldsToDisplay">
+                            <list>
+                                <param name="value">eval total=(orig_bytes)+(resp_bytes) | timechart sum(total)</param>
+                                <param name="label">Total</param>
+                            </list>
+                            <list>
+                                <param name="value">timechart sum(orig_bytes)</param>
+                                <param name="label">Originator/Source IP</param>
+                            </list>
+                            <list>
+                                <param name="value">timechart sum(resp_bytes)</param>
+                                <param name="label">Responder/Destination IP</param>
+                            </list>
+                        </param>                       
+                        <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                            <param name="search">sourcetype="bro_conn" (src_ip="$search_ip$" OR dest_ip="$search_ip$") | fields src_ip dest_ip dest_port orig_bytes resp_bytes orig_cc resp_cc service proto conn_desc  | $bytes_by$ by $bytes_sort_by$</param>
+                            <module name="ViewstateAdapter">
+                                <module name="HiddenFieldPicker">
+                                    <param name="strictMode">True</param>
+                                    <module name="EnablePreview">
+                                        <param name="display">False</param>
+                                        <param name="enable">True</param>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.chart">column</param>
+                                            <param name="charting.axisTitleX.text">Time</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <param name="height">250px</param>
+                                                <module name="Gimp"/>
+                                                <module name="GenericHeader" layoutPanel="panel_row2_col1_grp1">
+                                                    <param name="label">Selected Event Details by Destination IP</param>
+                                                </module>
+                                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                                    <param name="search">sourcetype="bro_conn" (src_ip="$search_ip$" OR dest_ip="$search_ip$") $bytes_sort_by$="$click.name2$" | stats values(dest_port) as dest_port sparkline count values(orig_bytes) as orig_bytes values(resp_bytes) as resp_bytes values(orig_cc) as orig_cc values(resp_cc) as resp_cc values(service) as service values(conn_state) as conn_state values(conn_desc) as conn_desc by src_ip dest_ip</param>                                    
+                                                    <module name="JobProgressIndicator"/>
+                                                    <module name="Pager">
+                                                        <param name="count">5</param>
+                                                        <param name="entityName">results</param>
+                                                        <module name="EnablePreview">
+                                                            <param name="enable">True</param>
+                                                            <param name="display">False</param>
+                                                            <module name="SimpleResultsTable">
+                                                                <param name="fieldFormats">
+                                                                    <param name="sparkline">
+                                                                        <list>
+                                                                            <param name="options">
+                                                                                <param name="height">10</param>
+                                                                                <param name="barColor">green</param>
+                                                                                <param name="type">line</param>
+                                                                            </param>
+                                                                            <param name="type">sparkline</param>
+                                                                        </list>
+                                                                    </param>
+                                                                </param>
+                                                                <param name="count">10</param>
+                                                                <param name="allowTransformedFieldSelect">True</param>
+                                                                <param name="drilldown">row</param>
+                                                                <param name="entityName">results</param>
+                                                                <param name="displayRowNumbers">false</param>
+                                                                <module name="Gimp"/>                                                                
+                                                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                                                    <param name="search">sourcetype="bro_conn" (src_ip="$click.fields.src_ip$" AND dest_ip="$click.fields.dest_ip$") | geoip dest_ip | chart values(dest_ip) as dest_ip sparkline count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name values(cif_confidence) as cif_confidence values(proto) as proto by src_ip</param>
+                                                                    <module name="JobProgressIndicator"/>
+                                                                    <module name="Events">
+                                                                        <param name="height">350px</param>
+                                                                        <param name="resizeMode">fixed</param>
+                                                                        <param name="allowTermClicks">False</param>
+                                                                        <param name="fields">src_ip dest_ip</param>
+                                                                    </module>                                                      
+                                                                    <module name="ViewRedirectorLink">
+                                                                        <param name="viewTarget">flashtimeline</param>
+                                                                    </module>                                                                                                                                       
+                                                                </module>
+                                                            </module>
+                                                        </module>                                        
+                                                    </module>                                                
+                                                </module>                           
+                                            </module>
+                                        </module>                                                                              
+                                    </module>                                                                                                   
+                                </module>                               
+                            </module>                                                  
+                        </module>                                                                                                     
+                    </module>
+                </module><!-- End Connection Bytes -->                
+
+<!-- HTTP Files by Extension -->
+           <module name="Pulldown" layoutPanel="panel_row2_col1_grp1" autoRun="False">
+                <param name="name">http_by</param>
+                <param name="groupLabel">HTTP Files</param>
+                <param name="label">Extension match by:</param>
+                <param name="staticFieldsToDisplay">
+                    <list>
+                        <param name="label">MIME_Types</param>
+                        <param name="value">mime_type</param>
+                    </list>
+                    <list>
+                        <param name="label">URI</param>
+                        <param name="value">uri</param>
+                    </list>
+                    <list>
+                        <param name="label">Destination IP</param>
+                        <param name="value">dest_ip</param>
+                    </list>
+                </param>
+                <module name="Search" layoutPanel="panel_row2_col1_grp1" label="HTTP Files">                    
+                    <param name="search">sourcetype="bro_http" (src_ip="$search_ip$" OR dest_ip="$search_ip$") | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.xls|\.zip|\.rar|\.7z" | geoip dest_ip | fields src_ip dest_ip dest_ip_country_name filename md5 mime_type domain uri status_msg user_agent file_extension | chart values(filename) as filename sparkline count values(domain) as domain values(dest_ip_country_name) as dest_ip_country_name values(status_msg) as status_msg values(user_agent) as user_agent by $http_by$</param>
+                    <param name="groupLabel">HTTP Files</param>  
+                    <module name="Pager">
+                            <param name="count">10</param>
+                            <param name="entityName">results</param>
+                            <module name="EnablePreview">
+                                <param name="enable">True</param>
+                                <param name="display">False</param>
+                                <module name="SimpleResultsTable">
+                                    <param name="fieldFormats">
+                                        <param name="sparkline">
+                                            <list>
+                                            <param name="options">
+                                                <param name="height">10</param>
+                                                <param name="barColor">green</param>
+                                                <param name="type">line</param>
+                                            </param>
+                                            <param name="type">sparkline</param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <param name="displayRowNumbers">false</param>
+                                <module name="Gimp"/>                  
+                                <module name="GenericHeader" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="label">Selected Details</param>
+                                </module>
+                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+		                    <param name="search">sourcetype="bro_http" (src_ip="$search_ip$" OR dest_ip="$search_ip$") $http_by$="$click.value$" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.xls|\.zip|\.rar|\.7z" | geoip dest_ip | fields uid src_ip dest_ip dest_port filename dest_ip_country_name mime_type domain uri status_msg user_agent file_extension _time | table _time src_ip dest_ip dest_port mime_type dest_ip_country_name domain uri user_agent uid</param>
+                                    <module name="JobProgressIndicator"/>
+                                    <module name="Paginator">
+                                        <param name="count">10</param>
+                                        <param name="entityName">results</param>
+                                        <module name="EnablePreview">
+                                            <param name="enable">True</param>
+                                            <param name="display">False</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="options">
+                                                                <param name="height">10</param>
+                                                                <param name="barColor">green</param>
+                                                                <param name="type">line</param>
+                                                            </param>
+                                                            <param name="type">sparkline</param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <param name="entityName">results</param>
+                                                <param name="displayRowNumbers">false</param>
+                                                <module name="Gimp"/>                                                 
+                                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                                    <param name="search">sourcetype="bro_*" src_ip="$click.fields.src_ip$" dest_ip="$click.fields.dest_ip$" uid="$click.fields.uid$" | geoip dest_ip | chart values(dest_ip) as dest_ip sparkline count values(dest_port) as dest_port values(sourcetype) as sourcetype values(mime_type) as mime_type values(filename) as filename values(dest_ip_country_name) as dest_ip_country_name values(domain) as domain values(status_msg) as status_msg values(user_agent) as user_agent by src_ip</param>
+                                                    <module name="JobProgressIndicator"/>
+                                                    <module name="Events">
+                                                        <param name="height">350px</param>
+                                                        <param name="resizeMode">fixed</param>
+                                                        <param name="allowTermClicks">False</param>
+                                                        <param name="fields">src_ip dest_ip sourcetype</param>
+                                                    </module>                                                            
+                                                    <module name="ViewRedirectorLink">
+                                                        <param name="viewTarget">flashtimeline</param>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>                      
+                                    </module>
+                                </module>                       
+                            </module>                    
+                        </module>                    
+                    </module>                                               
+		</module>
+            </module><!-- End HTTP Files -->
+
+<!-- SSL -->
+                <module name="Pulldown" layoutPanel="panel_row2_col1_grp1" autoRun="False">
+                    <param name="name">ssl_by</param>
+                    <param name="groupLabel">SSL Certificates</param>
+                    <param name="label">Certificates by:</param>
+                    <param name="staticFieldsToDisplay">
+                        <list>
+                            <param name="label">Organization</param>
+                            <param name="value">O</param>
+                        </list>
+                        <list>
+                            <param name="label">Server Name</param>
+                            <param name="value">server_name</param>
+                        </list>
+                        <list>
+                            <param name="label">Validation Status</param>
+                            <param name="value">validation_status</param>
+                        </list>
+                        <list>
+                            <param name="label">CN</param>
+                            <param name="value">CN</param>
+                        </list>
+                        <list>
+                            <param name="label">Subject</param>
+                            <param name="value">subject</param>
+                        </list>
+                        <list>
+                            <param name="label">Issuer Subject</param>
+                            <param name="value">issuer_subject</param>
+                        </list>
+                        <list>
+                            <param name="label">Country</param>
+                            <param name="value">C</param>
+                        </list>
+                    </param>   
+                    <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                        <param name="search">sourcetype="bro_ssl" (src_ip="$search_ip$" OR dest_ip="$search_ip$") | geoip dest_ip | chart sparkline count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count values(dest_ip_country_name) as dest_ip_country_name values(version) as version by $ssl_by$</param>
+                        <module name="Pager">
+                            <param name="count">10</param>
+                            <param name="entityName">results</param>
+                            <module name="EnablePreview">
+                                <param name="enable">True</param>
+                                <param name="display">False</param>
+                                <module name="SimpleResultsTable">
+                                    <param name="fieldFormats">
+                                        <param name="sparkline">
+                                            <list>
+                                            <param name="options">
+                                                <param name="height">10</param>
+                                                <param name="barColor">green</param>
+                                                <param name="type">line</param>
+                                            </param>
+                                            <param name="type">sparkline</param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <param name="displayRowNumbers">false</param>
+                                <module name="Gimp"/>                  
+                                <module name="GenericHeader" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="label">Selected Event Details by Source IP</param>
+                                </module>
+                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="search">sourcetype="bro_ssl" (src_ip="$search_ip$" OR dest_ip="$search_ip$") $ssl_by$="*$click.value$" | geoip dest_ip | stats values(dest_port) as dest_port sparkline count values(O) as O values(CN) as CN values(validation_status) as validation_status values(C) as C values(issuer_subject) as issuer_subject values(dest_ip_country_name) as dest_ip_country_name by src_ip dest_ip</param>                                    
+                                    <module name="JobProgressIndicator"/>
+                                    <module name="Paginator">
+                                        <param name="count">10</param>
+                                        <param name="entityName">results</param>
+                                        <module name="EnablePreview">
+                                            <param name="enable">True</param>
+                                            <param name="display">False</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="options">
+                                                                <param name="height">10</param>
+                                                                <param name="barColor">green</param>
+                                                                <param name="type">line</param>
+                                                            </param>
+                                                            <param name="type">sparkline</param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <param name="entityName">results</param>
+                                                <param name="displayRowNumbers">false</param>
+                                                <module name="Gimp"/>                                                 
+                                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                                    <param name="search">sourcetype="bro_ssl" (src_ip="$click.fields.src_ip$" AND dest_ip="$click.fields.dest_ip$") CN="$click.fields.CN$" O="$click.fields.O$" | geoip dest_ip | chart values(dest_ip) as dest_ip sparkline count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name values(sourcetype) as sourcetype values(_raw) as _raw by src_ip</param>
+                                                    <module name="JobProgressIndicator"/>
+                                                    <module name="Events">
+                                                        <param name="height">350px</param>
+                                                        <param name="resizeMode">fixed</param>
+                                                        <param name="allowTermClicks">False</param>
+                                                        <param name="fields">sourcetype src_ip dest_ip</param>
+                                                    </module>                                                            
+                                                    <module name="ViewRedirectorLink">
+                                                        <param name="viewTarget">flashtimeline</param>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>                      
+                                    </module>
+                                </module>                       
+                            </module>                    
+                        </module>                    
+                    </module>                
+                    </module>                                   
+                </module><!-- End SSL -->                
+
+<!-- Software -->
+                <module name="Pulldown" layoutPanel="panel_row2_col1_grp1" autoRun="False">
+                    <param name="name">software_by</param>
+                    <param name="groupLabel">Software</param>
+                    <param name="label">Software by:</param>
+                    <param name="staticFieldsToDisplay">
+                        <list>
+                            <param name="label">Name</param>
+                            <param name="value">name</param>
+                        </list>
+                        <list>
+                            <param name="label">Software Type</param>
+                            <param name="value">software_type</param>
+                        </list>
+                    </param>   
+                    <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                        <param name="search">sourcetype="bro_software" src_ip="$search_ip$" | chart sparkline count values(unparsed_versionp) as unparsed_version by $software_by$</param>
+                        <module name="Pager">
+                            <param name="count">10</param>
+                            <param name="entityName">results</param>
+                            <module name="EnablePreview">
+                                <param name="enable">True</param>
+                                <param name="display">False</param>
+                                <module name="SimpleResultsTable">
+                                    <param name="fieldFormats">
+                                        <param name="sparkline">
+                                            <list>
+                                            <param name="options">
+                                                <param name="height">10</param>
+                                                <param name="barColor">green</param>
+                                                <param name="type">line</param>
+                                            </param>
+                                            <param name="type">sparkline</param>
+                                        </list>
+                                        </param>
+                                    </param>
+                                    <param name="count">10</param>
+                                    <param name="allowTransformedFieldSelect">True</param>
+                                    <param name="drilldown">row</param>
+                                    <param name="entityName">results</param>
+                                    <param name="displayRowNumbers">false</param>
+                                    <module name="Gimp"/>                  
+                                    <module name="GenericHeader" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="label">Selected Event Details by Source IP</param>
+                                    </module>                                    
+                                    <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">sourcetype="bro_software" src_ip="$search_ip$" $software_by$="*$click.value$" | stats sparkline count values(software_type) as software_type values(unparsed_version) as unparsed_version by name</param>                                    
+                                        <module name="JobProgressIndicator"/>                                    
+                                        <module name="Events">
+                                            <param name="height">350px</param>
+                                            <param name="resizeMode">fixed</param>
+                                            <param name="allowTermClicks">False</param>
+                                            <param name="fields">sourcetype src_ip dest_ip</param>
+                                        </module>                                                            
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>                       
+                                </module>                    
+                            </module>                    
+                        </module>                                        
+                    </module>                                   
+                </module><!-- End Software -->                  
+                
+<!-- Top Level Domains -->
+                <module name="Pulldown" layoutPanel="panel_row2_col1_grp1" autoRun="False">
+                    <param name="groupLabel">Top Level Domains</param>  
+                    <param name="name">dns_source</param>
+                    <param name="label">Select Sourcetype:</param>                            
+                    <param name="staticFieldsToDisplay">
+                        <list>
+                            <param name="value">bro_http</param>
+                            <param name="label">Top Level Domains (HTTP Logs)</param>
+                        </list>
+                        <list>
+                            <param name="value">bro_dns</param>
+                            <param name="label">Top Level Domains (DNS Logs)</param>
+                        </list>
+                    </param>
+
+                    <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                        <param name="search">sourcetype=$dns_source$ (src_ip="$search_ip$" OR dest_ip="$search_ip$") | rex field=domain "(?&lt;tld&gt;\.[a-zA-Z]+$$)" | fields tld src_ip dest_ip dest_port proto | chart sparkline count values(dest_port) as dest_port values(proto) as proto by tld</param>
+                        <module name="Pager">
+                            <param name="count">10</param>
+                            <param name="entityName">results</param>
+                            <module name="EnablePreview">
+                                <param name="enable">True</param>
+                                <param name="display">False</param>
+                                <module name="SimpleResultsTable">
+                                    <param name="fieldFormats">
+                                        <param name="sparkline">
+                                            <list>
+                                            <param name="options">
+                                                <param name="height">10</param>
+                                                <param name="barColor">green</param>
+                                                <param name="type">line</param>
+                                            </param>
+                                            <param name="type">sparkline</param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <param name="displayRowNumbers">false</param>
+                                <module name="Gimp"/>                  
+                                <module name="GenericHeader" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="label">Selected Event Details by Source IP</param>
+                                </module>
+                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="search">sourcetype="$dns_source$" (src_ip="$search_ip$" OR dest_ip="$search_ip$") domain="*$click.fields.tld$" | geoip dest_ip | stats values(dest_port) as dest_port sparkline count values(domain) as domain values(dest_ip_country_name) as dest_ip_country_name values(proto) as proto by src_ip dest_ip</param>                                    
+                                    <module name="JobProgressIndicator"/>
+                                    <module name="Paginator">
+                                        <param name="count">10</param>
+                                        <param name="entityName">results</param>
+                                        <module name="EnablePreview">
+                                            <param name="enable">True</param>
+                                            <param name="display">False</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="options">
+                                                                <param name="height">10</param>
+                                                                <param name="barColor">green</param>
+                                                                <param name="type">line</param>
+                                                            </param>
+                                                            <param name="type">sparkline</param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <param name="entityName">results</param>
+                                                <param name="displayRowNumbers">false</param>
+                                                <module name="Gimp"/>                                                 
+                                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                                    <param name="search">sourcetype="$dns_source$" (src_ip="$click.fields.src_ip$" AND dest_ip="$click.fields.dest_ip$") domain="*$click.fields.tld$" | geoip dest_ip | chart values(dest_ip) as dest_ip sparkline count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name values(sourcetype) as sourcetype values(_raw) as _raw by src_ip</param>
+                                                    <module name="JobProgressIndicator"/>
+                                                    <module name="Events">
+                                                        <param name="height">350px</param>
+                                                        <param name="resizeMode">fixed</param>
+                                                        <param name="allowTermClicks">False</param>
+                                                        <param name="fields">sourcetype src_ip dest_ip</param>
+                                                    </module>                                                            
+                                                    <module name="ViewRedirectorLink">
+                                                        <param name="viewTarget">flashtimeline</param>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>                      
+                                    </module>
+                                </module>                       
+                            </module>                    
+                        </module>                    
+                    </module>                
+                    </module>                                   
+                </module><!-- End Top Level Domains -->                
+
+<!-- Anomalous Domains -->
+                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                    <param name="search">sourcetype="bro_dns" query!="-" (src_ip="$search_ip$" OR dest_ip="$search_ip$")  | search NOT [ inputcsv domains_visited.csv | fields query  ] | geoip dest_ip | chart sparkline count dc(dest_ip) as dest_ip values(dest_ip_country_name) as dest_ip_country_name by query</param>
+                    <param name="groupLabel">Anomalous Domains</param>
+                    <module name="Pager">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <module name="EnablePreview">
+                            <param name="enable">True</param>
+                            <param name="display">False</param>
+                            <module name="SimpleResultsTable">
+                                <param name="fieldFormats">
+                                    <param name="sparkline">
+                                        <list>
+                                            <param name="options">
+                                                <param name="height">10</param>
+                                                <param name="barColor">green</param>
+                                                <param name="type">line</param>
+                                            </param>
+                                            <param name="type">sparkline</param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <param name="displayRowNumbers">false</param>
+                                <module name="Gimp"/>                  
+                                <module name="GenericHeader" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="label">Selected Event Details by Source IP</param>
+                                </module>
+                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="search">sourcetype="bro_dns" query="click.value" (src_ip="$search_ip$" OR dest_ip="$search_ip$") sourcetype="bro_dns" $click.name$="$click.value$" | geoip dest_ip | stats values(dest_port) as dest_port sparkline count values(domain) as domain values(dest_ip_country_name) as dest_ip_country_name values(proto) as proto by src_ip dest_ip</param>                                    
+                                    <module name="JobProgressIndicator"/>
+                                    <module name="Paginator">
+                                        <param name="count">10</param>
+                                        <param name="entityName">results</param>
+                                        <module name="EnablePreview">
+                                            <param name="enable">True</param>
+                                            <param name="display">False</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="options">
+                                                                <param name="height">10</param>
+                                                                <param name="barColor">green</param>
+                                                                <param name="type">line</param>
+                                                            </param>
+                                                            <param name="type">sparkline</param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <param name="entityName">results</param>
+                                                <param name="displayRowNumbers">false</param>
+                                                <module name="Gimp"/>                                                 
+                                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                                    <param name="search">sourcetype="bro_dns" (src_ip="$click.fields.src_ip$" AND dest_ip="$click.fields.dest_ip$") | geoip dest_ip | stats values(dest_port) as dest_port sparkline count values(domain) as domain values(dest_ip_country_name) as dest_ip_country_name values(proto) as proto by src_ip dest_ip</param>
+                                                    <module name="JobProgressIndicator"/>
+                                                    <module name="Events">
+                                                        <param name="height">350px</param>
+                                                        <param name="resizeMode">fixed</param>
+                                                        <param name="allowTermClicks">False</param>
+                                                        <param name="fields">sourcetype src_ip dest_ip</param>
+                                                    </module>                                                            
+                                                    <module name="ViewRedirectorLink">
+                                                        <param name="viewTarget">flashtimeline</param>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>                      
+                                    </module>
+                                </module>                       
+                            </module>                    
+                        </module>                    
+                    </module>                                                   
+                </module><!-- End Anomalous Domains -->                  
+
+<!-- CIF Correlation -->
+                <module name="Pulldown" layoutPanel="panel_row2_col1_grp1" autoRun="False">
+                    <param name="groupLabel">CIF Correlation</param>  
+                    <param name="name">cif_select</param>
+                    <param name="label">CIF Correlation by:</param>                            
+                    <param name="staticFieldsToDisplay">
+                        <list>
+                            <param name="value">bro_conn</param>
+                            <param name="label">IP</param>
+                        </list>
+                        <list>
+                            <param name="value">bro_http</param>
+                            <param name="label">Domain/MD5</param>
+                        </list>
+                    </param>
+
+                    <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                        <param name="search">sourcetype="$cif_select$" (src_ip="$search_ip$" OR dest_ip="$search_ip$") cif_severity="*" | geoip dest_ip | chart count values(src_ip) as src_ip values(dest_ip_country_name) as dest_ip_country_name values(cif_severity) as cif_severity values(cif_confidence) as cif_confidence values(cif_description) as cif_description by dest_ip</param>
+                        <module name="Pager">
+                            <param name="count">10</param>
+                            <param name="entityName">results</param>
+                            <module name="EnablePreview">
+                                <param name="enable">True</param>
+                                <param name="display">False</param>
+                                <module name="SimpleResultsTable">
+                                    <param name="fieldFormats">
+                                        <param name="sparkline">
+                                            <list>
+                                            <param name="options">
+                                                <param name="height">10</param>
+                                                <param name="barColor">green</param>
+                                                <param name="type">line</param>
+                                            </param>
+                                            <param name="type">sparkline</param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <param name="displayRowNumbers">false</param>
+                                <module name="Gimp"/>                  
+                                <module name="GenericHeader" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="label">Selected Event Details by Source IP</param>
+                                </module>
+                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="search">sourcetype="$cif_select$" (src_ip="$search_ip$" OR dest_ip="$search_ip$") cif_severity="*" | geoip dest_ip | stats values(dest_port) as dest_port sparkline count values(dest_ip_country_name) as dest_ip_country_name values(severity) as severity values(proto) as proto by src_ip dest_ip</param>                                    
+                                    <module name="JobProgressIndicator"/>
+                                    <module name="Paginator">
+                                        <param name="count">10</param>
+                                        <param name="entityName">results</param>
+                                        <module name="EnablePreview">
+                                            <param name="enable">True</param>
+                                            <param name="display">False</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="options">
+                                                                <param name="height">10</param>
+                                                                <param name="barColor">green</param>
+                                                                <param name="type">line</param>
+                                                            </param>
+                                                            <param name="type">sparkline</param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <param name="entityName">results</param>
+                                                <param name="displayRowNumbers">false</param>
+                                                <module name="Gimp"/>                                                 
+                                                <module name="Search" layoutPanel="panel_row2_col1_grp1">
+                                                    <param name="search">sourcetype="$cif_select$" (src_ip="$click.fields.src_ip$" AND dest_ip="$click.fields.dest_ip$") cif_severity="*" | geoip dest_ip | chart values(dest_ip) as dest_ip sparkline count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name values(cif_severity) as cif_severity by src_ip</param>
+                                                    <module name="JobProgressIndicator"/>
+                                                    <module name="Events">
+                                                        <param name="height">350px</param>
+                                                        <param name="resizeMode">fixed</param>
+                                                        <param name="allowTermClicks">False</param>
+                                                        <param name="fields">src_ip dest_ip</param>
+                                                    </module>                                                            
+                                                    <module name="ViewRedirectorLink">
+                                                        <param name="viewTarget">flashtimeline</param>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>                      
+                                    </module>
+                                </module>                       
+                            </module>                    
+                        </module>                    
+                    </module>                
+                    </module>                                   
+                </module><!-- End CIF Correlation -->
+                
+            </module><!-- End Profile Tabswitcher -->
+                    
+<!-- Bro(wser) -->                    
+            <module name="GenericHeader" layoutPanel="panel_row3_col1_grp1">
+                <param name="label">Bro(wser)</param>
+            </module>
+            <module name="Search" layoutPanel="panel_row3_col1_grp1">
+                <param name="search">sourcetype="bro_*" (src_ip="$search_ip$" OR dest_ip="$search_ip$") | fields _raw uid src_ip dest_ip dest_port sourcetype | chart sparkline count dc(src_ip) as src_count dc(dest_ip) as dest_count dc(dest_port) as dest_port_count by sourcetype</param>
+                <module name="Pager">
+                    <param name="count">10</param>
+                    <param name="entityName">results</param>
+                    <module name="EnablePreview">
+                        <param name="enable">True</param>
+                        <param name="display">False</param>
+                        <module name="SimpleResultsTable">
+                            <param name="fieldFormats">
+                                <param name="sparkline">
+                                    <list>
+                                        <param name="options">
+                                            <param name="height">15</param>
+                                            <param name="barColor">green</param>
+                                            <param name="type">line</param>
+                                        </param>
+                                        <param name="type">sparkline</param>
+                                    </list>
+                                </param>
+                            </param>
+                            <param name="count">15</param>
+                            <param name="allowTransformedFieldSelect">True</param>
+                            <param name="drilldown">row</param>
+                            <param name="entityName">results</param>
+                            <param name="displayRowNumbers">false</param>
+                            <module name="Gimp"/>                          
+                            <module name="GenericHeader" layoutPanel="panel_row3_col1_grp2">
+                                <param name="label">Bro Events for Selected Sourcetype and IP</param>
+                            </module>                                    
+                            <module name="Pulldown" layoutPanel="panel_row3_col1_grp2" autoRun="False">
+                                <param name="name">group_by</param>
+                                <param name="label">Group Results by:</param>
+                                <param name="staticFieldsToDisplay">
+                                    <list>
+                                        <param name="value">dest_ip</param>
+                                        <param name="label">Responder/Destination IP</param>
+                                    </list>   
+                                    <list>
+                                        <param name="value">src_ip</param>
+                                        <param name="label">Originator/Source IP</param>
+                                    </list>
+                                </param>
+                                <module name="Search" layoutPanel="panel_row3_col1_grp2">                                 
+                                    <param name="search">sourcetype="$click.fields.sourcetype$" (src_ip="$search_ip$" OR dest_ip="$search_ip$") | geoip dest_ip | fields _raw uid src_ip dest_ip dest_port dest_ip_country_name sourcetype | chart values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name sparkline count by $group_by$</param>                                   
+                                    <module name="JobProgressIndicator"/>                                    
+                                    <module name="Pager">
+                                        <param name="count">10</param>
+                                        <param name="entityName">results</param>
+                                        <module name="EnablePreview">
+                                            <param name="enable">True</param>
+                                            <param name="display">False</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="options">
+                                                                <param name="height">15</param>
+                                                                <param name="barColor">green</param>
+                                                                <param name="type">line</param>
+                                                            </param>
+                                                            <param name="type">sparkline</param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <param name="entityName">results</param>
+                                                <param name="displayRowNumbers">false</param>
+                                                <module name="Gimp"/>
+                                                <module name="GenericHeader" layoutPanel="panel_row4_col1_grp1">
+                                                    <param name="label">All Bro Events Drilldown by uid</param>
+                                                </module>                            
+                                                <module name="Search" layoutPanel="panel_row4_col1_grp1">
+                                                    <param name="search">sourcetype="bro_*" [ SEARCH sourcetype="$click.fields.sourcetype$" "$search_ip$" | fields uid] | geoip dest_ip | fields _raw uid src_ip dest_ip dest_port dest_ip_country_name sourcetype | search $group_by$="$click.value$" | chart sparkline count values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_ip values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by uid</param>
+                                                    <module name="JobProgressIndicator"/>
+                                                    <module name="Pager">
+                                                        <param name="entityName">results</param>
+                                                        <module name="EnablePreview">
+                                                            <param name="enable">True</param>
+                                                            <param name="display">False</param>
+                                                            <module name="SimpleResultsTable">
+                                                                <param name="fieldFormats">
+                                                                    <param name="count">5</param>
+                                                                    <param name="sparkline">
+                                                                        <list>
+                                                                            <param name="options">
+                                                                                <param name="height">25</param>
+                                                                                <param name="barColor">green</param>
+                                                                                <param name="type">line</param>
+                                                                            </param>
+                                                                            <param name="type">sparkline</param>
+                                                                        </list>
+                                                                    </param>
+                                                                </param>
+                                                                <param name="allowTransformedFieldSelect">True</param>
+                                                                <param name="drilldown">row</param>
+                                                                <param name="entityName">results</param>
+                                                                <param name="displayRowNumbers">false</param>
+                                                                <module name="Gimp"/>                                                                                            
+                                                                <module name="Search" layoutPanel="panel_row4_col1_grp1">
+                                                                    <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _raw uid src_ip dest_ip dest_port sourcetype | chart sparkline count values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_dest_ip values(dest_port) as dest_port by uid</param>
+                                                                            <module name="Events">
+                                                                        <param name="height">350px</param>
+                                                                        <param name="resizeMode">fixed</param>
+                                                                        <param name="allowTermClicks">False</param>
+                                                                        <param name="fields">src_ip dest_ip sourcetype dest_port</param>
+                                                                    </module>                                                      
+                                                                    <module name="ViewRedirectorLink">
+                                                                        <param name="viewTarget">flashtimeline</param>
+                                                                    </module>                                                                                                                                       
+                                                                </module>                            
+                                                            </module>
+                                                        </module>       
+                                                    </module> 
+                                                </module>
+                                            </module>
+                                        </module>      
+                                    </module>                        
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module><!-- End Bro(wser) -->
+
+<!-- All Activity Grouped Transactions -->
+            <module name="Pulldown" layoutPanel="panel_row5_col1" autoRun="False">
+                <param name="groupLabel">Connection Byte Counts</param>  
+                <param name="name">max_pause</param>
+                <param name="label">Group Transactions by:</param>  
+                <param name="staticFieldsToDisplay">
+                    <list>
+                        <param name="value">5s</param>
+                        <param name="label">5 seconds</param>
+                    </list>
+                    <list>
+                        <param name="value">30s</param>
+                        <param name="label">30 seconds</param>
+                    </list>
+                    <list>
+                        <param name="value">120s</param>
+                        <param name="label">120 seconds</param>
+                    </list>
+                    <list>
+                        <param name="value">300s</param>
+                        <param name="label">5 minutes</param>
+                    </list>
+                    <list>
+                        <param name="value">600s</param>
+                        <param name="label">10 minutes</param>
+                    </list>
+                </param>
+                <module name="Search" layoutPanel="panel_row5_col1" group="All Events" autoRun="False">
+                    <param name="search">sourcetype="*" (src_ip="$search_ip$" OR dest_ip="$search_ip$") | transaction src_ip maxpause=$max_pause$ | fields sourcetype src_ip dest_ip</param>
+                    <param name="groupLabel">All Events</param>
+                    <module name="Events">
+                        <param name="height">500px</param>
+                        <param name="resizeMode">fixed</param>
+                        <param name="allowTermClicks">False</param>
+                        <param name="fields">sourcetype src_ip dest_ip</param>
+                    </module>                                                      
+                    <module name="ViewRedirectorLink">
+                        <param name="viewTarget">flashtimeline</param>
+                    </module>                                                                                                                                                           
+                </module>
+            </module><!-- End All Activity Gropued Transactions -->
+        </module>                     
+    </module>
+</view>

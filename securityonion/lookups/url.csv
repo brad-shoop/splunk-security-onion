@@ -1,0 +1,2 @@
+address,alternativeid,alternativeid_restriction,confidence,description,detecttime,guid,impact,malware_md5,malware_sha1,md5,portlist,protocol,purpose,relatedid,restriction,severity,sha1,source,uuid
+http://testmyids.com,alternativeid,alternativeid_restriction,confidence,description,detecttime,guid,impact,malware_md5,malware_sha1,md5,portlist,protocol,purpose,relatedid,restriction,severity,sha1,source,uuid

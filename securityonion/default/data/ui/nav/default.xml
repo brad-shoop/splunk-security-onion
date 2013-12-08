@@ -1,0 +1,80 @@
+<nav>
+  <view name="flashtimeline" />  
+  <view name="securityonion_overview" default='true' />
+  <view name="securityonion_monitors" />
+  <view name="securityonion_geoip" />
+  <view name="securityonion_browser" />
+  <view name="securityonion_ir_search" />    
+  <view name="securityonion_web_monitor" />
+
+  <collection label="Mining">
+	<view name="securityonion_mining" />
+	<view name="securityonion_mining_sguil" />
+        <view name="securityonion_mining_http" /> 
+    	<view name="securityonion_mining_smtp" />
+	    <view name="securityonion_mining_syslog" />
+        <view name="securityonion_mining_known" />
+    	<view name="securityonion_mining_connections" />
+        <view name="securityonion_mining_pads" />
+    	<collection label="CIF Correlation">
+          <view name="securityonion_cif_conn" />
+          <view name="securityonion_cif_http" />
+        </collection>
+  </collection>
+  
+  <collection label="OSSEC">
+	<collection label="Dashboards &amp; Views">
+		<view name="OSSEC_Agent_Coverage" />
+		<view name="OSSEC_Agent_Status" />
+		<divider />
+		<view name="OSSEC_Dashboard" />
+		<view name="OSSEC_Summary_Dashboard" />
+		<view name="OSSEC_Event_Search" />
+		<view name="OSSEC_File_Integrity" />
+		<divider />
+		<view source="unclassified" match="OSSEC" />
+	</collection>
+	<collection label="Searches &amp; Reports">
+		<collection label="Utility">
+			<saved source="unclassified" match="Lookup Table" />
+			<saved source="unclassified" match="OSSEC - Track" />
+			<saved source="unclassified" match="OSSEC - SIGen" />
+		</collection>
+		<collection label="Alerts">
+			<saved source="unclassified" match="OSSEC - Malware Alert" />
+			<saved source="unclassified" match="OSSEC - High-Severity Alert" />
+			<saved source="unclassified" match="OSSEC - Alert" />
+		</collection>
+		<divider />
+		<collection label="Top Events">
+			<saved source="unclassified" match="OSSEC - Top" />
+		</collection>
+		<collection label="Timecharts">
+			<saved source="unclassified" match="OSSEC - Timechart" />
+		</collection>
+		<collection label="Top Events (Summary Data)">
+			<saved source="unclassified" match="OSSEC - SI - Top" />
+		</collection>
+		<collection label="Timecharts (Summary Data)">
+			<saved source="unclassified" match="OSSEC - SI - Timechart" />
+		</collection>
+		<divider />
+		<saved source="unclassified" match="OSSEC" />
+	</collection>
+	<collection label="Agent Management">
+		<view name="OSSEC_Agent_Management" />
+	</collection>	  <view name="OSSEC_Dashboard" />
+  </collection>
+  <view name="Snorby" /> 
+          <a href="https://localhost:3000">Snorby</a>
+  <view name="Squert" />
+  <a href="https://localhost/squert/p-login.php">Squert</a>
+  	
+  <collection label="SOstat">
+    <view name="securityonion_sostat_so" />
+    <view name="securityonion_sostat_nix" />
+    <view name="securityonion_sostat_ids_rules" />
+    <view name="Security Onion Data Flow" />
+    <a href="securityonion_viz?s=Security%20Onion%20Data%20Flow">Security Onion Data Flow</a>
+  </collection>
+</nav>

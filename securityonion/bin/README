@@ -1,0 +1,21 @@
+SOstat Monitoring Scripts:
+
+The SOstat monitoring scripts are configured to run at various intervals (seconds). The default settings are very conservative,
+executing most scripts once a day and status scripts 3 times a day. The default configuration is:
+
+Sourcetype			Script									Interval (seconds)
+sostat_disk			/opt/splunk/etc/apps/securityonion/bin/disk.sh 				86400	
+sostat_ifconfig			/opt/splunk/etc/apps/securityonion/bin/ifconfig.sh 			86400	
+sostat_nsm_log_archive 		/opt/splunk/etc/apps/securityonion/bin/nsm_log_archive.sh 		86400	
+sostat_nsm_packet_drops		/opt/splunk/etc/apps/securityonion/bin/nsm_packet_drops.sh 		86400
+sostat_nsm_sensor_ps-status	/opt/splunk/etc/apps/securityonion/bin/nsm_sensor_ps-status.sh 		21600	
+sostat_nsm_server_ps-status	/opt/splunk/etc/apps/securityonion/bin/nsm_server_ps-status.sh 		21600 	
+sostat_nsm_sguil_uncategorized	/opt/splunk/etc/apps/securityonion/bin/nsm_sguil_uncategorized.sh 	86400
+sostat_nsm_snorby_event_summary	/opt/splunk/etc/apps/securityonion/bin/nsm_snorby_event_summary.sh 	86400
+sostat_nsm_snorby_top_50 	/opt/splunk/etc/apps/securityonion/bin/nsm_snorby_top_50.sh 		86400 	
+sostat_top			/opt/splunk/etc/apps/securityonion/bin/top.sh 				21600
+
+The default settings can be modified via Splunk Manager > Data Inputs > Scripts. Click on the script name in the "Command" 
+column to increase/decrease the interval. You can also disable/enable scripts.
+
+Disabling then enabling a script will force it to execute.

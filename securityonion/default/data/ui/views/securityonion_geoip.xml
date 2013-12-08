@@ -1,0 +1,222 @@
+<view template="dashboard.html" stylesheet="dashboard_size.css">
+    <label>GeoIP</label>    
+    <module name="AccountBar" layoutPanel="appHeader"/>
+    <module name="AppBar" layoutPanel="navigationHeader"/>
+    <module name="Message" layoutPanel="messaging">
+        <param name="filter">*</param>
+        <param name="clearOnJobDispatch">False</param>
+        <param name="maxSize">1</param>
+    </module>
+    <module name="TitleBar" layoutPanel="viewHeader">
+    </module>
+    
+<!-- Text Breakdown -->
+    <module name="GenericHeader" layoutPanel="panel_row1_col1">
+        <param name="label">Events by GeoIP</param>
+    </module>
+    <module name="StaticSelect" layoutPanel="panel_row1_col1">
+        <param name="settingToCreate">source_setting</param>
+        <param name="label">GeoIP source:</param>
+        <param name="staticFieldsToDisplay">
+            <list>
+                <param name="value">sguild</param>
+                <param name="label">Sguil Events</param>
+            </list>      
+            <list>
+                <param name="value">bro_conn</param>
+                <param name="label">Bro Connections</param>
+            </list>      
+            <list>
+                <param name="value">bro_dns</param>
+                <param name="label">Bro DNS</param>
+            </list>
+            <list>
+                <param name="value">bro_dpd</param>        
+                <param name="label">Bro Dynamic Protocol Detection</param>
+            </list>
+            <list>
+                <param name="value">bro_ftp</param>        
+                <param name="label">Bro FTP</param>
+            </list>
+            <list>
+                <param name="value">bro_http</param>        
+                <param name="label">Bro HTTP</param>
+            </list>
+            <list>
+                <param name="value">bro_irc</param>
+                <param name="label">Bro IRC</param>
+            </list>
+            <list>      
+                <param name="value">bro_notice</param>        
+                <param name="label">Bro Notices</param>        
+            </list>
+            <list>      
+                <param name="value">bro_smtp</param>        
+                <param name="label">Bro SMTP</param>        
+            </list>
+            <list>      
+                <param name="value">bro_smtp_entities</param>        
+                <param name="label">Bro SMTP Entities</param>        
+            </list>
+            <list>      
+                <param name="value">bro_ssh</param>        
+                <param name="label">Bro SSH</param>        
+            </list>
+            <list>      
+                <param name="value">bro_ssl</param>        
+                <param name="label">Bro SSL</param>        
+            </list>
+            <list>      
+                <param name="value">bro_syslog</param>        
+                <param name="label">Bro Syslog</param>        
+            </list>
+            <list>      
+                <param name="value">bro_weird</param>        
+                <param name="label">Bro Weird</param>        
+            </list>
+        </param>           
+        <module name="ConvertToIntention">
+            <param name="settingToConvert">source_setting</param>
+            <param name="intention">
+                <param name="name">stringreplace</param>
+                <param name="arg">
+                    <param name="source_value">
+                        <param name="value">$target$</param>
+                    </param>
+                </param>
+            </param>
+            <module name="TimeRangePicker">
+                <param name="searchWhenChanged">True</param>
+                <param name="selected">Last 60 minutes</param>                
+                <module name="HiddenSearch" layoutPanel="panel_row1_col1" autoRun="True">
+                    <param name="search">sourcetype="$source_value$" dest_ip="*" | fields src_ip dest_ip sourcetype | geoip dest_ip | stats count by dest_ip_country_name</param>
+                    <module name="JobProgressIndicator"></module>
+                    <module name="Paginator">
+                        <param name="count">15</param>      
+                        <param name="entityName">results</param>
+                        <param name="maxPages">10</param>
+                        <module name="SimpleResultsTable">
+                            <param name="displayRowNumbers">False</param>
+                            <param name="drilldown">row</param>
+                            <param name="entityName">results</param>
+                            <module name="ConvertToDrilldownSearch">
+                                <module name="JobProgressIndicator"></module>
+                                <module name="SimpleResultsHeader">
+                                    <param name="headerFormat">The drilldown search has $count$ events</param>
+                                    <param name="entityName">events</param>
+                                </module>
+                                <module name="Paginator">
+                                    <param name="count">20</param>
+                                    <param name="entityName">results</param>
+                                    <param name="maxPages">10</param>
+                                    <module name="HiddenFieldPicker">
+                                        <param name="fields">src_ip dest_ip dest_ip_city dest_ip_country_name sourcetype</param>
+                                        <module name="EventsViewer">
+                                            <param name="enableEventActions">True</param>
+                                            <param name="enableFieldActions">True</param>
+                                        </module>
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module>            
+            <module name="ConvertToIntention">
+                <param name="settingToConvert">source_setting</param>
+                <param name="intention">
+                    <param name="name">stringreplace</param>
+                    <param name="arg">
+                        <param name="source_value">
+                            <param name="value">$target$</param>
+                        </param>
+                    </param>
+                </param>
+<!-- GeoIP Breakdown -->
+                <module name="GenericHeader" layoutPanel="panel_row1_col2">
+                    <param name="label">GeoIP Destinations</param>
+                    <module name="HiddenSearch" layoutPanel="panel_row1_col2" autoRun="true">
+                        <param name="search">sourcetype="$source_value$" dest_ip="*" | fields src_ip dest_ip sourcetype dest_ip_city dest_ip_country_name | geoip dest_ip</param>
+                        <module name="TimeRangePicker">
+                            <param name="selected">Last 60 minutes</param>
+                            <param name="searchWhenChanged">True</param> 
+                            <module name="GoogleMaps">
+                                <param name="autoPostProcess">on</param>
+                                <param name="height">600px</param>
+                                <param name="mapType">satellite</param>
+                                <param name="scrollwheel">off</param>
+
+                                <param name="center">42.032974,-10.546875</param>
+
+                                <param name="mapTypeControl">on</param>
+
+                                <param name="navigationControl">on</param>
+
+                                <param name="scaleControl">on</param>
+
+                                <param name="zoomLevel">4</param>
+
+                                <param name="drilldown">true</param>
+
+                                <param name="drilldown_field">dest_ip</param>
+
+                                <module name="ConvertToIntention">
+
+                                    <param name="settingToConvert">source_setting</param>
+
+                                    <param name="intention">
+
+                                        <param name="name">stringreplace</param>
+
+                                        <param name="arg">
+                                            <param name="source_value">
+                                                <param name="value">$target$</param>
+                                            </param>
+                                        </param>
+                                    </param>                                   
+                                    <module name="HiddenSearch">
+                                        <param name="search">sourcetype="$source_value$" $dest_ip$ | fields src_ip dest_ip sourcetype dest_ip_city dest_ip_country_name | geoip dest_ip</param>                                        
+                                        <module name="ConvertToIntention">
+                                            <param name="settingToConvert">maps.drilldown</param>
+                                            <param name="intention">
+                                                <param name="name">stringreplace</param>
+                                                <param name="arg">
+                                                    <param name="dest_ip">
+                                                        <param name="value">$target$</param>
+                                                    </param>
+                                                </param>
+                                            </param>                                           
+                                            <module name="JobProgressIndicator"></module>
+                                            <module name="SimpleResultsHeader">
+                                                <param name="headerFormat">The drilldown search has $count$ events</param>
+                                                <param name="entityName">events</param>
+                                            </module>
+                                            <module name="Paginator">
+                                                <param name="count">20</param>
+                                                <param name="entityName">results</param>
+                                                <param name="maxPages">10</param>
+                                                <module name="HiddenFieldPicker">
+                                                    <param name="fields">src_ip dest_ip dest_ip_city dest_ip_country_name sourcetype</param>
+                                                    <module name="EventsViewer">
+                                                        <param name="enableEventActions">True</param>
+                                                        <param name="enableFieldActions">True</param>
+                                                    </module>
+                                                    <module name="ViewRedirectorLink">
+                                                        <param name="viewTarget">flashtimeline</param>
+                                                    </module>                        
+                                                </module>
+                                            </module>         
+                                        </module>
+                                    </module>         
+                                </module>    
+                            </module>
+                        </module>         
+                    </module>    
+                </module>
+            </module>         
+        </module>    
+    </module>
+</view>

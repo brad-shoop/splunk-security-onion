@@ -1,0 +1,2230 @@
+<view autoCancelInterval="90" decomposeIntentions="false" isPersistable="true" isSticky="false" isVisible="true" objectMode="viewconf" onunloadCancelJobs="true" template="dashboard.html" stylesheet="dashboard_bro_explorer.css">
+    <label>Bro(wser)</label>
+    <module name="AccountBar" layoutPanel="appHeader"/>
+    <module name="AppBar" layoutPanel="appHeader"/>
+    <module name="SideviewUtils" layoutPanel="appHeader"/>
+    <module name="Message" layoutPanel="messaging">
+        <param name="clearOnJobDispatch">False</param>
+        <param name="filter">*</param>
+        <param name="maxSize">2</param>
+    </module>
+    <module name="TitleBar" layoutPanel="viewHeader"/>
+        
+  
+    <module name="TimeRangePicker" layoutPanel="panel_row1_col1" group="Bro(wser)">
+        <param name="searchWhenChanged">True</param>
+        <param name="selected">Last 60 minutes</param>   
+
+<!-- TabSwitcher - Bro(wser) -->
+        <module name="TabSwitcher" layoutPanel="panel_row1_col1" group="Bro(wser)">
+            <param name="groupLabel">Bro Explorer</param>
+            <param name="mode">independent</param> 
+            
+<!-- TabSwitcher - Notices -->                
+            <module name="Search" layoutPanel="panel_row1_col1" autoRun="True">
+                <param name="groupLabel">Notices</param>
+                <param name="search">sourcetype="bro_notice" | fields sourcetype uid src_ip dest_ip src_port dest_port proto name msg | geoip dest_ip | chart sparkline count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name values(proto) as proto dc(msg) as msg_count by name</param>
+                <module name="JobProgressIndicator"/>
+                <module name="Pager">
+                    <param name="count">10</param>
+                    <param name="entityName">results</param>
+                    <module name="EnablePreview">
+                        <param name="display">False</param>
+                        <param name="enable">True</param>
+                        <module name="SimpleResultsTable">
+                            <param name="fieldFormats">
+                                <param name="sparkline">
+                                    <list>
+                                        <param name="type">sparkline</param>
+                                        <param name="options">
+                                            <param name="type">line</param>
+                                            <param name="height">25</param>
+                                        </param>
+                                    </list>
+                                </param>
+                            </param>
+                            <param name="count">10</param>
+                            <param name="allowTransformedFieldSelect">True</param>
+                            <param name="drilldown">row</param>
+                            <param name="entityName">results</param>
+                            <module name="Gimp"/>  
+<!-- TabSwitcher - Notices - Pie Charts -->                                     
+                            <module name="Search" layoutpanel="panel_row2_col1">
+                                <param name="search">sourcetype="bro_notice" name="$click.value$" | geoip dest_ip | stats count by _time, src_ip, dest_ip, dest_ip_country_name, msg, dest_port, proto</param>
+<!-- TabSwitcher - Notices - Pie src_ip -->
+                                <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="search">chart count by src_ip</param>
+                                    <module name="SimpleResultsHeader">
+                                        <param name="headerFormat">Originator/Source IPs</param>
+                                        <param name="entityName">events</param>
+                                    </module>
+                                    <module name="HiddenChartFormatter">
+                                        <param name="chart.stackMode">stacked</param>
+                                        <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                        <param name="charting.legend.placement">bottom</param>
+                                        <param name="charting.chart">pie</param>
+                                        <param name="charting.axisTitleX.text">Originator/Source IPs</param>
+                                        <module name="JSChart">
+                                            <param name="width">100%</param>
+                                            <module name="Gimp"/>                                            
+                                        </module>
+                                    </module>
+                                </module>    
+<!-- TabSwitcher - Notices - Pie dest_ip -->
+                                <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                    <param name="search">chart count by dest_ip</param>
+                                    <module name="SimpleResultsHeader">
+                                        <param name="headerFormat">Responder/Destination IPs</param>
+                                        <param name="entityName">events</param>
+                                    </module>
+                                    <module name="HiddenChartFormatter">
+                                        <param name="chart.stackMode">stacked</param>
+                                        <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                        <param name="charting.legend.placement">bottom</param>
+                                        <param name="charting.chart">pie</param>
+                                        <param name="charting.axisTitleX.text">Responder/Destination IP</param>
+                                        <module name="JSChart">
+                                            <param name="width">100%</param>
+                                            <module name="Gimp"/>                                            
+                                        </module>                                                    
+                                    </module>
+                                </module>                                           
+<!-- TabSwitcher - Notices - Pie dest_ip_country_name -->
+                                <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                    <param name="search">chart count by dest_ip_country_name</param>
+                                    <module name="SimpleResultsHeader">
+                                        <param name="headerFormat">Responder/Destination IP Country Names</param>
+                                        <param name="entityName">events</param>
+                                    </module>
+                                    <module name="HiddenChartFormatter">
+                                        <param name="chart.stackMode">stacked</param>
+                                        <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                        <param name="charting.legend.placement">bottom</param>
+                                        <param name="charting.chart">pie</param>
+                                        <param name="charting.axisTitleX.text">Responder/Destination IP Country Names</param>
+                                        <module name="JSChart">
+                                            <param name="width">100%</param>
+                                            <module name="Gimp"/>                                            
+                                        </module>                                                    
+                                    </module>
+                                </module>                                            
+<!-- TabSwitcher - Notices - Pie dest_port -->
+                                <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                    <param name="search">chart count by dest_port</param>
+                                    <module name="SimpleResultsHeader">
+                                        <param name="headerFormat">Responder/Destination Ports</param>
+                                        <param name="entityName">events</param>
+                                    </module>
+                                    <module name="HiddenChartFormatter">
+                                        <param name="chart.stackMode">stacked</param>
+                                        <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                        <param name="charting.legend.placement">bottom</param>
+                                        <param name="charting.chart">pie</param>
+                                        <param name="charting.axisTitleX.text">Responder/Destination Port</param>
+                                        <module name="JSChart">
+                                            <param name="width">100%</param>
+                                            <module name="Gimp"/>                                            
+                                        </module>                                                    
+                                    </module>
+                                </module>                                                     
+<!-- TabSwitcher - Notices - By msg-->    
+                                <module name="Search" layoutPanel="panel_row2_col2">
+                                    <param name="search">sourcetype="bro_notice" name="$click.value$" | geoip dest_ip | stats count dc(dest_ip) as dest_ip_count sparkline values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by src_ip name</param>
+                                    <module name="SimpleResultsHeader">
+                                        <param name="headerFormat">Charted by Originator/Source IP</param>
+                                        <param name="entityName">events</param>
+                                    </module>
+                                    <module name="Paginator">
+                                        <param name="count">10</param>
+                                        <param name="maxPages">10</param>
+                                        <param name="entityName">results</param>
+                                        <module name="SimpleResultsTable">
+                                            <param name="fieldFormats">
+                                                <param name="sparkline">
+                                                    <list>
+                                                        <param name="type">sparkline</param>
+                                                        <param name="options">
+                                                            <param name="type">line</param>
+                                                            <param name="height">25</param>
+                                                        </param>
+                                                    </list>
+                                                </param>
+                                            </param>
+                                            <param name="entityName">results</param>
+                                            <param name="count">10</param>
+                                            <param name="allowTransformedFieldSelect">True</param>
+                                            <param name="drilldown">row</param>
+                                            <module name="Gimp"/>  
+<!-- TabSwitcher - Notices - By src_ip -->
+                                            <module name="Search" layoutPanel="panel_row3_col1">
+                                                <param name="search">sourcetype="bro_*" [search sourcetype="bro_notice" $click.cell1.name$="$click.cell1.value$" src_ip="$click.fields.src_ip$" | eval matched_uid=uid | fields + matched_uid _time | rename matched_uid as uid ] | geoip dest_ip | convert timeformat="%m/%d/%y %H:%M:%S" ctime(_time) AS event_time | fields event_time uid dest_ip src_ip dest_port dest_ip_country_name sourcetype | stats values(event_time) as event_time count sparkline values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_ip values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by uid | sort - event_time</param>
+                                                <module name="SimpleResultsHeader">
+                                                    <param name="headerFormat">Selected Notice and Originator/Source IP by UID</param>
+                                                    <param name="entityName">events</param>
+                                                </module>
+                                                <module name="Paginator">
+                                                    <param name="count">10</param>
+                                                    <param name="maxPages">10</param>
+                                                    <param name="entityName">results</param>
+                                                    <module name="SimpleResultsTable">
+                                                        <param name="fieldFormats">                                                            
+                                                            <param name="sparkline">
+                                                                <list>
+                                                                    <param name="type">sparkline</param>
+                                                                    <param name="options">
+                                                                        <param name="type">line</param>
+                                                                        <param name="height">25</param>
+                                                                    </param>
+                                                                </list>
+                                                            </param>
+                                                        </param>
+                                                        <param name="entityName">results</param>
+                                                        <param name="count">10</param>
+                                                        <param name="allowTransformedFieldSelect">True</param>
+                                                        <param name="drilldown">row</param>
+                                                        <module name="Gimp"/>                                                                   
+                                                        <module name="SimpleResultsHeader">
+                                                            <param name="entityName">events</param>
+                                                            <param name="headerFormat">Bro events for Selected UID</param>
+                                                        </module>
+                                                        <module name="Search">
+                                                            <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
+                                                            <module name="Paginator">
+                                                                <param name="count">10</param>
+                                                                <param name="maxPages">10</param>
+                                                                <param name="entityName">results</param>
+                                                                <module name="HiddenFieldPicker">
+                                                                    <param name="fields">sourcetype src_ip uid dest_ip</param>
+                                                                    <module name="EventsViewer">
+                                                                        <param name="enableEventActions">True</param>
+                                                                        <param name="enableFieldActions">True</param>
+                                                                    </module>
+                                                                    <module name="ViewRedirectorLink">
+                                                                        <param name="viewTarget">flashtimeline</param>
+                                                                    </module>
+                                                                </module>
+                                                            </module>
+                                                        </module>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>  
+                    </module>                    
+                </module>
+            </module><!-- End TabSwitcher - Notices -->          
+          
+<!-- TabSwitcher - Connections -->                
+            <module name="Pulldown" layoutPanel="panel_row1_col1">
+                <param name="groupLabel">Connections</param>
+                <param name="label">Explore by:</param>
+                <param name="name">conn_by</param>               
+                <param name="staticFieldsToDisplay">
+                    <list>
+                        <param name="label">Services</param>
+                        <param name="value">service</param>
+                    </list>
+                    <list>
+                        <param name="label">Responder/Destination Port</param>
+                        <param name="value">dest_port</param>
+                    </list>
+                    <list>
+                        <param name="label">Connection Description</param>
+                        <param name="value">conn_desc</param>
+                    </list>
+                    <list>
+                        <param name="label">Connection State</param>
+                        <param name="value">conn_state</param>
+                    </list>
+                    <list>
+                        <param name="label">Originator Country Code</param>
+                        <param name="value">orig_cc</param>
+                    </list>
+                    <list>
+                        <param name="label">Responder Country Code</param>
+                        <param name="value">resp_cc</param>
+                    </list>
+                </param>
+                <module name="Search" layoutPanel="panel_row1_col1" group="Connections" autoRun="False">
+                    <param name="search">sourcetype="bro_conn" | fields uid conn_desc dest_ip src_ip src_port dest_port orig_cc resp_cc conn_state proto service orig_bytes resp_bytes | chart sparkline count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count sum(orig_bytes) as orig_bytes_sum sum(resp_bytes) as resp_bytes_sum by $conn_by$</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="Pager">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <module name="EnablePreview">
+                            <param name="display">False</param>
+                            <param name="enable">True</param>                                        
+                            <module name="SimpleResultsTable">
+                                <param name="fieldFormats">
+                                    <param name="sparkline">
+                                        <list>
+                                            <param name="type">sparkline</param>
+                                            <param name="options">
+                                                <param name="type">line</param>
+                                                <param name="height">25</param>
+                                            </param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <module name="Gimp"/>  
+<!-- TabSwitcher - Connections - Pie Charts -->
+                                <module name="Search" layoutpanel="panel_row2_col1">
+                                    <param name="search">sourcetype="bro_conn" $conn_by$="$click.value$" | stats count by _time, src_ip, dest_ip, conn_desc, orig_cc, resp_cc, conn_state, service, dest_port, proto</param>
+<!-- TabSwitcher - Connections - Pie src_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by src_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Originator/Source IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Originator/Source IPs</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>
+                                        </module>
+                                    </module>    
+<!-- TabSwitcher - Connections - Pie dest_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination IP</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>  
+<!-- TabSwitcher - Connections - Pie resp_cc -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by resp_cc</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder Country Codes</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder Country Code</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>                                            
+<!-- TabSwitcher - Connections - Pie dest_port -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_port</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination Ports</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination Port</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>                                                            
+<!-- TabSwitcher - Connections - By src_ip-->    
+                                    <module name="Search" layoutPanel="panel_row2_col2">
+                                        <param name="search">sourcetype="bro_conn" $conn_by$="$click.value$" | geoip dest_ip | stats count dc(dest_ip) as dest_ip_count sparkline values(dest_ip_country_name) as dest_ip_country_name by src_ip $conn_by$</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Charted by Originator/Source IP</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="Paginator">
+                                            <param name="count">10</param>
+                                            <param name="maxPages">10</param>
+                                            <param name="entityName">results</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="type">sparkline</param>
+                                                            <param name="options">
+                                                                <param name="type">line</param>
+                                                                <param name="height">25</param>
+                                                            </param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="entityName">results</param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <module name="Gimp"/>                                                                        
+<!-- TabSwitcher - Connections - By uid -->    
+                                                <module name="Search" layoutPanel="panel_row3_col1">
+                                                    <param name="search">sourcetype="bro_*" [search sourcetype="bro_conn" src_ip="$click.fields.src_ip$" $click.cell1.name$="$click.cell1.value$"  | eval matched_uid=uid | fields + matched_uid | rename matched_uid as uid] | geoip dest_ip | convert timeformat="%m/%d/%y %H:%M:%S" ctime(_time) AS event_time | fields event_time uid dest_ip src_ip dest_port dest_ip_country_name sourcetype | chart values(event_time) as event_time count sparkline values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_ip values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by uid | sort - event_time</param>
+                                                    <module name="SimpleResultsHeader">
+                                                        <param name="headerFormat">Originator/Source IP by UID</param>
+                                                        <param name="entityName">events</param>
+                                                    </module>
+                                                    <module name="Paginator">
+                                                        <param name="count">10</param>
+                                                        <param name="maxPages">10</param>
+                                                        <param name="entityName">results</param>
+                                                        <module name="SimpleResultsTable">
+                                                            <param name="fieldFormats">
+                                                                <param name="sparkline">
+                                                                    <list>
+                                                                        <param name="type">sparkline</param>
+                                                                        <param name="options">
+                                                                            <param name="type">line</param>
+                                                                            <param name="height">25</param>
+                                                                        </param>
+                                                                    </list>
+                                                                </param>
+                                                            </param>
+                                                            <param name="entityName">results</param>
+                                                            <param name="count">10</param>
+                                                            <param name="allowTransformedFieldSelect">True</param>
+                                                            <param name="drilldown">row</param>
+                                                            <module name="Gimp"/>                                                                
+                                                            <module name="SimpleResultsHeader">
+                                                                <param name="entityName">events</param>
+                                                                <param name="headerFormat">Bro events for selected uid</param>
+                                                            </module>
+                                                            <module name="Search">
+                                                                <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
+                                                                <module name="Paginator">
+                                                                    <param name="count">10</param>
+                                                                    <param name="maxPages">10</param>
+                                                                    <param name="entityName">results</param>                                                                   
+                                                                    <module name="HiddenFieldPicker">
+                                                                        <param name="fields">sourcetype src_ip uid dest_ip</param>
+                                                                        <module name="EventsViewer">
+                                                                            <param name="enableEventActions">True</param>
+                                                                            <param name="enableFieldActions">True</param>
+                                                                        </module>
+                                                                        <module name="ViewRedirectorLink">
+                                                                            <param name="viewTarget">flashtimeline</param>                                                                
+                                                                        </module> 
+                                                                    </module>
+                                                                </module>
+                                                            </module>
+                                                        </module>
+                                                    </module>                                                                            
+                                                </module>
+                                            </module>                                                                      
+                                        </module>
+                                    </module>
+                                </module>  
+                            </module>      
+                        </module>
+                    </module>
+                </module>                             
+            </module><!-- End TabSwitcher - Connections -->
+            
+<!-- TabSwitcher - DNS -->                
+            <module name="Pulldown" layoutPanel="panel_row1_col1">
+                <param name="groupLabel">DNS</param>
+                <param name="label">Explore by:</param>
+                <param name="name">dns_by</param>
+                <param name="staticFieldsToDisplay">
+                    <list>
+                        <param name="label">Domain Name Queried</param>
+                        <param name="value">query</param>
+                    </list>
+                    <list>
+                        <param name="label">Response Code Name</param>
+                        <param name="value">rcode_name</param>
+                    </list>
+                    <list>
+                        <param name="label">Query Class Name</param>
+                        <param name="value">qclass_name</param>
+                    </list>
+                    <list>
+                        <param name="label">Query Type Name</param>
+                        <param name="value">qtype_name</param>
+                    </list>
+                    <list>
+                        <param name="label">Recursion Available (True or False)</param>
+                        <param name="value">RA</param>
+                    </list>
+                    <list>
+                        <param name="label">Recursion Desired (True or False)</param>
+                        <param name="value">RD</param>
+                    </list>
+                </param>                    
+                <module name="Search" layoutPanel="panel_row1_col1" group="DNS" autoRun="False">
+                    <param name="search">sourcetype="bro_dns" | fields src_ip dest_ip dest_port proto qclass_name qtype_name query rcode_name RD RA timeendpos timestartpos trans_id dest_ip_country_name | geoip dest_ip | chart sparkline count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name values(proto) as proto by $dns_by$</param>                
+                    <module name="JobProgressIndicator"/>
+                    <module name="Pager">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <module name="EnablePreview">
+                            <param name="display">False</param>
+                            <param name="enable">True</param>
+                            <module name="SimpleResultsTable">
+                                <param name="fieldFormats">
+                                    <param name="sparkline">
+                                        <list>
+                                            <param name="type">sparkline</param>
+                                            <param name="options">
+                                                <param name="type">line</param>
+                                                <param name="height">25</param>
+                                            </param>
+                                        </list>                                    
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <module name="Gimp"/>  
+<!-- TabSwitcher - DNS - Pie Charts -->
+                                <module name="Search" layoutpanel="panel_row2_col1">
+                                    <param name="search">sourcetype="bro_dns" $dns_by$="$click.value$" | fields src_ip dest_ip dest_port proto query dest_ip_country_name $dns_by$ | geoip dest_ip | stats count by _time, src_ip, dest_ip, dest_port, proto</param>
+<!-- TabSwitcher - DNS - Pie src_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by src_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Originator/Source IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Originator/Source IPs</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>
+                                        </module>
+                                    </module>    
+<!-- TabSwitcher - DNS - Pie dest_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination IP</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>
+<!-- TabSwitcher - DNS - Pie proto -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by proto</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Protocol</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Protocol</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>
+<!-- TabSwitcher - DNS - Pie dest_port -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_port</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination Port</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination Port</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>                                                
+<!-- TabSwitcher - DNS - By src_ip-->
+                                    <module name="Search" layoutPanel="panel_row2_col2">
+                                        <param name="search">sourcetype="bro_dns" $dns_by$="$click.value$" | geoip dest_ip | fields $dns_by$ src_ip dest_ip dest_ip_country_name dest_port dest_ip_country_name | stats count dc(dest_ip) as dest_ip_count sparkline values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by src_ip $dns_by$</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Charted by Originator/Source IP</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="Paginator">
+                                            <param name="count">10</param>
+                                            <param name="maxPages">10</param>
+                                            <param name="entityName">results</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="type">sparkline</param>
+                                                            <param name="options">
+                                                                <param name="type">line</param>
+                                                                <param name="height">25</param>
+                                                            </param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="entityName">results</param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <module name="Gimp"/> 
+<!-- TabSwitcher - DNS - By uid -->
+                                                <module name="Search" layoutPanel="panel_row3_col1">
+                                                    <param name="search">sourcetype="bro_*" [search sourcetype="bro_dns" $click.cell1.name$="$click.cell1.value$" src_ip="$click.fields.src_ip$" | eval matched_uid=uid | fields + matched_uid | rename matched_uid as uid] | geoip dest_ip | convert timeformat="%m/%d/%y %H:%M:%S" ctime(_time) AS event_time | fields event_time uid dest_ip src_ip dest_port dest_ip_country_name sourcetype | chart values(event_time) as event_time count sparkline values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_ip values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by uid | sort - event_time</param>
+                                                    <module name="SimpleResultsHeader">
+                                                        <param name="headerFormat">UIDs for Originator/Source IP across all Bro log sources</param>
+                                                        <param name="entityName">events</param>
+                                                    </module>
+                                                    <module name="Paginator">
+                                                        <param name="count">10</param>
+                                                        <param name="maxPages">10</param>
+                                                        <param name="entityName">results</param>
+                                                        <module name="SimpleResultsTable">
+                                                            <param name="fieldFormats">
+                                                                <param name="sparkline">
+                                                                    <list>
+                                                                        <param name="type">sparkline</param>                                                         
+                                                                        <param name="options">
+                                                                            <param name="type">line</param>
+                                                                            <param name="height">25</param>
+                                                                        </param>
+                                                                    </list>
+                                                                </param>
+                                                            </param>
+                                                            <param name="entityName">results</param>
+                                                            <param name="count">10</param>
+                                                            <param name="allowTransformedFieldSelect">True</param>
+                                                            <param name="drilldown">row</param>
+                                                            <module name="Gimp"/>                                                                   
+                                                            <module name="SimpleResultsHeader">
+                                                                <param name="entityName">events</param>
+                                                                <param name="headerFormat">Bro events for selected uid</param>
+                                                            </module>                                                       
+                                                            <module name="Search">
+                                                                <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip sourcetype dest_ip</param>
+                                                                <module name="Paginator">
+                                                                    <param name="count">10</param>
+                                                                    <param name="maxPages">10</param>
+                                                                    <param name="entityName">results</param>                                                               
+                                                                    <module name="HiddenFieldPicker">
+                                                                        <param name="fields">sourcetype src_ip uid dest_ip</param>
+                                                                        <module name="EventsViewer">
+                                                                            <param name="enableEventActions">True</param>
+                                                                            <param name="enableFieldActions">True</param>
+                                                                        </module>
+                                                                        <module name="ViewRedirectorLink">
+                                                                            <param name="viewTarget">flashtimeline</param>
+                                                                        </module>
+                                                                    </module>
+                                                                </module>                                                             
+                                                            </module>
+                                                        </module>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>                
+            </module><!-- End TabSwitcher - DNS -->
+
+<!-- TabSwitcher - HTTP -->
+            <module name="Pulldown" layoutPanel="panel_row1_col1">
+                <param name="groupLabel">HTTP</param>
+                <param name="label">Explore by:</param>
+                <param name="name">http_by</param>
+                <param name="staticFieldsToDisplay">
+                    <list>
+                        <param name="label">MIME Types</param>
+                        <param name="value">mime_type</param>
+                    </list>
+                    <list>
+                        <param name="label">User Agents</param>
+                        <param name="value">user_agent</param>
+                    </list>
+                    <list>
+                        <param name="label">Status Messages</param>
+                        <param name="value">status_msg</param>
+                    </list>
+                </param>
+                <module name="Search" layoutPanel="panel_row1_col1" group="HTTP" autoRun="False">
+                    <param name="search">sourcetype="bro_http" | fields src_ip dest_ip dest_port md5 status_msg domain filename method mime_type user_agent | geoip dest_ip | chart sparkline count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count values(dest_port) as dest_port dc(domain) as domain_count values(method) as method values(dest_ip_country_name) as dest_ip_country_name dc(filename) as filename_count by $http_by$</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="Pager">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <module name="EnablePreview">
+                            <param name="display">False</param>
+                            <param name="enable">True</param>
+                            <module name="SimpleResultsTable">
+                                <param name="fieldFormats">
+                                    <param name="sparkline">
+                                        <list>
+                                            <param name="type">sparkline</param>
+                                            <param name="options">
+                                                <param name="type">line</param>
+                                                <param name="height">25</param>
+                                            </param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <module name="Gimp"/>  
+<!-- TabSwitcher - HTTP - Pie Charts -->
+                                <module name="Search" layoutpanel="panel_row2_col1">
+                                    <param name="search">sourcetype="bro_http" $http_by$="$click.value$" | stats count by _time, src_ip, dest_ip, dest_port, domain</param>
+<!-- TabSwitcher - HTTP - Pie src_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by src_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Originator/Source IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Originator/Source IPs</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>
+                                        </module>
+                                    </module>    
+<!-- TabSwitcher - HTTP - Pie dest_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination IP</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>
+<!-- TabSwitcher - HTTP - Pie domain -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by domain</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Domain</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination IP</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>
+<!-- TabSwitcher - HTTP - Pie dest_port -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_port</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination Port</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination Port</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>                                                
+<!-- TabSwitcher - HTTP - By dest_ip-->    
+                                    <module name="Search" layoutPanel="panel_row2_col2">
+                                        <param name="search">sourcetype="bro_http" $http_by$="$click.value$" | geoip dest_ip | fields uid dest_ip domain dest_port dest_ip_country_name filename $http_by$ src_ip | stats count dc(dest_ip) as dest_ip_count sparkline dc(domain) as domain_count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name values(filename) as filename by src_ip $http_by$</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Charted by Originator/Source IP</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="Paginator">
+                                            <param name="count">10</param>
+                                            <param name="maxPages">10</param>
+                                            <param name="entityName">results</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="type">sparkline</param>
+                                                            <param name="options">
+                                                                <param name="type">line</param>
+                                                                <param name="height">25</param>
+                                                            </param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="entityName">results</param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <module name="Gimp"/> 
+<!-- TabSwitcher - HTTP - By uid -->
+                                                <module name="Search" layoutPanel="panel_row3_col1">
+                                                    <param name="search">sourcetype="bro_*" [search sourcetype="bro_http" $click.cell1.name$="$click.cell1.value$" src_ip="$click.fields.src_ip$" | eval matched_uid=uid | fields + matched_uid | rename matched_uid as uid] | geoip dest_ip | convert timeformat="%m/%d/%y %H:%M:%S" ctime(_time) AS event_time | fields event_time uid dest_ip src_ip dest_port dest_ip_country_name sourcetype | chart values(event_time) as event_time count sparkline values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_ip values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by uid | sort - event_time</param>
+                                                    <module name="SimpleResultsHeader">
+                                                        <param name="headerFormat">UIDs for Originator/Source IP across all Bro log sources</param>
+                                                        <param name="entityName">events</param>
+                                                    </module>
+                                                    <module name="Paginator">
+                                                        <param name="count">10</param>
+                                                        <param name="maxPages">10</param>
+                                                        <param name="entityName">results</param>
+                                                        <module name="SimpleResultsTable">
+                                                            <param name="fieldFormats">
+                                                                <param name="sparkline">
+                                                                    <list>
+                                                                        <param name="type">sparkline</param>
+                                                                        <param name="options">
+                                                                            <param name="type">line</param>
+                                                                            <param name="height">25</param>
+                                                                        </param>
+                                                                    </list>
+                                                                </param>
+                                                            </param>
+                                                            <param name="entityName">results</param>
+                                                            <param name="count">10</param>
+                                                            <param name="allowTransformedFieldSelect">True</param>
+                                                            <param name="drilldown">row</param>
+                                                            <module name="Gimp"/>                                                                   
+                                                            <module name="SimpleResultsHeader">
+                                                                <param name="entityName">events</param>
+                                                                <param name="headerFormat">Bro events for selected uid</param>
+                                                            </module>
+                                                            <module name="Search">
+                                                                <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
+                                                                <module name="Paginator">
+                                                                    <param name="count">10</param>
+                                                                    <param name="maxPages">10</param>
+                                                                    <param name="entityName">results</param>
+                                                                    <module name="HiddenFieldPicker">
+                                                                        <param name="fields">sourcetype src_ip uid dest_ip</param>
+                                                                        <module name="EventsViewer">
+                                                                            <param name="enableEventActions">True</param>
+                                                                            <param name="enableFieldActions">True</param>
+                                                                        </module>
+                                                                        <module name="ViewRedirectorLink">
+                                                                            <param name="viewTarget">flashtimeline</param>
+                                                                        </module>
+                                                                    </module>
+                                                                </module>
+                                                            </module>
+                                                        </module>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module><!-- End TabSwitcher - HTTP --> 
+
+<!-- TabSwitcher - SSL -->
+            <module name="Pulldown" layoutPanel="panel_row1_col1">
+                <param name="groupLabel">SSL</param>
+                <param name="label">Explore by:</param>
+                <param name="name">ssl_by</param>
+                <param name="staticFieldsToDisplay">
+                    <list>
+                        <param name="label">CN</param>
+                        <param name="value">CN</param>
+                    </list>
+                    <list>
+                        <param name="label">Country</param>
+                        <param name="value">C</param>
+                    </list>
+                    <list>
+                        <param name="label">Organization</param>
+                        <param name="value">O</param>
+                    </list>
+                    <list>
+                        <param name="label">Server Name</param>
+                        <param name="value">server_name</param>
+                    </list>
+                    <list>
+                        <param name="label">Validation Status</param>
+                        <param name="value">validation_status</param>
+                    </list>
+                    <list>
+                        <param name="label">Subject</param>
+                        <param name="value">subject</param>
+                    </list>                    
+                    <list>
+                        <param name="label">Issuer Subject</param>
+                        <param name="value">issuer_subject</param>
+                    </list>
+                    <list>
+                        <param name="label">Cipher</param>
+                        <param name="value">cipher</param>
+                    </list>
+                </param>
+                <module name="Search" layoutPanel="panel_row1_col1" group="SSL" autoRun="False">
+                    <param name="search">sourcetype="bro_ssl" | geoip dest_ip | chart sparkline count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by $ssl_by$</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="Pager">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <module name="EnablePreview">
+                            <param name="display">False</param>
+                            <param name="enable">True</param>
+                            <module name="SimpleResultsTable">
+                                <param name="fieldFormats">
+                                    <param name="sparkline">
+                                        <list>
+                                            <param name="type">sparkline</param>
+                                            <param name="options">
+                                                <param name="type">line</param>
+                                                <param name="height">25</param>
+                                            </param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <module name="Gimp"/>  
+<!-- TabSwitcher - SSL - Pie Charts -->
+                                <module name="Search" layoutpanel="panel_row2_col1">
+                                    <param name="search">sourcetype="bro_ssl" $ssl_by$="$click.value$" | stats count by _time, src_ip, dest_ip, dest_port, server_name</param>
+<!-- TabSwitcher - SSL - Pie src_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by src_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Originator/Source IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Originator/Source IPs</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>
+                                        </module>
+                                    </module>    
+<!-- TabSwitcher - SSL - Pie dest_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination IP</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>
+<!-- TabSwitcher - SSL - Pie server_name -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by server_name</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Server Names</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Server Name</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>
+<!-- TabSwitcher - SSL - Pie dest_port -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_port</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination Port</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination Port</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>                                                
+<!-- TabSwitcher - SSL - By dest_ip-->    
+                                    <module name="Search" layoutPanel="panel_row2_col2">
+                                        <param name="search">sourcetype="bro_ssl" $ssl_by$="$click.value$" | geoip dest_ip | fields uid dest_ip dest_port dest_ip_country_name $ssl_by$ src_ip | stats count dc(dest_ip) as dest_ip_count sparkline values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by src_ip $ssl_by$</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Charted by Originator/Source IP</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="Paginator">
+                                            <param name="count">10</param>
+                                            <param name="maxPages">10</param>
+                                            <param name="entityName">results</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="type">sparkline</param>
+                                                            <param name="options">
+                                                                <param name="type">line</param>
+                                                                <param name="height">25</param>
+                                                            </param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="entityName">results</param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <module name="Gimp"/> 
+<!-- TabSwitcher - SSL - By uid -->
+                                                <module name="Search" layoutPanel="panel_row3_col1">
+                                                    <param name="search">sourcetype="bro_*" [search sourcetype="bro_ssl" $click.cell1.name$="$click.cell1.value$" src_ip="$click.fields.src_ip$" | eval matched_uid=uid | fields + matched_uid | rename matched_uid as uid] | geoip dest_ip | convert timeformat="%m/%d/%y %H:%M:%S" ctime(_time) AS event_time | fields event_time uid dest_ip src_ip dest_port dest_ip_country_name sourcetype | chart values(event_time) as event_time count sparkline values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_ip values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by uid | sort - event_time</param>
+                                                    <module name="SimpleResultsHeader">
+                                                        <param name="headerFormat">UIDs for Originator/Source IP across all Bro log sources</param>
+                                                        <param name="entityName">events</param>
+                                                    </module>
+                                                    <module name="Paginator">
+                                                        <param name="count">10</param>
+                                                        <param name="maxPages">10</param>
+                                                        <param name="entityName">results</param>
+                                                        <module name="SimpleResultsTable">
+                                                            <param name="fieldFormats">
+                                                                <param name="sparkline">
+                                                                    <list>
+                                                                        <param name="type">sparkline</param>
+                                                                        <param name="options">
+                                                                            <param name="type">line</param>
+                                                                            <param name="height">25</param>
+                                                                        </param>
+                                                                    </list>
+                                                                </param>
+                                                            </param>
+                                                            <param name="entityName">results</param>
+                                                            <param name="count">10</param>
+                                                            <param name="allowTransformedFieldSelect">True</param>
+                                                            <param name="drilldown">row</param>
+                                                            <module name="Gimp"/>                                                                   
+                                                            <module name="SimpleResultsHeader">
+                                                                <param name="entityName">events</param>
+                                                                <param name="headerFormat">Bro events for selected uid</param>
+                                                            </module>
+                                                            <module name="Search">
+                                                                <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
+                                                                <module name="Paginator">
+                                                                    <param name="count">10</param>
+                                                                    <param name="maxPages">10</param>
+                                                                    <param name="entityName">results</param>
+                                                                    <module name="HiddenFieldPicker">
+                                                                        <param name="fields">sourcetype src_ip uid dest_ip</param>
+                                                                        <module name="EventsViewer">
+                                                                            <param name="enableEventActions">True</param>
+                                                                            <param name="enableFieldActions">True</param>
+                                                                        </module>
+                                                                        <module name="ViewRedirectorLink">
+                                                                            <param name="viewTarget">flashtimeline</param>
+                                                                        </module>
+                                                                    </module>
+                                                                </module>
+                                                            </module>
+                                                        </module>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module><!-- End TabSwitcher - SSL -->
+            
+<!-- TabSwitcher - SMTP -->
+            <module name="Pulldown" layoutPanel="panel_row1_col1">
+                <param name="groupLabel">SMTP</param>
+                <param name="label">Explore by:</param>
+                <param name="name">smtp_by</param>
+                <param name="staticFieldsToDisplay">
+                    <list>
+                        <param name="label">Helo</param>
+                        <param name="value">helo</param>
+                    </list>
+                    <list>
+                        <param name="label">Subject</param>
+                        <param name="value">subject</param>
+                    </list>
+                    <list>
+                        <param name="label">User Agents</param>
+                        <param name="value">user_agent</param>
+                    </list>
+                    <list>
+                        <param name="label">Path</param>
+                        <param name="value">path</param>
+                    </list>
+                    <list>
+                        <param name="label">Last Reply</param>
+                        <param name="value">last_reply</param>
+                    </list>
+                    <list>
+                        <param name="label">Is Webmail (True or False)</param>
+                        <param name="value">is_webmail</param>
+                    </list>
+                    <list>
+                        <param name="label">To</param>
+                        <param name="value">to</param>
+                    </list>
+                    <list>
+                        <param name="label">From</param>
+                        <param name="value">from</param>
+                    </list>
+
+                </param>
+                <module name="Search" layoutPanel="panel_row1_col1" group="HTTP" autoRun="False">
+                    <param name="search">sourcetype="bro_smtp" | fields src_ip dest_ip dest_port $smtp_by$ | geoip dest_ip | chart sparkline count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by $smtp_by$</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="Pager">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <module name="EnablePreview">
+                            <param name="display">False</param>
+                            <param name="enable">True</param>
+                            <module name="SimpleResultsTable">
+                                <param name="fieldFormats">
+                                    <param name="sparkline">
+                                        <list>
+                                            <param name="type">sparkline</param>
+                                            <param name="options">
+                                                <param name="type">line</param>
+                                                <param name="height">25</param>
+                                            </param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <module name="Gimp"/>  
+<!-- TabSwitcher - SMTP - Pie Charts -->
+                                <module name="Search" layoutpanel="panel_row2_col1">
+                                    <param name="search">sourcetype="bro_smtp" $smtp_by$="$click.value$" | stats count by _time, src_ip, dest_ip, dest_port, user_agent</param>
+<!-- TabSwitcher - SMTP - Pie src_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by src_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Originator/Source IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Originator/Source IPs</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>
+                                        </module>
+                                    </module>    
+<!-- TabSwitcher - SMTP - Pie dest_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination IP</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>
+<!-- TabSwitcher - SMTP - Pie domain -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by user_agent</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">User Agents</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">User Agenty</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>
+<!-- TabSwitcher - SMTP - Pie dest_port -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_port</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination Port</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination Port</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>                                                
+<!-- TabSwitcher - SMTP - By dest_ip-->    
+                                    <module name="Search" layoutPanel="panel_row2_col2">
+                                        <param name="search">sourcetype="bro_smtp" $smtp_by$="$click.value$" | geoip dest_ip | fields uid dest_ip dest_port dest_ip_country_name $smtp_by$ src_ip | stats count dc(dest_ip) as dest_ip_count sparkline values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by src_ip $smtp_by$</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Charted by Originator/Source IP</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="Paginator">
+                                            <param name="count">10</param>
+                                            <param name="maxPages">10</param>
+                                            <param name="entityName">results</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="type">sparkline</param>
+                                                            <param name="options">
+                                                                <param name="type">line</param>
+                                                                <param name="height">25</param>
+                                                            </param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="entityName">results</param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <module name="Gimp"/> 
+<!-- TabSwitcher - SMTP - By uid -->
+                                                <module name="Search" layoutPanel="panel_row3_col1">
+                                                    <param name="search">sourcetype="bro_*" [search sourcetype="bro_smtp" $click.cell1.name$="$click.cell1.value$" src_ip="$click.fields.src_ip$" | eval matched_uid=uid | fields + matched_uid | rename matched_uid as uid] | geoip dest_ip | convert timeformat="%m/%d/%y %H:%M:%S" ctime(_time) AS event_time | fields event_time uid dest_ip src_ip dest_port dest_ip_country_name sourcetype | chart values(event_time) as event_time count sparkline values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_ip values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by uid | sort - event_time</param>
+                                                    <module name="SimpleResultsHeader">
+                                                        <param name="headerFormat">UIDs for Originator/Source IP across all Bro log sources</param>
+                                                        <param name="entityName">events</param>
+                                                    </module>
+                                                    <module name="Paginator">
+                                                        <param name="count">10</param>
+                                                        <param name="maxPages">10</param>
+                                                        <param name="entityName">results</param>
+                                                        <module name="SimpleResultsTable">
+                                                            <param name="fieldFormats">
+                                                                <param name="sparkline">
+                                                                    <list>
+                                                                        <param name="type">sparkline</param>
+                                                                        <param name="options">
+                                                                            <param name="type">line</param>
+                                                                            <param name="height">25</param>
+                                                                        </param>
+                                                                    </list>
+                                                                </param>
+                                                            </param>
+                                                            <param name="entityName">results</param>
+                                                            <param name="count">10</param>
+                                                            <param name="allowTransformedFieldSelect">True</param>
+                                                            <param name="drilldown">row</param>
+                                                            <module name="Gimp"/>                                                                   
+                                                            <module name="SimpleResultsHeader">
+                                                                <param name="entityName">events</param>
+                                                                <param name="headerFormat">Bro events for selected uid</param>
+                                                            </module>
+                                                            <module name="Search">
+                                                                <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
+                                                                <module name="Paginator">
+                                                                    <param name="count">10</param>
+                                                                    <param name="maxPages">10</param>
+                                                                    <param name="entityName">results</param>
+                                                                    <module name="HiddenFieldPicker">
+                                                                        <param name="fields">sourcetype src_ip uid dest_ip</param>
+                                                                        <module name="EventsViewer">
+                                                                            <param name="enableEventActions">True</param>
+                                                                            <param name="enableFieldActions">True</param>
+                                                                        </module>
+                                                                        <module name="ViewRedirectorLink">
+                                                                            <param name="viewTarget">flashtimeline</param>
+                                                                        </module>
+                                                                    </module>
+                                                                </module>
+                                                            </module>
+                                                        </module>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module><!-- End TabSwitcher - SMTP --> 
+            
+<!-- TabSwitcher - FTP -->                
+            <module name="Pulldown" layoutPanel="panel_row1_col1">
+                <param name="groupLabel">FTP</param>
+                <param name="label">Explore by:</param>
+                <param name="name">ftp_by</param>
+                <param name="staticFieldsToDisplay">
+                    <list>
+                        <param name="label">Command</param>
+                        <param name="value">command</param>
+                    </list>
+                    <list>
+                        <param name="label">Arguments</param>
+                        <param name="value">arg</param>
+                    </list>
+                    <list>
+                        <param name="label">MIME Type</param>
+                        <param name="value">mime_type</param>
+                    </list>
+                    <list>
+                        <param name="label">MIME Desc</param>
+                        <param name="value">mime_desc</param>
+                    </list>
+                </param>
+                <module name="Search" layoutPanel="panel_row1_col1" group="FTP" autoRun="False">
+                    <param name="search">sourcetype="bro_ftp" | fields uid src_ip dest_ip dest_port arg command file_size extraction_file mime_desc mime_type reply_msg user dest_ip_country_name | geoip dest_ip | chart sparkline count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name values(extraction_file) as extraction_file values(file_size) as file_size by $ftp_by$</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="Pager">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <module name="EnablePreview">
+                            <param name="display">False</param>
+                            <param name="enable">True</param>                                        
+                            <module name="SimpleResultsTable">
+                                <param name="fieldFormats">
+                                    <param name="sparkline">
+                                        <list>
+                                            <param name="type">sparkline</param>
+                                            <param name="options">
+                                                <param name="type">line</param>
+                                                <param name="height">25</param>
+                                            </param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <module name="Gimp"/>  
+<!-- TabSwitcher - FTP - Pie Charts -->
+                                <module name="Search" layoutpanel="panel_row2_col1">
+                                    <param name="search">sourcetype="bro_ftp" $ftp_by$="$click.value$" | geoip dest_ip | stats count by _time, src_ip, dest_ip, dest_port, dest_ip_country_name</param>
+<!-- TabSwitcher - FTP - Pie src_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by src_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Originator/Source IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Originator/Source IPs</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>
+                                        </module>
+                                    </module>    
+<!-- TabSwitcher - FTP - Pie dest_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination IP</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>
+<!-- TabSwitcher - FTP - Pie dest_ip_country_name -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_ip_country_name</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination Country Name</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder Country Name</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>                                                          
+<!-- TabSwitcher - FTP - Pie dest_port -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by dest_port</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination Ports</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination Port</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>                                               
+<!-- TabSwitcher - FTP - By src_ip-->    
+                                    <module name="Search" layoutPanel="panel_row2_col2">
+                                        <param name="search">sourcetype="bro_ftp" $ftp_by$="$click.value$" | geoip dest_ip | fields $ftp_by$ src_ip, dest_ip, dest_port, dest_ip_country_name | stats count dc(dest_ip) as dest_ip_count sparkline values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by src_ip $ftp_by$</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Charted by Originator/Source IP</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="Paginator">
+                                            <param name="count">10</param>
+                                            <param name="maxPages">10</param>
+                                            <param name="entityName">results</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="type">sparkline</param>
+                                                            <param name="options">
+                                                                <param name="type">line</param>
+                                                                <param name="height">25</param>
+                                                            </param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="entityName">results</param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <module name="Gimp"/> 
+<!-- TabSwitcher - FTP - By uid -->
+                                                <module name="Search" layoutPanel="panel_row3_col1">
+                                                    <param name="search">sourcetype="bro_*" [search sourcetype="bro_ftp" $click.cell1.name$="$click.cell1.value$" src_ip="$click.fields.src_ip$" | eval matched_uid=uid | fields + matched_uid | rename matched_uid as uid] | geoip dest_ip | convert timeformat="%m/%d/%y %H:%M:%S" ctime(_time) AS event_time | fields event_time uid dest_ip src_ip dest_port dest_ip_country_name sourcetype | chart values(event_time) as event_time count sparkline values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_ip values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by uid | sort - event_time</param>
+                                                    <module name="SimpleResultsHeader">
+                                                        <param name="headerFormat">UIDs for Originator/Source IP across all Bro log sources</param>
+                                                        <param name="entityName">events</param>
+                                                    </module>
+                                                    <module name="Paginator">
+                                                        <param name="count">10</param>
+                                                        <param name="maxPages">10</param>
+                                                        <param name="entityName">results</param>
+                                                        <module name="SimpleResultsTable">
+                                                            <param name="fieldFormats">
+                                                                <param name="sparkline">
+                                                                    <list>
+                                                                        <param name="type">sparkline</param>
+                                                                        <param name="options">
+                                                                            <param name="type">line</param>
+                                                                            <param name="height">25</param>
+                                                                        </param>
+                                                                    </list>
+                                                                </param>
+                                                            </param>
+                                                            <param name="entityName">results</param>
+                                                            <param name="count">10</param>
+                                                            <param name="allowTransformedFieldSelect">True</param>
+                                                            <param name="drilldown">row</param>
+                                                            <module name="Gimp"/>                                                                   
+                                                            <module name="SimpleResultsHeader">
+                                                                <param name="entityName">events</param>
+                                                                <param name="headerFormat">Bro events for selected uid</param>
+                                                            </module>
+                                                            <module name="Search">
+                                                                <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
+                                                                <module name="Paginator">
+                                                                    <param name="count">10</param>
+                                                                    <param name="maxPages">10</param>
+                                                                    <param name="entityName">results</param>
+                                                                    <module name="HiddenFieldPicker">
+                                                                        <param name="fields">sourcetype src_ip uid dest_ip</param>
+                                                                        <module name="EventsViewer">
+                                                                            <param name="enableEventActions">True</param>
+                                                                            <param name="enableFieldActions">True</param>                                                                    
+                                                                        </module>
+                                                                        <module name="ViewRedirectorLink">
+                                                                            <param name="viewTarget">flashtimeline</param>
+                                                                        </module>
+                                                                    </module>
+                                                                </module>
+                                                            </module>
+                                                        </module>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>                    
+                                    </module>
+                                </module>                    
+                            </module>                                                                          
+                        </module>  
+                    </module>                    
+                </module>
+            </module><!-- End TabSwitcher - FTP -->            
+
+<!-- TabSwitcher - IRC -->                
+            <module name="Pulldown" layoutPanel="panel_row1_col1">
+                <param name="groupLabel">IRC</param>
+                <param name="label">Explore by:</param>
+                <param name="name">irc_by</param>
+                <param name="staticFieldsToDisplay">
+                    <list>
+                        <param name="label">Command</param>
+                        <param name="value">command</param>
+                    </list>
+                    <list>
+                        <param name="label">Value</param>
+                        <param name="value">value</param>
+                    </list>
+                    <list>
+                        <param name="label">Nick</param>
+                        <param name="value">nick</param>
+                    </list>
+                    <list>
+                        <param name="label">User</param>
+                        <param name="value">user</param>
+                    </list>
+                </param>
+                <module name="Search" layoutPanel="panel_row1_col1" group="IRC" autoRun="False">
+                    <param name="search">sourcetype="bro_irc" | fields src_ip dest_ip dest_port nick user command value addl dcc_filename dcc_file_size dcc_mime_type extraction_file dest_ip_country_name | geoip dest_ip | chart sparkline count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name values(dcc_mime_type) as dcc_mime_type values(dcc_file_name) as dcc_file_name by $irc_by$</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="Pager">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <module name="EnablePreview">
+                            <param name="display">False</param>
+                            <param name="enable">True</param>                                        
+                            <module name="SimpleResultsTable">
+                                <param name="fieldFormats">
+                                    <param name="sparkline">
+                                        <list>
+                                            <param name="type">sparkline</param>
+                                            <param name="options">
+                                                <param name="type">line</param>
+                                                <param name="height">25</param>
+                                            </param>
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <module name="Gimp"/>  
+<!-- TabSwitcher - IRC - Pie Charts -->                                                    
+                                <module name="Search" layoutpanel="panel_row2_col1">
+                                    <param name="search">sourcetype="bro_irc" $irc_by$="$click.value$" | geoip dest_ip | stats count by _time, src_ip, dest_ip, dest_port, dest_ip_country_name</param>
+<!-- TabSwitcher - IRC - Pie src_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by src_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Originator/Source IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Originator/Source IPs</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>
+                                        </module>
+                                    </module>    
+<!-- TabSwitcher - IRC - Pie dest_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination IP</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>
+<!-- TabSwitcher - IRC - Pie dest_ip_country_name -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_ip_country_name</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination Country Name</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder Country Name</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>                                                          
+<!-- TabSwitcher - IRC - Pie dest_port -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by dest_port</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination Ports</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination Port</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>                                               
+<!-- TabSwitcher - IRC - By src_ip-->    
+                                    <module name="Search" layoutPanel="panel_row2_col2">
+                                        <param name="search">sourcetype="bro_irc" $irc_by$="$click.value$" | geoip dest_ip | fields $irc_by$ src_ip dest_ip dest_port dest_ip_country_name | stats count dc(dest_ip) as dest_ip_count sparkline values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by src_ip $irc_by$</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Charted by Originator/Source IP</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="Paginator">
+                                            <param name="count">10</param>
+                                            <param name="maxPages">10</param>
+                                            <param name="entityName">results</param>
+                                            <module name="SimpleResultsTable">
+                                                <param name="fieldFormats">
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="type">sparkline</param>
+                                                            <param name="options">
+                                                                <param name="type">line</param>
+                                                                <param name="height">25</param>
+                                                            </param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="entityName">results</param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <module name="Gimp"/> 
+<!-- TabSwitcher - IRC - By uid -->
+                                                <module name="Search" layoutPanel="panel_row3_col1">
+                                                    <param name="search">sourcetype="bro_*" [search sourcetype="bro_irc" $click.cell1.name$="$click.cell1.value$" src_ip="$click.fields.src_ip$" | eval matched_uid=uid | fields + matched_uid | rename matched_uid as uid] | geoip dest_ip | convert timeformat="%m/%d/%y %H:%M:%S" ctime(_time) AS event_time | fields event_time uid dest_ip src_ip dest_port dest_ip_country_name sourcetype | chart values(event_time) as event_time count sparkline values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_ip values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by uid | sort - event_time</param>
+                                                    <module name="SimpleResultsHeader">
+                                                        <param name="headerFormat">UIDs for Originator/Source IP across all Bro log sources</param>
+                                                        <param name="entityName">events</param>
+                                                    </module>
+                                                    <module name="Paginator">
+                                                        <param name="count">10</param>
+                                                        <param name="maxPages">10</param>
+                                                        <param name="entityName">results</param>
+                                                        <module name="SimpleResultsTable">
+                                                            <param name="fieldFormats">
+                                                                <param name="sparkline">
+                                                                    <list>
+                                                                        <param name="type">sparkline</param>
+                                                                        <param name="options">
+                                                                            <param name="type">line</param>
+                                                                            <param name="height">25</param>
+                                                                        </param>
+                                                                    </list>
+                                                                </param>
+                                                            </param>
+                                                            <param name="entityName">results</param>
+                                                            <param name="count">10</param>
+                                                            <param name="allowTransformedFieldSelect">True</param>
+                                                            <param name="drilldown">row</param>
+                                                            <module name="Gimp"/>                                                                   
+                                                            <module name="SimpleResultsHeader">
+                                                                <param name="entityName">events</param>
+                                                                <param name="headerFormat">Bro events for selected uid</param>                                                           
+                                                            </module>
+                                                            <module name="Search">
+                                                                <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
+                                                                <module name="Paginator">
+                                                                    <param name="count">10</param>
+                                                                    <param name="maxPages">10</param>
+                                                                    <param name="entityName">results</param>
+                                                                    <module name="HiddenFieldPicker">
+                                                                        <param name="fields">sourcetype src_ip uid dest_ip</param>
+                                                                        <module name="EventsViewer">
+                                                                            <param name="enableEventActions">True</param>
+                                                                            <param name="enableFieldActions">True</param>
+                                                                        </module>
+                                                                        <module name="ViewRedirectorLink">
+                                                                            <param name="viewTarget">flashtimeline</param>
+                                                                        </module>
+                                                                    </module>
+                                                                </module>
+                                                            </module>
+                                                        </module>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>                                        
+                                    </module>  
+                                </module>                    
+                            </module>
+                        </module>
+                    </module>
+                </module>
+            </module><!-- End TabSwitcher - IRC -->          
+
+<!-- TabSwitcher - SSH -->                
+            <module name="Pulldown" layoutPanel="panel_row1_col1">
+                <param name="groupLabel">SSH</param>
+                <param name="label">Explore by:</param>
+                <param name="name">ssh_by</param>
+                <param name="staticFieldsToDisplay">
+                    <list>
+                        <param name="label">Server</param>
+                        <param name="value">server</param>
+                    </list>
+                    <list>
+                        <param name="label">Client</param>
+                        <param name="value">client</param>
+                    </list>
+                    <list>
+                        <param name="label">Direction</param>
+                        <param name="value">direction</param>
+                    </list>
+                </param>
+                <module name="Search" layoutPanel="panel_row1_col1" group="SSH" autoRun="False">
+                    <param name="search">sourcetype="bro_ssh" | fields src_ip dest_ip dest_port client direction server status remote_location_country_code | geoip dest_ip | chart sparkline count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count values(dest_port) as dest_port values(remote_location_country_code) as remote_location_country_code values(status) as status by $ssh_by$</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="Pager">
+                        <param name="count">10</param>
+                        <param name="entityName">results</param>
+                        <module name="EnablePreview">
+                            <param name="display">False</param>
+                            <param name="enable">True</param>                                        
+                            <module name="SimpleResultsTable">
+                                <param name="fieldFormats">
+                                    <param name="sparkline">
+                                        <list>
+                                            <param name="type">sparkline</param>
+                                            <param name="options">
+                                                <param name="type">line</param>
+                                                <param name="height">25</param>
+                                            </param>                                  
+                                        </list>
+                                    </param>
+                                </param>
+                                <param name="count">10</param>
+                                <param name="allowTransformedFieldSelect">True</param>
+                                <param name="drilldown">row</param>
+                                <param name="entityName">results</param>
+                                <module name="Gimp"/>  
+<!-- TabSwitcher - SSH - Pie Charts -->
+                                <module name="Search" layoutpanel="panel_row2_col1">
+                                    <param name="search">sourcetype="bro_ssh" $ssh_by$="$click.value$" | stats count by _time, src_ip, dest_ip, dest_port, remote_location_country_code</param>
+<!-- TabSwitcher - SSH - Pie src_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by src_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Originator/Source IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">                                                   
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Originator/Source IPs</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>
+                                        </module>
+                                    </module>    
+<!-- TabSwitcher - SSH - Pie dest_ip -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by dest_ip</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination IPs</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination IP</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>
+<!-- TabSwitcher - SSH - Pie remote_location_country_code -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                        <param name="search">chart count by remote_location_country_code</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination Country Code</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder Country Name</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>
+                                    </module>                                                          
+<!-- TabSwitcher - SSH - Pie dest_port -->
+                                    <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                        <param name="search">chart count by dest_port</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Responder/Destination Ports</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="HiddenChartFormatter">
+                                            <param name="chart.stackMode">stacked</param>
+                                            <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                            <param name="charting.legend.placement">bottom</param>
+                                            <param name="charting.chart">pie</param>
+                                            <param name="charting.axisTitleX.text">Responder/Destination Port</param>
+                                            <module name="JSChart">
+                                                <param name="width">100%</param>
+                                                <module name="Gimp"/>                                            
+                                            </module>                                                    
+                                        </module>                                         
+                                    </module>                                               
+<!-- TabSwitcher - SSH - By src_ip-->    
+                                    <module name="Search" layoutPanel="panel_row2_col2">
+                                        <param name="search">sourcetype="bro_ssh" $ssh_by$="$click.value$" | geoip dest_ip | fields src_ip dest_ip dest_port dest_ip_country_name $ssh_by$ | stats count dc(dest_ip) as dest_ip_count sparkline values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by src_ip $ssh_by$</param>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">Charted by Originator/Source IP</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                        <module name="Paginator">
+                                            <param name="count">10</param>
+                                            <param name="maxPages">10</param>
+                                            <param name="entityName">results</param>
+                                            <module name="SimpleResultsTable">
+                                               <param name="fieldFormats">                                                
+                                                    <param name="sparkline">
+                                                        <list>
+                                                            <param name="type">sparkline</param>
+                                                            <param name="options">
+                                                                <param name="type">line</param>
+                                                                <param name="height">25</param>
+                                                            </param>
+                                                        </list>
+                                                    </param>
+                                                </param>
+                                                <param name="entityName">results</param>
+                                                <param name="count">10</param>
+                                                <param name="allowTransformedFieldSelect">True</param>
+                                                <param name="drilldown">row</param>
+                                                <module name="Gimp"/> 
+<!-- TabSwitcher - SSH - By uid -->                                                                                                
+                                                <module name="Search" layoutPanel="panel_row3_col1">
+                                                    <param name="search">sourcetype="bro_*" [search sourcetype="bro_ssh" $click.cell1.name$="$click.cell1.value$" src_ip="$click.fields.src_ip$" | eval matched_uid=uid | fields + matched_uid | rename matched_uid as uid] | geoip dest_ip | convert timeformat="%m/%d/%y %H:%M:%S" ctime(_time) AS event_time | fields event_time uid dest_ip src_ip dest_port dest_ip_country_name sourcetype | chart values(event_time) as event_time count sparkline values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_ip values(dest_port) as dest_port values(dest_ip_country_name) as dest_ip_country_name by uid | sort - event_time</param>
+                                                    <module name="SimpleResultsHeader">
+                                                        <param name="headerFormat">UIDs for Originator/Source IP across all Bro log sources</param>
+                                                        <param name="entityName">events</param>
+                                                    </module>
+                                                    <module name="Paginator">
+                                                        <param name="count">10</param>
+                                                        <param name="maxPages">10</param>
+                                                        <param name="entityName">results</param>
+                                                        <module name="SimpleResultsTable">
+                                                            <param name="fieldFormats">
+                                                                <param name="sparkline">
+                                                                    <list>
+                                                                        <param name="type">sparkline</param>
+                                                                        <param name="options">
+                                                                            <param name="type">line</param>
+                                                                            <param name="height">25</param>
+                                                                        </param>
+                                                                    </list>
+                                                                </param>
+                                                            </param>
+                                                            <param name="entityName">results</param>
+                                                            <param name="count">10</param>
+                                                            <param name="allowTransformedFieldSelect">True</param>
+                                                            <param name="drilldown">row</param>
+                                                            <module name="Gimp"/>                                                                   
+                                                            <module name="SimpleResultsHeader">
+                                                                <param name="entityName">events</param>
+                                                                <param name="headerFormat">Bro events for selected uid</param>
+                                                            </module>
+                                                            <module name="Search">
+                                                                <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
+                                                                <module name="Paginator">
+                                                                    <param name="count">10</param>
+                                                                    <param name="maxPages">10</param>
+                                                                    <param name="entityName">results</param>
+                                                                    <module name="HiddenFieldPicker">
+                                                                        <param name="fields">sourcetype src_ip dest_ip uid</param>
+                                                                        <module name="EventsViewer">
+                                                                            <param name="enableEventActions">True</param>
+                                                                            <param name="enableFieldActions">True</param>
+                                                                        </module>
+                                                                        <module name="ViewRedirectorLink">
+                                                                            <param name="viewTarget">flashtimeline</param>
+                                                                        </module>
+                                                                    </module>
+                                                                </module>
+                                                            </module>
+                                                        </module>                                                                    
+                                                    </module>
+                                                </module>
+                                            </module>  
+                                        </module>                    
+                                    </module>
+                                </module>                    
+                            </module>                                                                                                      
+                        </module>  
+                    </module>                    
+                </module>
+            </module><!-- End TabSwitcher - SSH -->  
+
+<!-- TabSwitcher - Software -->                
+            <module name="Pulldown" layoutPanel="panel_row1_col1">
+                <param name="groupLabel">Software</param>
+                <param name="label">Explore by:</param>
+                <param name="name">software_by</param>
+                <param name="staticFieldsToDisplay">
+                    <list>
+                        <param name="label">Software Type</param>
+                        <param name="value">software_type</param>
+                    </list>
+                    <list>
+                        <param name="label">Name</param>
+                        <param name="value">name</param>
+                    </list>
+                </param>
+                <module name="Search" layoutPanel="panel_row1_col1" group="SSL" autoRun="False">
+                    <param name="search">sourcetype="bro_software" | fields src_ip name software_type unparsed_version | chart sparkline count dc(src_ip) as src_ip_count values(unparsed_version) as unparsed_version by $software_by$</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="ViewstateAdapter">
+                        <module name="HiddenFieldPicker">
+                            <param name="strictMode">True</param>
+                            <module name="Paginator">
+                                <param name="count">10</param>
+                                <param name="entityName">results</param>
+                                <module name="EnablePreview">
+                                    <param name="display">False</param>
+                                    <param name="enable">True</param>                                        
+                                    <module name="SimpleResultsTable">
+                                        <param name="fieldFormats">
+                                            <param name="sparkline">
+                                                <list>
+                                                    <param name="type">sparkline</param>
+                                                    <param name="options">
+                                                        <param name="type">line</param>
+                                                        <param name="height">25</param>
+                                                    </param>
+                                                </list>
+                                            </param>
+                                        </param>
+                                        <param name="count">10</param>
+                                        <param name="allowTransformedFieldSelect">True</param>
+                                        <param name="drilldown">row</param>
+                                        <param name="entityName">results</param>
+                                        <module name="Gimp"/>  
+<!-- TabSwitcher - Software - Pie Charts -->
+                                        <module name="Search" layoutpanel="panel_row2_col1">
+                                            <param name="search">sourcetype="bro_software" $software_by$="$click.value$" | stats count by src_ip, software_type, unparsed_version, name</param>
+<!-- TabSwitcher - Software - Pie src_ip -->
+                                            <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                                <param name="search">chart count by src_ip</param>
+                                                <module name="SimpleResultsHeader">
+                                                    <param name="headerFormat">Source IPs</param>
+                                                    <param name="entityName">events</param>
+                                                </module>
+                                                <module name="HiddenChartFormatter">
+                                                    <param name="chart.stackMode">stacked</param>
+                                                    <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                                    <param name="charting.legend.placement">bottom</param>
+                                                    <param name="charting.chart">pie</param>
+                                                    <param name="charting.axisTitleX.text">Originator/Source IPs</param>
+                                                    <module name="JSChart">
+                                                        <param name="width">100%</param>
+                                                        <module name="Gimp"/>                                            
+                                                    </module>
+                                                </module>
+                                            </module>    
+<!-- TabSwitcher - Software - Pie name -->
+                                            <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                                <param name="search">chart count by name</param>
+                                                <module name="SimpleResultsHeader">
+                                                    <param name="headerFormat">Software Name</param>
+                                                    <param name="entityName">events</param>
+                                                </module>
+                                                <module name="HiddenChartFormatter">
+                                                    <param name="chart.stackMode">stacked</param>
+                                                    <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                                    <param name="charting.legend.placement">bottom</param>
+                                                    <param name="charting.chart">pie</param>
+                                                    <param name="charting.axisTitleX.text">Responder/Destination IP</param>
+                                                    <module name="JSChart">
+                                                        <param name="width">100%</param>
+                                                        <module name="Gimp"/>                                            
+                                                    </module>                                                    
+                                                </module>
+                                            </module>
+<!-- TabSwitcher - Software - Pie software_type -->
+                                            <module name="PostProcess" layoutPanel="panel_row2_col1_grp1">
+                                                <param name="search">chart count by software_type</param>
+                                                <module name="SimpleResultsHeader">
+                                                    <param name="headerFormat">Software Type</param>
+                                                    <param name="entityName">events</param>
+                                                </module>
+                                                <module name="HiddenChartFormatter">
+                                                    <param name="chart.stackMode">stacked</param>
+                                                    <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                                    <param name="charting.legend.placement">bottom</param>
+                                                    <param name="charting.chart">pie</param>
+                                                    <param name="charting.axisTitleX.text">software_type</param>
+                                                    <module name="JSChart">
+                                                        <param name="width">100%</param>
+                                                        <module name="Gimp"/>                                            
+                                                    </module>                                                    
+                                                </module>
+                                            </module>                                                          
+<!-- TabSwitcher - Software - Pie unparsed_version -->
+                                            <module name="PostProcess" layoutPanel="panel_row2_col1_grp2">
+                                                <param name="search">chart count by unparsed_version</param>
+                                                <module name="SimpleResultsHeader">
+                                                    <param name="headerFormat">Unparsed Version</param>
+                                                    <param name="entityName">events</param>
+                                                </module>
+                                                <module name="HiddenChartFormatter">
+                                                    <param name="chart.stackMode">stacked</param>
+                                                    <param name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</param>
+                                                    <param name="charting.legend.placement">bottom</param>
+                                                    <param name="charting.chart">pie</param>
+                                                    <param name="charting.axisTitleX.text">unparsed_versiont</param>
+                                                    <module name="JSChart">
+                                                        <param name="width">100%</param>
+                                                        <module name="Gimp"/>                                            
+                                                    </module>                                                    
+                                                </module>
+                                            </module>                                               
+<!-- TabSwitcher - Software - By name-->    
+                                            <module name="Search" layoutPanel="panel_row2_col2">
+                                                <param name="search">sourcetype="bro_software" $software_by$="$click.value$" | fields src_ip name software_type unparsed_version version | stats count sparkline by src_ip $software_by$</param>
+                                                <module name="SimpleResultsHeader">
+                                                    <param name="headerFormat">Charted by Originator/Source IP</param>
+                                                    <param name="entityName">events</param>
+                                                </module>
+                                                <module name="Paginator">
+                                                    <param name="count">10</param>
+                                                    <param name="maxPages">10</param>
+                                                    <param name="entityName">results</param>
+                                                    <module name="SimpleResultsTable">
+                                                        <param name="fieldFormats">
+                                                            <param name="sparkline">
+                                                                <list>
+                                                                    <param name="type">sparkline</param>
+                                                                    <param name="options">
+                                                                        <param name="type">line</param>
+                                                                        <param name="height">25</param>
+                                                                    </param>
+                                                                </list>
+                                                            </param>
+                                                        </param>
+                                                        <param name="entityName">results</param>
+                                                        <param name="count">10</param>
+                                                        <param name="allowTransformedFieldSelect">True</param>
+                                                        <param name="drilldown">row</param>
+                                                        <module name="Gimp"/> 
+<!-- TabSwitcher - Software - By src_ip -->
+                                                        <module name="Search" layoutPanel="panel_row3_col1">
+                                                            <param name="search">sourcetype="bro_*" src_ip="$click.fields.src_ip$" | convert timeformat="%m/%d/%y %H:%M:%S" ctime(_time) AS event_time | chart values(event_time) as event_time count sparkline values(sourcetype) as sourcetype values(src_ip) as src_ip values(dest_ip) as dest_ip values(dest_port) as dest_port by uid | sort - event_time</param>
+                                                            <module name="SimpleResultsHeader">
+                                                                <param name="headerFormat">Originator/Source IP across all Bro log sources</param>
+                                                                <param name="entityName">events</param>
+                                                            </module>
+                                                            <module name="Paginator">
+                                                                <param name="count">10</param>
+                                                                <param name="maxPages">10</param>
+                                                                <param name="entityName">results</param>
+                                                                <module name="SimpleResultsTable">
+                                                                    <param name="fieldFormats">
+                                                                        <param name="sparkline">
+                                                                            <list>
+                                                                                <param name="type">sparkline</param>
+                                                                                <param name="options">
+                                                                                    <param name="type">line</param>
+                                                                                    <param name="height">25</param>
+                                                                                </param>
+                                                                            </list>
+                                                                        </param>
+                                                                    </param>
+                                                                    <param name="entityName">results</param>
+                                                                    <param name="count">10</param>
+                                                                    <param name="allowTransformedFieldSelect">True</param>
+                                                                    <param name="drilldown">row</param>
+                                                                    <module name="Gimp"/>                                                                   
+                                                                    <module name="SimpleResultsHeader">
+                                                                        <param name="entityName">events</param>
+                                                                        <param name="headerFormat">Bro events for selected uid</param>
+                                                                    </module>
+                                                                    <module name="Search">
+                                                                        <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
+                                                                        <module name="Paginator">
+                                                                            <param name="count">10</param>
+                                                                            <param name="maxPages">10</param>
+                                                                            <param name="entityName">results</param>
+                                                                            <module name="HiddenFieldPicker">
+                                                                                <param name="fields">sourcetype src_ip dest_ip uid</param>
+                                                                                <module name="EventsViewer">
+                                                                                    <param name="enableEventActions">True</param>
+                                                                                    <param name="enableFieldActions">True</param>
+                                                                                </module>
+                                                                                <module name="ViewRedirectorLink">
+                                                                                    <param name="viewTarget">flashtimeline</param>
+                                                                                </module>
+                                                                            </module>
+                                                                        </module>
+                                                                    </module>
+                                                                </module>
+                                                            </module>
+                                                        </module>
+                                                    </module>
+                                                </module>
+                                            </module>
+                                        </module>
+                                    </module>
+                                </module>
+                            </module>
+                        </module>                        
+                    </module>                    
+                </module>
+            </module><!-- End TabSwitcher - Software -->  
+        </module><!-- End TabSwitcher - Bro(wser) -->
+    </module><!-- End TimeRangePicker -->
+</view>

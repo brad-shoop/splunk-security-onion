@@ -1,0 +1,1123 @@
+[default]
+
+[]
+version = 4.3.1
+export = none
+modtime = 1332421249.574841000
+
+[app/launcher]
+version = 4.3.1
+modtime = 1334195430.736410000
+
+[app/package/check_for_updates]
+version = 4.3.1
+modtime = 1334195430.744051000
+
+[app/ui]
+version = 4.3.1
+modtime = 1334195430.730746000
+
+[eventtypes/PADS]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1346417337.637640000
+owner = admin
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fcommunication.log]
+version = 4.3.1
+modtime = 1332730145.910041000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fconn.log]
+version = 4.3.1
+modtime = 1332730149.386822000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fdns.log]
+version = 4.3.1
+modtime = 1332730151.930863000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fdpd.log]
+version = 4.3.1
+modtime = 1332730153.347822000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fhttp.log]
+version = 4.3.1
+modtime = 1332730154.984450000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fknown_certs.log]
+version = 4.3.1
+modtime = 1332730156.564814000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fknown_hosts.log]
+version = 4.3.1
+modtime = 1332730158.984708000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fknown_services.log]
+version = 4.3.1
+modtime = 1332730160.355265000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fnotice.log]
+version = 4.3.1
+modtime = 1332730161.787446000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fsmtp.log]
+version = 4.3.1
+modtime = 1332730163.878605000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fsmtp_entities.log]
+version = 4.3.1
+modtime = 1332730165.187488000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fsoftware.log]
+version = 4.3.1
+modtime = 1332730166.393883000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fssh.log]
+version = 4.3.1
+modtime = 1332730167.497075000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fssl.log]
+version = 4.3.1
+modtime = 1332730168.539134000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fsyslog.log]
+version = 4.3.1
+modtime = 1332730169.513089000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Flogs%2Fcurrent%2Fweird.log]
+version = 4.3.1
+modtime = 1332730170.478695000
+
+[inputs/monitor%3A%2F%2F%2Fnsm%2Fbro%2Fspool%2Fstats.log]
+version = 4.3.1
+owner = admin
+modtime = 1335019169.374943000
+
+[inputs/monitor%3A%2F%2F%2Fvar%2Flog%2Fnsm%2Fsecurityonion%2Fsguild.log]
+version = 4.3.1
+owner = admin
+modtime = 1333068238.982471000
+
+[inputs/monitor%3A%2F%2F%2Fvar%2Flog%2Fnsm%2Fsostat.log]
+version = 4.3.1
+owner = admin
+modtime = 1333233320.185485000
+
+[inputs/monitor%3A%2F%2F%2Fvar%2Flog%2Fprads-asset.log]
+version = 5.0
+owner = admin
+modtime = 1351001777.740068000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Fdisk.sh]
+version = 4.3.1
+modtime = 1333747415.922378000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Fifconfig.sh]
+version = 4.3.1
+modtime = 1333746896.471279000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Fnsm_log_archive.sh]
+version = 4.3.1
+modtime = 1335184218.558478000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Fnsm_packet_drops.sh]
+version = 4.3.1
+modtime = 1333637032.614954000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Fnsm_sensor_ps-status.sh]
+version = 5.0.1
+modtime = 1353414878.941370000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Fnsm_server_ps-status.sh]
+version = 4.3.1
+modtime = 1333929436.720658000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Fnsm_sguil_uncategorized.sh]
+version = 4.3.1
+modtime = 1333716759.644406000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Fnsm_snorby_event_summary.sh]
+version = 4.3.1
+modtime = 1334022223.417879000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Fnsm_snorby_top_50.sh]
+version = 4.3.1
+modtime = 1333717804.889459000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Fnsm_status.sh]
+version = 4.3.1
+modtime = 1333815405.377739000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Fnsm_status_bro.sh]
+version = 4.3.1
+modtime = 1334006029.265700000
+
+[inputs/script%3A%2F%2F%2Fopt%2Fsplunk%2Fetc%2Fapps%2Fsecurityonion%2Fbin%2Ftop.sh]
+version = 4.3.1
+modtime = 1333741071.309731000
+
+[lookups/mining_uri_values.csv]
+version = 4.3.2
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1336869282.560617000
+owner = nobody
+
+[nav/default]
+version = 5.0.1
+modtime = 1355974945.459402000
+
+[props/bro_conn/EXTRACT-conn_state]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801172.239375000
+owner = admin
+
+[props/bro_conn/EXTRACT-dest_ip]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801314.541091000
+owner = admin
+
+[props/bro_conn/EXTRACT-dest_port]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801305.205878000
+owner = admin
+
+[props/bro_conn/EXTRACT-duration]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801295.161503000
+owner = admin
+
+[props/bro_conn/EXTRACT-history]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801279.269760000
+owner = admin
+
+[props/bro_conn/EXTRACT-local_orig]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801271.238264000
+owner = admin
+
+[props/bro_conn/EXTRACT-missed_bytes]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801263.202482000
+owner = admin
+
+[props/bro_conn/EXTRACT-orig_bytes]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801254.281508000
+owner = admin
+
+[props/bro_conn/EXTRACT-proto]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801246.530897000
+owner = admin
+
+[props/bro_conn/EXTRACT-resp_bytes]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801238.875162000
+owner = admin
+
+[props/bro_conn/EXTRACT-service]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801231.160669000
+owner = admin
+
+[props/bro_conn/EXTRACT-src_ip]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801223.135741000
+owner = admin
+
+[props/bro_conn/EXTRACT-src_port]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801214.355270000
+owner = admin
+
+[props/bro_conn/EXTRACT-ts]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801203.305987000
+owner = admin
+
+[props/bro_conn/EXTRACT-uid]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327801187.414426000
+owner = admin
+
+[props/bro_conn/FIELDALIAS-bro_conn]
+version = 4.3
+modtime = 1327981145.767978000
+
+[props/bro_conn/LOOKUP-cif_infrastructure]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1347650550.835990000
+owner = admin
+
+[props/bro_dns/FIELDALIAS-bro_dns]
+version = 4.3
+modtime = 1327981162.080075000
+
+[props/bro_dpd/FIELDALIAS-bro_dpd]
+version = 4.3
+modtime = 1327981183.144907000
+
+[props/bro_ftp/FIELDALIAS-bro_ftp]
+version = 4.3
+modtime = 1327981205.316047000
+
+[props/bro_http/EXTRACT-bro_http]
+version = 4.3
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327937872.950689000
+owner = nobody
+
+[props/bro_http/FIELDALIAS-bro_http]
+version = 4.3
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327981230.946971000
+owner = nobody
+
+[props/bro_http/LOOKUP-cif_domain]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1347650556.588645000
+owner = admin
+
+[props/bro_http/LOOKUP-cif_url]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1347650561.397036000
+owner = admin
+
+[props/bro_notice/FIELDALIAS-bro_note_name]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1332595262.081713000
+owner = admin
+
+[props/bro_notice/FIELDALIAS-bro_notice]
+version = 4.3
+modtime = 1327981253.693269000
+
+[props/bro_smtp/FIELDALIAS-bro_smtp]
+version = 4.3
+modtime = 1327981282.715952000
+
+[props/bro_ssh/FIELDALIAS-bro_ssh]
+version = 4.3
+modtime = 1327981302.951845000
+
+[props/bro_ssl/FIELDALIAS-bro_ssl]
+version = 4.3
+modtime = 1327981323.732842000
+
+[props/bro_stats/EXTRACT-status]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1335024980.845654000
+owner = admin
+
+[props/bro_syslog/FIELDALIAS-bro_syslog]
+version = 4.3
+modtime = 1327981341.971394000
+
+[props/bro_weird/FIELDALIAS-bro_weird]
+version = 4.3
+modtime = 1327981360.126495000
+
+[props/httpry/EXTRACT-host]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327766935.522429000
+owner = admin
+
+[props/httpry/EXTRACT-method]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327766957.339207000
+owner = admin
+
+[props/httpry/EXTRACT-referrer]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327766967.726450000
+owner = admin
+
+[props/httpry/EXTRACT-src_ip]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327785602.423030000
+owner = admin
+
+[props/httpry/EXTRACT-src_port]
+version = 4.3
+modtime = 1327785559.705124000
+
+[props/httpry/EXTRACT-ts]
+version = 4.3
+modtime = 1327785575.037914000
+
+[props/httpry/EXTRACT-uri]
+version = 4.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1327766979.275090000
+owner = admin
+
+[props/httpry/FIELDALIAS-httpry]
+version = 4.3
+modtime = 1327980859.209805000
+
+[props/sguild/EXTRACT-alert_id]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1332986993.792207000
+owner = admin
+
+[props/sguild/EXTRACT-classification]
+version = 4.3.2
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1339958329.893678000
+owner = admin
+
+[props/sguild/EXTRACT-dest_ip]
+version = 4.3.2
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1341279371.795266000
+owner = admin
+
+[props/sguild/EXTRACT-dest_port]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1332990563.884391000
+owner = admin
+
+[props/sguild/EXTRACT-detection_engine]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1332986904.764845000
+owner = admin
+
+[props/sguild/EXTRACT-event_time]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1332986601.333769000
+owner = admin
+
+[props/sguild/EXTRACT-generator_id]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1333072322.197446000
+owner = admin
+
+[props/sguild/EXTRACT-name]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1333072334.053521000
+owner = admin
+
+[props/sguild/EXTRACT-pid]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1332986043.013025000
+owner = admin
+
+[props/sguild/EXTRACT-priority]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1333072350.908935000
+owner = admin
+
+[props/sguild/EXTRACT-proto]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1332990554.492261000
+owner = admin
+
+[props/sguild/EXTRACT-sig_id]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1333072387.366503000
+owner = admin
+
+[props/sguild/EXTRACT-src_ip]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1332987429.731407000
+owner = admin
+
+[props/sguild/EXTRACT-src_port]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1332990543.138600000
+owner = admin
+
+[props/sguild/EXTRACT-timestamp]
+version = 4.3.1
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1332986069.352392000
+owner = admin
+
+[props/sguild/FIELDALIAS-rule_name]
+version = 4.3.3
+export = system
+access = read : [ * ], write : [ admin, power ]
+modtime = 1345771803.447478000
+owner = admin
+
+[props/snort_rules/EXTRACT-category]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342369354.658453000
+owner = admin
+
+[props/snort_rules/EXTRACT-classtype]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342306831.032170000
+owner = nobody
+
+[props/snort_rules/EXTRACT-msg]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342306840.346536000
+owner = nobody
+
+[props/snort_rules/EXTRACT-name]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342361485.224928000
+owner = nobody
+
+[props/snort_rules/EXTRACT-reference]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342306845.411185000
+owner = nobody
+
+[props/snort_rules/EXTRACT-reference_bugtraq]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342361494.567217000
+owner = nobody
+
+[props/snort_rules/EXTRACT-reference_cve]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342361503.678348000
+owner = nobody
+
+[props/snort_rules/EXTRACT-reference_url]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342361510.746016000
+owner = nobody
+
+[props/snort_rules/EXTRACT-rev]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342306851.010379000
+owner = nobody
+
+[props/snort_rules/EXTRACT-sid]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342306856.731025000
+owner = nobody
+
+[props/sostat/EXTRACT-snort_pkt_drop_percent]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1333730425.979002000
+owner = admin
+
+[props/sostat_disk/EXTRACT-filesystem-size-used-available-use_percent-mount]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1333751905.400738000
+owner = admin
+
+[props/sostat_nsm_packet_drops/EXTRACT-packet_drop_percent]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1333751913.123870000
+owner = admin
+
+[props/sostat_nsm_packet_drops/EXTRACT-sensor]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105211.873064000
+owner = admin
+
+[props/sostat_nsm_packet_drops/EXTRACT-snort_pkt_drop_percent]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1333836929.560052000
+owner = nobody
+
+[props/sostat_nsm_sensor_ps-status/EXTRACT-sensor]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105205.033244000
+owner = admin
+
+[props/sostat_nsm_sensor_ps-status/EXTRACT-service]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105399.310268000
+owner = admin
+
+[props/sostat_nsm_sensor_ps-status/EXTRACT-status]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105385.813594000
+owner = admin
+
+[props/sostat_nsm_server_ps-status/EXTRACT-status]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105375.431987000
+owner = admin
+
+[props/sostat_nsm_sguil_uncategorized/EXTRACT-sguil_uncategorized_events]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105364.205754000
+owner = admin
+
+[props/sostat_nsm_snorby_event_summary/EXTRACT-name]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105356.786124000
+owner = admin
+
+[props/sostat_nsm_snorby_event_summary/EXTRACT-sig_id]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105346.781373000
+owner = admin
+
+[props/sostat_nsm_snorby_event_summary/EXTRACT-total]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105293.644038000
+owner = admin
+
+[props/sostat_nsm_snorby_top_50/EXTRACT-name]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105278.785213000
+owner = admin
+
+[props/sostat_nsm_snorby_top_50/EXTRACT-sig_id]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105248.402162000
+owner = admin
+
+[props/sostat_nsm_snorby_top_50/EXTRACT-total]
+version = 4.3.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1334105237.299634000
+owner = admin
+
+[savedsearches/Bro%20Notice%20Top%2020%20Destination%20IPs%20Last%2024h]
+version = 4.3
+export = none
+owner = admin
+modtime = 1328068442.348601000
+
+[savedsearches/Bro%20Notice%20Top%2020%20Source%20IPs%20Last%2024h]
+version = 4.3
+export = none
+owner = admin
+modtime = 1328068156.292707000
+
+[savedsearches/Bro%20Weird%20Top%2020%20Destination%20IPs%20Last%2024h]
+version = 4.3
+export = none
+owner = admin
+modtime = 1328068525.241613000
+
+[savedsearches/Bro%20Weird%20Top%2020%20Source%20IPs%20Last%2024h]
+version = 4.3
+export = none
+owner = admin
+modtime = 1328068573.882646000
+
+[savedsearches/Security%20Onion%20Data%20Flow]
+version = 4.3.2
+owner = admin
+modtime = 1337721364.692375000
+
+[savedsearches/bro_http_tld]
+version = 4.3.3
+owner = admin
+modtime = 1347415024.048621000
+
+[transforms/bro_blacklist_hash]
+version = 4.3
+access = read : [ * ], write : [ admin, power ]
+modtime = 1328409406.787296000
+owner = nobody
+
+[transforms/cif_domain]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1347650573.684520000
+owner = admin
+
+[transforms/cif_infrastructure]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1347650578.793425000
+owner = admin
+
+[transforms/cif_url]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1347650583.847977000
+owner = admin
+
+[transforms/mime_types]
+version = 4.3.4
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1350578756.707862000
+owner = admin
+
+[transforms/mining_uri_values]
+version = 4.3.2
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1336869329.568552000
+owner = nobody
+
+[transforms/sostat_disk_null]
+version = 4.3.2
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1337644617.703325000
+owner = nobody
+
+[transforms/sostat_nsm_sensor_ps-status_null]
+version = 4.3.2
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1337644637.583179000
+owner = nobody
+
+[transforms/sostat_nsm_sensor_ps-status_null2]
+version = 4.3.2
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1337644647.190029000
+owner = nobody
+
+[transforms/sostat_nsm_sguil_uncategorized_null]
+version = 4.3.2
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1337644664.972268000
+owner = nobody
+
+[transforms/sostat_nsm_snorby_null]
+version = 4.3.2
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1337644674.560117000
+owner = nobody
+
+[views/securityonion_cif_conn]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1356570299.552523000
+
+[views/securityonion_cif_http]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1356569791.226255000
+
+[views/securityonion_geoip]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356569617.562293000
+owner = admin
+
+[views/securityonion_ir_search]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1356791832.908347000
+owner = admin
+
+[views/securityonion_mining]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356562612.585653000
+owner = admin
+
+[views/securityonion_mining_connections]
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356556956.367569000
+owner = admin
+version = 5.0.1
+
+[views/securityonion_mining_http]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356556566.345635000
+owner = admin
+
+[views/securityonion_mining_known]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356538970.298489000
+owner = admin
+
+[views/securityonion_mining_pads]
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356487882.914599000
+owner = admin
+version = 5.0.1
+
+[views/securityonion_mining_sguil]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356486422.312019000
+owner = admin
+
+[views/securityonion_mining_smtp]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356485577.022665000
+owner = admin
+
+[views/securityonion_mining_syslog]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356484884.353541000
+owner = admin
+
+[views/securityonion_monitors]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356484356.594173000
+owner = admin
+
+[views/securityonion_overview]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356718532.065297000
+owner = admin
+
+[views/securityonion_sostat_ids_rules]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356476262.864221000
+owner = admin
+
+[views/securityonion_sostat_nix]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1356463936.136396000
+owner = admin
+
+[views/securityonion_sostat_so]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1356463635.192818000
+owner = admin
+
+[views/securityonion_viz]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin ]
+modtime = 1356462884.353439000
+owner = admin
+
+[views/securityonion_web_monitor]
+version = 5.0.1
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1356456820.151522000
+owner = admin
+
+[viewstates/flashtimeline%3Ah6zs0w6d]
+version = 4.3.3
+export = system
+owner = nobody
+modtime = 1347414870.847800000
+
+[viewstates/securityonion_viz%3Ah2jgr73y]
+version = 4.3.2
+export = system
+owner = nobody
+modtime = 1337721354.695073000
+
+[workflow_actions/cif_query_dest_ip]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342397235.215315000
+owner = admin
+
+[workflow_actions/cif_query_domain]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342397241.960468000
+owner = admin
+
+[workflow_actions/cif_query_md5]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342397248.575736000
+owner = admin
+
+[workflow_actions/cif_query_src_ip]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342397257.468578000
+owner = admin
+
+[workflow_actions/dshield_query_dest_ip]
+version = 5.0
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1350913018.720213000
+owner = admin
+
+[workflow_actions/dshield_query_src_ip]
+version = 5.0
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1350913033.579028000
+owner = admin
+
+[workflow_actions/ids_bugtraq]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342397132.428896000
+owner = admin
+
+[workflow_actions/ids_cve]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342397160.192023000
+owner = admin
+
+[workflow_actions/ids_url]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342397178.684743000
+owner = admin
+
+[workflow_actions/robtex_query_dest_ip]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342397227.590957000
+owner = admin
+
+[workflow_actions/robtex_query_domain]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342397219.364734000
+owner = admin
+
+[workflow_actions/robtext_query_src_ip]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1342397187.487142000
+owner = admin
+
+[workflow_actions/splunk_query_src_ip]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1347413983.387513000
+owner = admin
+
+[workflow_actions/vicheck_md5]
+version = 5.0
+modtime = 1351433691.062768000
+
+[workflow_actions/virustotal_md5]
+version = 5.0
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1351433724.778929000
+owner = admin
+
+[workflow_actions/vrt_reference]
+version = 4.3.3
+export = none
+access = read : [ * ], write : [ admin, power ]
+modtime = 1344473682.284530000
+owner = admin
+
+[savedsearches/bro_dns_query_si]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1356302382.446047000
+
+[savedsearches/bro_http_ext_ir_search]
+version = 5.0.1
+modtime = 1355238487.185772000
+
+[props/bro_conn/LOOKUP-conn_state]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = nobody
+version = 5.0.1
+modtime = 1355278129.752611000
+
+[views/securityonion_browser]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1356570328.391360000
+
+[transforms/conn_state]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = nobody
+version = 5.0.1
+modtime = 1356291776.989085000
+
+[viewstates/%2A%3Azp1wkwxl]
+owner = nobody
+version = 5.0.1
+modtime = 1356297556.173677000
+
+[workflow_actions/ir_search_dest]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1356378915.221305000
+
+[workflow_actions/ir_search_src]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1356378923.841536000
+
+[views/securityonion_ir_search_lookup]
+access = read : [ * ], write : [ admin, power ]
+owner = nobody
+version = 5.0.1
+modtime = 1356717847.313171000
+
