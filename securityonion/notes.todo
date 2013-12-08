@@ -1,0 +1,43 @@
+notes.todo
+
+New Sourcetypes:
+ ☐ sourcetype = bro_app_stats - TEST
+   ✔ inputs @done (13-12-08 18:08)
+   ✔ props @done (13-12-08 18:13)
+   ✔ transforms @done (13-12-08 18:28)
+ ☐ sourcetype = bro_dhcp - TEST
+   ✔ inputs @done (13-12-08 18:08)
+   ✔ props @done (13-12-08 18:13)
+   ✔ transforms @done (13-12-08 18:28)
+ ☐ sourcetype = bro_files - TEST
+   ✔ inputs @done (13-12-08 18:08)
+   ✔ props @done (13-12-08 18:28)
+   ✔ transforms @done (13-12-08 18:28)
+ ☐ sourcetype = bro_tunnel - TEST
+   ✔ inputs @done (13-12-08 18:08)
+   ✔ props @done (13-12-08 18:08)
+   ✔ transforms @done (13-12-08 18:08)
+     (special thanks to Timothy Whisnant)
+
+Add "KV_MODE = none" props.conf:
+ ✔ adding "KV_MODE = none" to props for each stanza stopped auto field extractions (not needed since you're defining the tab delimited fields), this helped with crazy field extractions for equal signs in URIs. @done (13-12-08 18:10)
+   (specilal thanks to Timothy Whisnant)
+
+Check all old sources for new fields:
+ ✔ sourcetype = bro_conn @done (13-12-08 18:42)
+ ✔ sourcetype = bro_dpd @done (13-12-08 18:42)
+ ✔ sourcetype = bro_ftp @done (13-12-08 18:42)
+ ✔ sourcetype = bro_http @done (13-12-08 18:39)
+ ☐ sourcetype = bro_irc
+ ☐ sourcetype = bro_known_certs
+ ☐ sourcetype = bro_known_hosts
+ ✔ sourcetype = bro_known_services @done (13-12-08 18:36)
+ ☐ sourcetype = bro_notice
+ ☐ sourcetype = bro_smtp
+ ☐ sourcetype = bro_smtp_entities
+ ✔ sourcetype = bro_software @done (13-12-08 18:35)
+ ☐ sourcetype = bro_ssh
+ ✔ sourcetype = bro_ssl @done (13-12-08 18:35)
+ ☐ sourcetype = bro_stats
+ ☐ sourcetype = bro_syslog
+ ✔ sourcetype = bro_weird @done (13-12-08 18:32)
