@@ -29,12 +29,11 @@ Check all old sources for new fields:
  ✔ sourcetype = bro_dpd - TEST @done (13-12-08 19:50)
  ✔ sourcetype = bro_ftp - TEST @done (13-12-08 20:00)
  ✔ sourcetype = bro_http - TEST @done (13-12-08 20:03)
- ✔ sourcetype = bro_irc - TEST @done (13-12-08 20:29)
- ☐ sourcetype = bro_known_certs - TEST
-   ☐ diff files
+ ✔ sourcetype = bro_irc - TEST @done (13-12-08 20:39)
+ ✔ sourcetype = bro_known_certs - Leave for now to support earlier releases @done (13-12-08 20:37)
  ✔ sourcetype = bro_known_hosts - TEST @done (13-12-08 20:10)
  ✔ sourcetype = bro_known_services - TEST @done (13-12-08 19:54)
- ☐ sourcetype = bro_notice - TEST
+ ✔ sourcetype = bro_notice - TEST @done (13-12-08 20:39)
  ☐ sourcetype = bro_smtp - TEST
    ☐ diff files
  ☐ sourcetype = bro_smtp_entities - TEST

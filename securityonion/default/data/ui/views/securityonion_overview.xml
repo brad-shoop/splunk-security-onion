@@ -14,7 +14,7 @@
       <param name="selected">Last 4 Hours</param>
       <param name="searchWhenChanged">True</param>
        
-<!-- Sguil Pie -->
+<!-- Sguil List -->
         <module name="StaticSelect" layoutPanel="panel_row2_col1" group="Sguil">
             <param name="label">Field:</param>
             <param name="staticFieldsToDisplay">
@@ -62,39 +62,31 @@
                     <param name="groupLabel">Sguil Events</param>                  
                     <param name="search">sourcetype="sguild" classification!="{}" | fields src_ip dest_ip dest_port detection_engine proto classification severity name | chart count by $field_select$</param>                   
                     <module name="JobProgressIndicator"/>
-                    <module name="EnablePreview">
-                        <param name="enable">True</param>
-                        <param name="display">False</param>
-                        <module name="HiddenChartFormatter">
-                            <param name="charting.legend.placement">bottom</param>
-                            <param name="charting.chart">pie</param>
-                            <module name="JSChart">
-                                <param name="height">300px</param>
-                                <module name="ConvertToDrilldownSearch">
-                                    <module name="JobProgressIndicator"/>
-                                    <module name="SimpleResultsHeader">
-                                        <param name="headerFormat">The drilldown search has $count$ events</param>
-                                        <param name="entityName">events</param>
-                                    </module>
-                                    <module name="Paginator">
-                                        <param name="entityName">results</param>
-                                        <param name="maxPages">10</param>
-                                        <param name="count">5</param>
-                                        <module name="HiddenFieldPicker">
-                                            <param name="fields">severity src_ip dest_ip name proto</param>
-                                            <module name="SimpleResultsTable">
-                                                <param name="drilldown">all</param>
-                                                <param name="displayRowNumbers">False</param>
-                                                <param name="entityName">results</param>
-                                                <module name="ConvertToDrilldownSearch">
-                                                    <module name="ViewRedirector">
-                                                        <param name="viewTarget">flashtimeline</param>
-                                                    </module>
-                                                </module>
-                                            </module>
-                                            <module name="ViewRedirectorLink">
-                                                <param name="viewTarget">flashtimeline</param>
-                                            </module>
+                        <param name="entityName">results</param>
+                        <param name="maxPages">10</param>
+                        <module name="SimpleResultsTable">
+                            <param name="drilldown">row</param>
+                            <param name="entityName">results</param>
+                            <param name="dataOverlayMode">none</param>
+                            <param name="displayRowNumbers">False</param>
+                            <module name="ConvertToDrilldownSearch">
+                                <module name="JobProgressIndicator"/>
+                                <module name="SimpleResultsHeader">
+                                    <param name="headerFormat">The drilldown search has $count$ events</param>
+                                    <param name="entityName">events</param>
+                                </module>
+                                <module name="Paginator">
+                                    <param name="count">5</param>
+                                    <param name="entityName">results</param>
+                                    <param name="maxPages">10</param>
+                                    <module name="HiddenFieldPicker">
+                                        <param name="fields">severity src_ip dest_ip name proto</param>
+                                        <module name="EventsViewer">
+                                            <param name="enableEventActions">True</param>
+                                            <param name="enableFieldActions">True</param>
+                                        </module>
+                                        <module name="ViewRedirectorLink">
+                                            <param name="viewTarget">flashtimeline</param>
                                         </module>
                                     </module>
                                 </module>
@@ -102,8 +94,7 @@
                         </module>
                     </module>
                 </module>
-            </module>
-        </module><!-- End Sguil Pie -->
+        </module><!-- End Sguil List -->
         
 <!-- Bro Notice -->
         <module name="StaticSelect" layoutPanel="panel_row2_col2" group="Bro Notice">
@@ -160,52 +151,44 @@
                         <module name="HiddenFieldPicker">
                             <param name="strictMode">True</param>
                             <module name="JobProgressIndicator">
-                                <module name="EnablePreview">
-                                    <param name="enable">True</param>
-                                    <param name="display">False</param>
-                                    <module name="HiddenChartFormatter">
-                                        <param name="charting.legend.placement">bottom</param>
-                                        <param name="charting.chart">pie</param>
-                                        <module name="JSChart">
-                                            <param name="height">300px</param>                                            
-                                            <module name="ConvertToDrilldownSearch">                
-                                                <module name="JobProgressIndicator"></module>                          
-                                                <module name="SimpleResultsHeader">                  
-                                                    <param name="headerFormat">The drilldown search has $count$ events</param>
-                                                    <param name="entityName">events</param>                 
-                                                </module>                 
-                                                <module name="Paginator">
-                                                    <param name="count">5</param>
-                                                    <param name="entityName">results</param>
-                                                    <param name="maxPages">10</param>
-                                                    <module name="HiddenFieldPicker">
-                                                        <param name="fields">src_ip dest_ip note msg</param>
-                                                        <module name="SimpleResultsTable">
-                                                            <param name="drilldown">all</param>
-                                                            <param name="entityName">results</param>
-                                                            <param name="displayRowNumbers">False</param>
-                                                            <module name="ConvertToDrilldownSearch">
-                                                                <module name="ViewRedirector">
-                                                                    <param name="viewTarget">flashtimeline</param>
-                                                                </module>                                                            </module>
-                                                        </module>
-                                                        <module name="ViewRedirectorLink">          
-                                                            <param name="viewTarget">flashtimeline</param>
-                                                        </module>
-                                                    </module>	        	      
-                                                </module>    
-                                            </module>       
-                                        </module>       
-                                    </module>       
+                            <module name="Paginator">
+                                <param name="entityName">results</param>
+                                <param name="maxPages">10</param>
+                                <module name="SimpleResultsTable">
+                                    <param name="drilldown">row</param>
+                                    <param name="entityName">results</param>
+                                    <param name="dataOverlayMode">none</param>
+                                    <param name="displayRowNumbers">False</param>
+                                        <module name="ConvertToDrilldownSearch">
+                                        <module name="JobProgressIndicator"/>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">The drilldown search has $count$ events</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                    <module name="Paginator">
+                                        <param name="count">5</param>
+                                        <param name="entityName">results</param>
+                                        <param name="maxPages">10</param>
+                                        <module name="HiddenFieldPicker">
+                                            <param name="fields">src_ip dest_ip note msg</param>
+                                            <module name="EventsViewer">
+                                               <param name="enableEventActions">True</param>
+                                               <param name="enableFieldActions">True</param>
+                                            </module>
+                                            <module name="ViewRedirectorLink">
+                                                <param name="viewTarget">flashtimeline</param>
+                                            </module>
+                                        </module>
+                                    </module>
                                 </module>
                             </module>
                         </module>
                     </module>
                 </module>
             </module>
-        </module><!-- End Bro Pie -->
+        </module><!-- End Bro List -->
         
-<!-- OSSEC Pie -->
+<!-- OSSEC List -->
         <module name="StaticSelect" layoutPanel="panel_row2_col3" group="OSSEC Events">
             <param name="settingToCreate">field_select</param>
             <param name="staticFieldsToDisplay">
@@ -248,41 +231,32 @@
                         <module name="HiddenFieldPicker">
                             <param name="strictMode">True</param>
                             <module name="JobProgressIndicator">
-                                <module name="EnablePreview">
-                                    <param name="enable">True</param>
-                                    <param name="display">False</param>
-                                    <module name="HiddenChartFormatter">
-                                        <param name="charting.legend.placement">bottom</param>
-                                        <param name="charting.chart">pie</param>
-                                        <module name="JSChart">
-                                            <param name="height">300px</param>                                            
-                                            <module name="ConvertToDrilldownSearch">
-                                                <module name="JobProgressIndicator"></module>        
-                                                <module name="SimpleResultsHeader">
-                                                    <param name="headerFormat">The drilldown search has $count$ events</param>
-                                                    <param name="entityName">events</param>
-                                                </module>
-                                                <module name="Paginator">
-                                                    <param name="count">5</param>
-                                                    <param name="entityName">results</param>
-                                                    <param name="maxPages">10</param>
-                                                    <module name="HiddenFieldPicker">
-                                                        <param name="fields">reporting_host src_ip user severity signature</param>
-                                                        <module name="SimpleResultsTable">
-                                                            <param name="drilldown">all</param>
-                                                            <param name="entityName">results</param>
-                                                            <param name="displayRowNumbers">False</param>
-                                                            <module name="ConvertToDrilldownSearch">
-                                                                <module name="ViewRedirector">
-                                                                    <param name="viewTarget">flashtimeline</param>
-                                                                </module>
-                                                            </module>
-                                                        </module>
-                                                        <module name="ViewRedirectorLink">
-                                                            <param name="viewTarget">flashtimeline</param>
-                                                        </module>
-                                                    </module>
-                                                </module>
+                            <module name="Paginator">
+                                <param name="entityName">results</param>
+                                <param name="maxPages">10</param>
+                                <module name="SimpleResultsTable">
+                                    <param name="drilldown">row</param>
+                                    <param name="entityName">results</param>
+                                    <param name="dataOverlayMode">none</param>
+                                    <param name="displayRowNumbers">False</param>
+                                        <module name="ConvertToDrilldownSearch">
+                                        <module name="JobProgressIndicator"/>
+                                        <module name="SimpleResultsHeader">
+                                            <param name="headerFormat">The drilldown search has $count$ events</param>
+                                            <param name="entityName">events</param>
+                                        </module>
+                                    <module name="Paginator">
+                                        <param name="count">5</param>
+                                        <param name="entityName">results</param>
+                                        <param name="maxPages">10</param>
+                                        <module name="HiddenFieldPicker">
+                                            <param name="fields">reporting_host src_ip user severity signature</param>
+                                            <module name="EventsViewer">
+                                               <param name="enableEventActions">True</param>
+                                               <param name="enableFieldActions">True</param>
+                                            </module>
+                                            <module name="ViewRedirectorLink">
+                                                <param name="viewTarget">flashtimeline</param>
                                             </module>
                                         </module>
                                     </module>
@@ -292,7 +266,9 @@
                     </module>
                 </module>
             </module>
-        </module><!-- End OSSEC Pie -->
+            </module>
+            </module>
+        </module><!-- End OSSEC List -->
 
 <!-- Events of Interest -->        
         <module name="TabSwitcher" layoutPanel="panel_row3_col1" group="Events of Interest">
@@ -561,10 +537,10 @@
                         <param name="value">domain</param>
                     </list>
                 </param>   
-            <module name="Search" layoutPanel="panel_row3_col1_grp1">
+                <module name="Search" layoutPanel="panel_row3_col1_grp1">
                 <param name="groupLabel">HTTP Files</param>
 <!--                <param name="search">sourcetype="bro_http" filename="*" | rex field=filename "(?&lt;file_extension&gt;\.[a-zA-Z]+$$)" | fields src_ip dest_ip filename md5 mime_type domain uri status_msg user_agent file_extension | chart values(mime_type) as mime_type count sparkline dc(filename) as filename_count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count dc(domain) as domain_count values(status_msg) as status_msg by file_extension</param>-->
-		<param name="search">search sourcetype="bro_http" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.xls|\.zip|\.rar|\.7z" | fields src_ip dest_ip domain filename mime_type user_agent uri status_msg | stats count by $http_by$</param> 
+		  <param name="search">search sourcetype="bro_http" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.xls|\.zip|\.rar|\.7z" | fields src_ip dest_ip domain filename mime_type user_agent uri status_msg | stats count by $http_by$</param> 
                 <module name="JobProgressIndicator"/>
                 <module name="Pager">
                     <param name="entityName">results</param>
@@ -643,7 +619,7 @@
                     </module> 
                 </module>
             </module>
-	</module><!-- HTTP Files -->
+	       </module><!-- HTTP Files -->
             
 <!-- SSL -->
             <module name="Pulldown" layoutPanel="panel_row3_col1_grp1" autoRun="False">
@@ -1154,4 +1130,6 @@
             </module>
         </module>
     </module> 
+</module>
+</module>
 </view>
