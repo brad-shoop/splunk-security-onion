@@ -1,15 +1,15 @@
 notes.todo
 
 New Sourcetypes:
- ☐ sourcetype = bro_app_stats - TEST
+ ✔ sourcetype = bro_app_stats - TEST @done (13-12-08 19:34)
    ✔ inputs @done (13-12-08 18:08)
    ✔ props @done (13-12-08 18:13)
    ✔ transforms @done (13-12-08 18:28)
- ☐ sourcetype = bro_dhcp - TEST
+ ✔ sourcetype = bro_dhcp - TEST @done (13-12-08 19:43)
    ✔ inputs @done (13-12-08 18:08)
    ✔ props @done (13-12-08 18:13)
    ✔ transforms @done (13-12-08 18:28)
- ☐ sourcetype = bro_files - TEST
+ ✔ sourcetype = bro_files - TEST @done (13-12-08 19:43)
    ✔ inputs @done (13-12-08 18:08)
    ✔ props @done (13-12-08 18:28)
    ✔ transforms @done (13-12-08 18:28)
@@ -24,20 +24,24 @@ Add "KV_MODE = none" props.conf:
    (specilal thanks to Timothy Whisnant)
 
 Check all old sources for new fields:
- ✔ sourcetype = bro_conn @done (13-12-08 18:42)
- ✔ sourcetype = bro_dpd @done (13-12-08 18:42)
- ✔ sourcetype = bro_ftp @done (13-12-08 18:42)
- ✔ sourcetype = bro_http @done (13-12-08 18:39)
- ☐ sourcetype = bro_irc
- ☐ sourcetype = bro_known_certs
- ☐ sourcetype = bro_known_hosts
- ✔ sourcetype = bro_known_services @done (13-12-08 18:36)
- ☐ sourcetype = bro_notice
- ☐ sourcetype = bro_smtp
- ☐ sourcetype = bro_smtp_entities
- ✔ sourcetype = bro_software @done (13-12-08 18:35)
- ☐ sourcetype = bro_ssh
- ✔ sourcetype = bro_ssl @done (13-12-08 18:35)
- ☐ sourcetype = bro_stats
- ☐ sourcetype = bro_syslog
- ✔ sourcetype = bro_weird @done (13-12-08 18:32)
+ ✔ sourcetype = bro_capture_loss @done (13-12-08 20:09)
+ ✔ sourcetype = bro_conn - TEST @done (13-12-08 19:49)
+ ✔ sourcetype = bro_dpd - TEST @done (13-12-08 19:50)
+ ✔ sourcetype = bro_ftp - TEST @done (13-12-08 20:00)
+ ✔ sourcetype = bro_http - TEST @done (13-12-08 20:03)
+ ✔ sourcetype = bro_irc - TEST @done (13-12-08 20:29)
+ ☐ sourcetype = bro_known_certs - TEST
+   ☐ diff files
+ ✔ sourcetype = bro_known_hosts - TEST @done (13-12-08 20:10)
+ ✔ sourcetype = bro_known_services - TEST @done (13-12-08 19:54)
+ ☐ sourcetype = bro_notice - TEST
+ ☐ sourcetype = bro_smtp - TEST
+   ☐ diff files
+ ☐ sourcetype = bro_smtp_entities - TEST
+   ☐ diff files
+ ✔ sourcetype = bro_software - TEST @done (13-12-08 20:04)
+ ☐ sourcetype = bro_ssh - TEST
+ ✔ sourcetype = bro_ssl - TEST @done (13-12-08 19:54)
+ ✔ sourcetype = bro_syslog - TEST @done (13-12-08 20:15)
+ ✔ sourcetype = bro_weird - TEST @done (13-12-08 19:51)
+
