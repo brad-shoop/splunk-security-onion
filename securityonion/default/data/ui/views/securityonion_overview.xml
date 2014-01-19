@@ -62,22 +62,22 @@
                     <param name="groupLabel">Sguil Events</param>                  
                     <param name="search">sourcetype="sguild" classification!="{}" | fields src_ip dest_ip dest_port detection_engine proto classification severity name | chart count by $field_select$</param>                   
                     <module name="JobProgressIndicator"/>
-                        <!--<param name="entityName">results</param>-->
+                        <param name="entityName">results</param>
                         <!--<param name="maxPages">10</param>-->
                         <module name="SimpleResultsTable">
                             <param name="drilldown">row</param>
-                            <!--<param name="entityName">results</param>-->
+                            <param name="entityName">results</param>
                             <param name="dataOverlayMode">none</param>
                             <param name="displayRowNumbers">False</param>
                             <module name="ConvertToDrilldownSearch">
                                 <module name="JobProgressIndicator"/>
                                 <module name="SimpleResultsHeader">
                                     <param name="headerFormat">The drilldown search has $count$ events</param>
-                                    <!--<param name="entityName">events</param>-->
+                                    <param name="entityName">events</param>
                                 </module>
                                 <module name="Paginator">
                                     <param name="count">5</param>
-                                    <!--<param name="entityName">results</param>-->
+                                    <param name="entityName">results</param>
                                     <!--<param name="maxPages">10</param>-->
                                     <module name="HiddenFieldPicker">
                                         <param name="fields">severity src_ip dest_ip name proto</param>
