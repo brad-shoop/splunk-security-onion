@@ -519,7 +519,7 @@
                 <param name="label">Extension match by:</param>
                 <param name="staticFieldsToDisplay">
                     <list>
-                        <param name="label">MIME_Types</param>
+                        <param name="label">MIME_Type</param>
                         <param name="value">mime_type</param>
                     </list>
                     <list>
@@ -541,7 +541,8 @@
                 </param>   
                 <module name="Search" layoutPanel="panel_row3_col1_grp1">
                 <param name="groupLabel">HTTP Files</param>
-        		<param name="search">search sourcetype="bro_http" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.xls|\.zip|\.rar|\.7z" | fields src_ip dest_ip domain filename mime_type user_agent uri status_msg | stats count by $http_by$</param> 
+<!--        		<param name="search">search sourcetype="bro_http" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.xls|\.zip|\.rar|\.7z" | fields src_ip dest_ip domain filename mime_type user_agent uri status_msg | stats count by $http_by$</param>-->
+                <param name="search">search sourcetype="bro_http" | fields src_ip dest_ip domain filename mime_type user_agent uri status_msg | stats count by $http_by$</param>
                 <module name="JobProgressIndicator"/>
                 <module name="Pager">
                     <param name="entityName">results</param>
