@@ -147,9 +147,9 @@
                 <module name="HiddenSearch" layoutPanel="panel_row2_col2" group="Bro Notice Events" autoRun="True">
                     <param name="search">sourcetype="bro_notice" | fields src_ip dest_ip note msg actions proto src_port dest_port | chart count by $field_select$</param>
                     <param name="groupLabel">Bro Notice Events</param>
-                    <module name="ViewstateAdapter">
+<!--                    <module name="ViewstateAdapter">
                         <module name="HiddenFieldPicker">
-                            <param name="strictMode">True</param>
+                            <param name="strictMode">True</param>-->
                             <module name="JobProgressIndicator">
                             <module name="Paginator">
                                 <param name="entityName">results</param>
@@ -182,8 +182,8 @@
                                     </module>
                                 </module>
                             </module>
-                        </module>
-                    </module>
+<!--                        </module>
+                    </module>-->
                 </module>
             </module>
         </module><!-- End Bro List -->
@@ -227,9 +227,9 @@
                 <module name="HiddenSearch" layoutPanel="panel_row2_col3" group="OSSEC Events" autoRun="True">
                     <param name="search">$field_select$</param>
                     <param name="groupLabel">OSSEC Events</param>
-                    <module name="ViewstateAdapter">
+<!--                    <module name="ViewstateAdapter">
                         <module name="HiddenFieldPicker">
-                            <param name="strictMode">True</param>
+                            <param name="strictMode">True</param>-->
                             <module name="JobProgressIndicator">
                             <module name="Paginator">
                                 <param name="entityName">results</param>
@@ -265,8 +265,8 @@
                         </module>
                     </module>
                 </module>
-            </module>
-            </module>
+<!--            </module>
+            </module>-->
             </module>
         </module><!-- End OSSEC List -->
 
@@ -539,8 +539,7 @@
                 </param>   
                 <module name="Search" layoutPanel="panel_row3_col1_grp1">
                 <param name="groupLabel">HTTP Files</param>
-<!--                <param name="search">sourcetype="bro_http" filename="*" | rex field=filename "(?&lt;file_extension&gt;\.[a-zA-Z]+$$)" | fields src_ip dest_ip filename md5 mime_type domain uri status_msg user_agent file_extension | chart values(mime_type) as mime_type count sparkline dc(filename) as filename_count dc(src_ip) as src_ip_count dc(dest_ip) as dest_ip_count dc(domain) as domain_count values(status_msg) as status_msg by file_extension</param>-->
-		  <param name="search">search sourcetype="bro_http" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.xls|\.zip|\.rar|\.7z" | fields src_ip dest_ip domain filename mime_type user_agent uri status_msg | stats count by $http_by$</param> 
+        		<param name="search">search sourcetype="bro_http" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.xls|\.zip|\.rar|\.7z" | fields src_ip dest_ip domain filename mime_type user_agent uri status_msg | stats count by $http_by$</param> 
                 <module name="JobProgressIndicator"/>
                 <module name="Pager">
                     <param name="entityName">results</param>
