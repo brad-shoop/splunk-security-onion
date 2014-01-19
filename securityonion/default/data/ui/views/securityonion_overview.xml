@@ -62,6 +62,7 @@
                     <param name="groupLabel">Sguil Events</param>                  
                     <param name="search">sourcetype="sguild" classification!="{}" | fields src_ip dest_ip dest_port detection_engine proto classification severity name | chart count by $field_select$</param>                   
                     <module name="JobProgressIndicator"/>
+                    <module name="Paginator">
                         <param name="entityName">results</param>
                         <param name="maxPages">10</param>
                         <module name="SimpleResultsTable">
@@ -94,6 +95,7 @@
                         </module>
                     </module>
                 </module>
+            </module>
         </module><!-- End Sguil List -->
         
 <!-- Bro Notice -->
