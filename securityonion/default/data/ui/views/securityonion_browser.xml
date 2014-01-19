@@ -136,7 +136,7 @@
                                     </module>
                                     <module name="Paginator">
                                         <param name="count">10</param>
-                                        <!--<param name="maxPages">10</param>-->
+                                        <param name="maxPages">10</param>
                                         <param name="entityName">results</param>
                                         <module name="SimpleResultsTable">
                                             <param name="fieldFormats">
@@ -164,7 +164,7 @@
                                                 </module>
                                                 <module name="Paginator">
                                                     <param name="count">10</param>
-                                                    <!--<param name="maxPages">10</param>-->
+                                                    <param name="maxPages">10</param>
                                                     <param name="entityName">results</param>
                                                     <module name="SimpleResultsTable">
                                                         <param name="fieldFormats">                                                            
@@ -191,7 +191,7 @@
                                                             <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
                                                             <module name="Paginator">
                                                                 <param name="count">10</param>
-                                                                <!--<param name="maxPages">10</param>-->
+                                                                <param name="maxPages">10</param>
                                                                 <param name="entityName">results</param>
                                                                 <module name="HiddenFieldPicker">
                                                                     <param name="fields">sourcetype src_ip uid dest_ip</param>
@@ -362,7 +362,7 @@
                                         </module>
                                         <module name="Paginator">
                                             <param name="count">10</param>
-                                            <!--<param name="maxPages">10</param>-->
+                                            <param name="maxPages">10</param>
                                             <param name="entityName">results</param>
                                             <module name="SimpleResultsTable">
                                                 <param name="fieldFormats">
@@ -390,7 +390,7 @@
                                                     </module>
                                                     <module name="Paginator">
                                                         <param name="count">10</param>
-                                                        <!--<param name="maxPages">10</param>-->
+                                                        <param name="maxPages">10</param>
                                                         <param name="entityName">results</param>
                                                         <module name="SimpleResultsTable">
                                                             <param name="fieldFormats">
@@ -417,7 +417,7 @@
                                                                 <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
                                                                 <module name="Paginator">
                                                                     <param name="count">10</param>
-                                                                    <!--<param name="maxPages">10</param>-->
+                                                                    <param name="maxPages">10</param>
                                                                     <param name="entityName">results</param>                                                                   
                                                                     <module name="HiddenFieldPicker">
                                                                         <param name="fields">sourcetype src_ip uid dest_ip</param>
@@ -589,7 +589,7 @@
                                         </module>
                                         <module name="Paginator">
                                             <param name="count">10</param>
-                                            <!--<param name="maxPages">10</param>-->
+                                            <param name="maxPages">10</param>
                                             <param name="entityName">results</param>
                                             <module name="SimpleResultsTable">
                                                 <param name="fieldFormats">
@@ -617,7 +617,7 @@
                                                     </module>
                                                     <module name="Paginator">
                                                         <param name="count">10</param>
-                                                        <!--<param name="maxPages">10</param>-->
+                                                        <param name="maxPages">10</param>
                                                         <param name="entityName">results</param>
                                                         <module name="SimpleResultsTable">
                                                             <param name="fieldFormats">
@@ -644,7 +644,7 @@
                                                                 <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip sourcetype dest_ip</param>
                                                                 <module name="Paginator">
                                                                     <param name="count">10</param>
-                                                                    <!--<param name="maxPages">10</param>-->
+                                                                    <param name="maxPages">10</param>
                                                                     <param name="entityName">results</param>                                                               
                                                                     <module name="HiddenFieldPicker">
                                                                         <param name="fields">sourcetype src_ip uid dest_ip</param>
@@ -804,7 +804,7 @@
                                         </module>
                                         <module name="Paginator">
                                             <param name="count">10</param>
-                                            <!--<param name="maxPages">10</param>-->
+                                            <param name="maxPages">10</param>
                                             <param name="entityName">results</param>
                                             <module name="SimpleResultsTable">
                                                 <param name="fieldFormats">
@@ -832,7 +832,7 @@
                                                     </module>
                                                     <module name="Paginator">
                                                         <param name="count">10</param>
-                                                        <!--<param name="maxPages">10</param>-->
+                                                        <param name="maxPages">10</param>
                                                         <param name="entityName">results</param>
                                                         <module name="SimpleResultsTable">
                                                             <param name="fieldFormats">
@@ -859,7 +859,7 @@
                                                                 <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
                                                                 <module name="Paginator">
                                                                     <param name="count">10</param>
-                                                                    <!--<param name="maxPages">10</param>-->
+                                                                    <param name="maxPages">10</param>
                                                                     <param name="entityName">results</param>
                                                                     <module name="HiddenFieldPicker">
                                                                         <param name="fields">sourcetype src_ip uid dest_ip</param>
@@ -1039,7 +1039,7 @@
                                         </module>
                                         <module name="Paginator">
                                             <param name="count">10</param>
-                                            <!--<param name="maxPages">10</param>-->
+                                            <param name="maxPages">10</param>
                                             <param name="entityName">results</param>
                                             <module name="SimpleResultsTable">
                                                 <param name="fieldFormats">
@@ -1067,7 +1067,7 @@
                                                     </module>
                                                     <module name="Paginator">
                                                         <param name="count">10</param>
-                                                        <!--<param name="maxPages">10</param>-->
+                                                        <param name="maxPages">10</param>
                                                         <param name="entityName">results</param>
                                                         <module name="SimpleResultsTable">
                                                             <param name="fieldFormats">
@@ -1094,7 +1094,7 @@
                                                                 <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
                                                                 <module name="Paginator">
                                                                     <param name="count">10</param>
-                                                                    <!--<param name="maxPages">10</param>-->
+                                                                    <param name="maxPages">10</param>
                                                                     <param name="entityName">results</param>
                                                                     <module name="HiddenFieldPicker">
                                                                         <param name="fields">sourcetype src_ip uid dest_ip</param>
@@ -1275,7 +1275,7 @@
                                         </module>
                                         <module name="Paginator">
                                             <param name="count">10</param>
-                                            <!--<param name="maxPages">10</param>-->
+                                            <param name="maxPages">10</param>
                                             <param name="entityName">results</param>
                                             <module name="SimpleResultsTable">
                                                 <param name="fieldFormats">
@@ -1303,7 +1303,7 @@
                                                     </module>
                                                     <module name="Paginator">
                                                         <param name="count">10</param>
-                                                        <!--<param name="maxPages">10</param>-->
+                                                        <param name="maxPages">10</param>
                                                         <param name="entityName">results</param>
                                                         <module name="SimpleResultsTable">
                                                             <param name="fieldFormats">
@@ -1330,7 +1330,7 @@
                                                                 <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
                                                                 <module name="Paginator">
                                                                     <param name="count">10</param>
-                                                                    <!--<param name="maxPages">10</param>-->
+                                                                    <param name="maxPages">10</param>
                                                                     <param name="entityName">results</param>
                                                                     <module name="HiddenFieldPicker">
                                                                         <param name="fields">sourcetype src_ip uid dest_ip</param>
@@ -1494,7 +1494,7 @@
                                         </module>
                                         <module name="Paginator">
                                             <param name="count">10</param>
-                                            <!--<param name="maxPages">10</param>-->
+                                            <param name="maxPages">10</param>
                                             <param name="entityName">results</param>
                                             <module name="SimpleResultsTable">
                                                 <param name="fieldFormats">
@@ -1522,7 +1522,7 @@
                                                     </module>
                                                     <module name="Paginator">
                                                         <param name="count">10</param>
-                                                        <!--<param name="maxPages">10</param>-->
+                                                        <param name="maxPages">10</param>
                                                         <param name="entityName">results</param>
                                                         <module name="SimpleResultsTable">
                                                             <param name="fieldFormats">
@@ -1549,7 +1549,7 @@
                                                                 <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
                                                                 <module name="Paginator">
                                                                     <param name="count">10</param>
-                                                                    <!--<param name="maxPages">10</param>-->
+                                                                    <param name="maxPages">10</param>
                                                                     <param name="entityName">results</param>
                                                                     <module name="HiddenFieldPicker">
                                                                         <param name="fields">sourcetype src_ip uid dest_ip</param>
@@ -1713,7 +1713,7 @@
                                         </module>
                                         <module name="Paginator">
                                             <param name="count">10</param>
-                                            <!--<param name="maxPages">10</param>-->
+                                            <param name="maxPages">10</param>
                                             <param name="entityName">results</param>
                                             <module name="SimpleResultsTable">
                                                 <param name="fieldFormats">
@@ -1741,7 +1741,7 @@
                                                     </module>
                                                     <module name="Paginator">
                                                         <param name="count">10</param>
-                                                        <!--<param name="maxPages">10</param>-->
+                                                        <param name="maxPages">10</param>
                                                         <param name="entityName">results</param>
                                                         <module name="SimpleResultsTable">
                                                             <param name="fieldFormats">
@@ -1768,7 +1768,7 @@
                                                                 <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
                                                                 <module name="Paginator">
                                                                     <param name="count">10</param>
-                                                                    <!--<param name="maxPages">10</param>-->
+                                                                    <param name="maxPages">10</param>
                                                                     <param name="entityName">results</param>
                                                                     <module name="HiddenFieldPicker">
                                                                         <param name="fields">sourcetype src_ip uid dest_ip</param>
@@ -1928,7 +1928,7 @@
                                         </module>
                                         <module name="Paginator">
                                             <param name="count">10</param>
-                                            <!--<param name="maxPages">10</param>-->
+                                            <param name="maxPages">10</param>
                                             <param name="entityName">results</param>
                                             <module name="SimpleResultsTable">
                                                <param name="fieldFormats">                                                
@@ -1956,7 +1956,7 @@
                                                     </module>
                                                     <module name="Paginator">
                                                         <param name="count">10</param>
-                                                        <!--<param name="maxPages">10</param>-->
+                                                        <param name="maxPages">10</param>
                                                         <param name="entityName">results</param>
                                                         <module name="SimpleResultsTable">
                                                             <param name="fieldFormats">
@@ -1983,7 +1983,7 @@
                                                                 <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
                                                                 <module name="Paginator">
                                                                     <param name="count">10</param>
-                                                                    <!--<param name="maxPages">10</param>-->
+                                                                    <param name="maxPages">10</param>
                                                                     <param name="entityName">results</param>
                                                                     <module name="HiddenFieldPicker">
                                                                         <param name="fields">sourcetype src_ip dest_ip uid</param>
@@ -2142,7 +2142,7 @@
                                                 </module>
                                                 <module name="Paginator">
                                                     <param name="count">10</param>
-                                                    <!--<param name="maxPages">10</param>-->
+                                                    <param name="maxPages">10</param>
                                                     <param name="entityName">results</param>
                                                     <module name="SimpleResultsTable">
                                                         <param name="fieldFormats">
@@ -2170,7 +2170,7 @@
                                                             </module>
                                                             <module name="Paginator">
                                                                 <param name="count">10</param>
-                                                                <!--<param name="maxPages">10</param>-->
+                                                                <param name="maxPages">10</param>
                                                                 <param name="entityName">results</param>
                                                                 <module name="SimpleResultsTable">
                                                                     <param name="fieldFormats">
@@ -2197,7 +2197,7 @@
                                                                         <param name="search">sourcetype="bro_*" uid="$click.fields.uid$" | fields _time uid src_ip dest_ip sourcetype</param>
                                                                         <module name="Paginator">
                                                                             <param name="count">10</param>
-                                                                            <!--<param name="maxPages">10</param>-->
+                                                                            <param name="maxPages">10</param>
                                                                             <param name="entityName">results</param>
                                                                             <module name="HiddenFieldPicker">
                                                                                 <param name="fields">sourcetype src_ip dest_ip uid</param>

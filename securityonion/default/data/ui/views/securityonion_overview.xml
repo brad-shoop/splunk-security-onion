@@ -63,7 +63,7 @@
                     <param name="search">sourcetype="sguild" classification!="{}" | fields src_ip dest_ip dest_port detection_engine proto classification severity name | chart count by $field_select$</param>                   
                     <module name="JobProgressIndicator"/>
                         <param name="entityName">results</param>
-                        <!--<param name="maxPages">10</param>-->
+                        <param name="maxPages">10</param>
                         <module name="SimpleResultsTable">
                             <param name="drilldown">row</param>
                             <param name="entityName">results</param>
@@ -78,7 +78,7 @@
                                 <module name="Paginator">
                                     <param name="count">5</param>
                                     <param name="entityName">results</param>
-                                    <!--<param name="maxPages">10</param>-->
+                                    <param name="maxPages">10</param>
                                     <module name="HiddenFieldPicker">
                                         <param name="fields">severity src_ip dest_ip name proto</param>
                                         <module name="EventsViewer">
@@ -153,7 +153,7 @@
                             <module name="JobProgressIndicator">
                             <module name="Paginator">
                                 <param name="entityName">results</param>
-                                <!--<param name="maxPages">10</param>-->
+                                <param name="maxPages">10</param>
                                 <module name="SimpleResultsTable">
                                     <param name="drilldown">row</param>
                                     <param name="entityName">results</param>
@@ -168,7 +168,7 @@
                                     <module name="Paginator">
                                         <param name="count">5</param>
                                         <param name="entityName">results</param>
-                                        <!--<param name="maxPages">10</param>-->
+                                        <param name="maxPages">10</param>
                                         <module name="HiddenFieldPicker">
                                             <param name="fields">src_ip dest_ip note msg</param>
                                             <module name="EventsViewer">
@@ -233,7 +233,7 @@
                             <module name="JobProgressIndicator">
                             <module name="Paginator">
                                 <param name="entityName">results</param>
-                                <!--<param name="maxPages">10</param>-->
+                                <param name="maxPages">10</param>
                                 <module name="SimpleResultsTable">
                                     <param name="drilldown">row</param>
                                     <param name="entityName">results</param>
@@ -248,7 +248,7 @@
                                     <module name="Paginator">
                                         <param name="count">5</param>
                                         <param name="entityName">results</param>
-                                        <!--<param name="maxPages">10</param>-->
+                                        <param name="maxPages">10</param>
                                         <module name="HiddenFieldPicker">
                                             <param name="fields">reporting_host src_ip user severity signature</param>
                                             <module name="EventsViewer">
