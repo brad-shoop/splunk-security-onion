@@ -512,19 +512,31 @@
                 </module>
             </module><!-- End Connection Byte Counts -->
             
-<!-- HTTP Files -->
+<!-- HTTP -->
             <module name="Pulldown" layoutPanel="panel_row3_col1_grp1" autoRun="False">
                 <param name="name">http_by</param>
-                <param name="groupLabel">HTTP Files</param>
-                <param name="label">Extension match by:</param>
+                <param name="groupLabel">HTTP</param>
+                <param name="label">Select by:</param>
                 <param name="staticFieldsToDisplay">
                     <list>
                         <param name="label">MIME_Type</param>
                         <param name="value">mime_type</param>
                     </list>
                     <list>
+                        <param name="label">User Agents</param>
+                        <param name="value">user_agent</param>
+                    </list>
+                    <list>
+                        <param name="label">Method</param>
+                        <param name="value">method</param>
+                    </list>
+                    <list>
                         <param name="label">URI</param>
                         <param name="value">uri</param>
+                    </list>
+                    <list>
+                        <param name="label">Status Message</param>
+                        <param name="value">status_msg</param>
                     </list>
                     <list>
                         <param name="label">Source IP</param>
@@ -540,9 +552,9 @@
                     </list>
                 </param>   
                 <module name="Search" layoutPanel="panel_row3_col1_grp1">
-                <param name="groupLabel">HTTP Files</param>
+                <param name="groupLabel">HTTP</param>
 <!--        		<param name="search">search sourcetype="bro_http" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.xls|\.zip|\.rar|\.7z" | fields src_ip dest_ip domain filename mime_type user_agent uri status_msg | stats count by $http_by$</param>-->
-                <param name="search">search sourcetype="bro_http" | fields src_ip dest_ip domain filename mime_type user_agent uri status_msg | stats count by $http_by$</param>
+                <param name="search">search sourcetype="bro_http" | fields src_ip dest_ip domain filename status_msg method mime_type user_agent uri status_msg | stats count by $http_by$</param>
                 <module name="JobProgressIndicator"/>
                 <module name="Pager">
                     <param name="entityName">results</param>
@@ -573,7 +585,8 @@
                                 <param name="label">Selected Event Details by Source IP</param>
                             </module>
                             <module name="Search" layoutPanel="panel_row3_col1_grp1">
-                                <param name="search">sourcetype="bro_http" $click.name$="$click.value$" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.sh|\.xls|\.zip|\.rar|\.7z" | geoip dest_ip | fields uid src_ip dest_ip filename dest_ip_country_name mime_type domain uri status_msg user_agent file_extension | chart sparkline count values(dest_ip) as dest_ip values(dest_port) as dest_port values(mime_type) as mime_type values(dest_ip_country_name) as dest_ip_country_name values(domain) as domain values(uri) as uri values(user_agent) as user_agent values(uid) as uid by src_ip</param>
+                                <!--<param name="search">sourcetype="bro_http" $click.name$="$click.value$" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.sh|\.xls|\.zip|\.rar|\.7z" | geoip dest_ip | fields uid src_ip dest_ip filename dest_ip_country_name mime_type domain uri status_msg user_agent file_extension | chart sparkline count values(dest_ip) as dest_ip values(dest_port) as dest_port values(mime_type) as mime_type values(dest_ip_country_name) as dest_ip_country_name values(domain) as domain values(uri) as uri values(user_agent) as user_agent values(uid) as uid by src_ip</param>-->
+                                <param name="search">search sourcetype="bro_http" $click.name$="$click.value$" | fields src_ip dest_ip domain filename status_msg method mime_type user_agent uri status_msg | geoip dest_ip | fields uid src_ip dest_ip filename dest_ip_country_name mime_type domain uri status_msg user_agent file_extension | chart sparkline count values(dest_ip) as dest_ip values(dest_port) as dest_port values(mime_type) as mime_type values(dest_ip_country_name) as dest_ip_country_name values(domain) as domain values(uri) as uri values(user_agent) as user_agent values(uid) as uid by src_ip</param>
                                 <module name="JobProgressIndicator"/>
                                 <module name="Paginator">
                                     <param name="entityName">results</param>
@@ -601,7 +614,8 @@
                                             <param name="drilldown">row</param>
                                             <module name="Gimp"/>
                                             <module name="Search" layoutPanel="panel_row3_col1_grp1">
-                                                <param name="search">sourcetype="bro_http" src_ip="$click.fields.src_ip$" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.sh|\.xls|\.zip|\.rar|\.7z" | geoip dest_ip | chart values(dest_ip) as dest_ip sparkline count values(dest_port) as dest_port values(mime_type) as mime_type values(filename) as filename values(dest_ip_country_name) as dest_ip_country_name values(domain) as domain values(status_msg) as status_msg values(user_agent) as user_agent by src_ip</param>
+                                                <!--<param name="search">sourcetype="bro_http" src_ip="$click.fields.src_ip$" | regex uri="\.exe|\.bat|\.bin|\.cmd|\.doc|\.jar|\.pdf|\.rtf|\.sh|\.xls|\.zip|\.rar|\.7z" | geoip dest_ip | chart values(dest_ip) as dest_ip sparkline count values(dest_port) as dest_port values(mime_type) as mime_type values(filename) as filename values(dest_ip_country_name) as dest_ip_country_name values(domain) as domain values(status_msg) as status_msg values(user_agent) as user_agent by src_ip</param>-->
+                                                <param name="search">sourcetype="bro_http" src_ip="$click.fields.src_ip$" | fields src_ip dest_ip domain filename status_msg method mime_type user_agent uri status_msg | geoip dest_ip | chart values(dest_ip) as dest_ip sparkline count values(dest_port) as dest_port values(mime_type) as mime_type values(filename) as filename values(dest_ip_country_name) as dest_ip_country_name values(domain) as domain values(status_msg) as status_msg values(user_agent) as user_agent by src_ip</param>
                                                 <module name="JobProgressIndicator"/>
                                                 <module name="Events">
                                                     <param name="allowTermClicks">False</param>
@@ -621,7 +635,7 @@
                     </module> 
                 </module>
             </module>
-	       </module><!-- HTTP Files -->
+	       </module><!-- HTTP -->
             
 <!-- SSL -->
             <module name="Pulldown" layoutPanel="panel_row3_col1_grp1" autoRun="False">

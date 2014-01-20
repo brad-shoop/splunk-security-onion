@@ -32,7 +32,6 @@
             </list>
             <list>
                 <param name="value">status_msg</param>
-
                 <param name="label">HTTP Status Messages</param>
             </list>
             <list>
