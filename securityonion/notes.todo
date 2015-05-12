@@ -1,6 +1,7 @@
 notes.todo
 
 New Sourcetypes:
+ ☐ sourcetype = bro_intel
  ✔ sourcetype = bro_app_stats - TEST @done (13-12-08 19:34)
    ✔ inputs @done (13-12-08 18:08)
    ✔ props @done (13-12-08 18:13)
