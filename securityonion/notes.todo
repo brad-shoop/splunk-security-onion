@@ -1,7 +1,9 @@
 notes.todo
 
 New Sourcetypes:
- ☐ sourcetype = bro_intel
+ ☐ sourcetype = bro_intel - intel.log
+ ☐ sourcetype = bro_snmp - snmp.log
+ ☐ sourcetype = bro_x509 - x509.log
  ✔ sourcetype = bro_app_stats - TEST @done (13-12-08 19:34)
    ✔ inputs @done (13-12-08 18:08)
    ✔ props @done (13-12-08 18:13)
