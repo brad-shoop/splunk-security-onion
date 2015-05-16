@@ -1,0 +1,58 @@
+<form script="autodiscover.js">
+  <label>Chord Chart</label>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="text" token="search_term" searchWhenChanged="true">
+        <label>Keyword/IP</label>
+        <default>*</default>
+        <seed></seed>
+        <suffix></suffix>
+    </input>
+    <input type="dropdown" token="sourcetype" searchWhenChanged="true">
+        <label>Sourcetype</label>
+        <choice value="sguild ">sguild</choice>
+        <choice value="bro_http">bro_http</choice>
+        <choice value="bro_dns">bro_dns</choice>
+        <choice value="bro_ftp">bro_ftp</choice>
+        <choice value="bro_smtp">bro_smtp</choice>
+        <default value="sguild">sguild</default>
+        <default></default>
+    </input>
+    <input type="time" searchWhenChanged="true">
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <html>
+        <h2>Chord Chart</h2>
+        <div id="chordchart_search" class="splunk-manager" data-require="splunkjs/mvc/searchmanager" data-options='{
+          "search": {
+            "type": "token_safe",
+            "value": "sourcetype=$$sourcetype$$ $$search_term$$ | stats count by src_ip dest_ip"
+          },
+          "preview": true,
+          "earliest_time": {
+            "type": "token_safe",
+            "value": "$$earliest$$"
+          },
+          "latest_time": {
+            "type": "token_safe",
+            "value": "$$latest$$"
+          }
+        }'>
+        </div>
+<!-- need to figure out how to make the src/dst_fields dynamic based on dropdown input -->
+        <div id="chordchart" class="splunk-view" data-require="app/custom_vizs/chordchart/chordchart" data-options='{
+          "managerid": "chordchart_search",
+          "src_field": "src_ip",
+          "dst_field": "dest_ip",
+          "colors": "d3"
+        }'>
+        </div>
+      </html>
+    </panel>
+  </row>
+</form>
