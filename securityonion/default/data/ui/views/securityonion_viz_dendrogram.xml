@@ -1,0 +1,60 @@
+<form script="autodiscover.js">
+  <label>Dendrogram</label>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="text" token="search_term" searchWhenChanged="true">
+        <label>Keyword/IP</label>
+        <default></default>
+        <seed></seed>
+        <suffix></suffix>
+    </input>
+    <input type="dropdown" token="sourcetype" searchWhenChanged="true">
+        <label>Sourcetype</label>
+        <choice value="bro_intel">bro_intel</choice>
+<!--
+        <choice value="sguild classification!={}">sguild</choice>
+        <choice value="bro_*">bro_*</choice>
+        <choice value="bro_http">bro_http</choice>
+        <choice value="bro_dns">bro_dns</choice>
+        <choice value="bro_ftp">bro_ftp</choice>
+        <choice value="bro_smtp">bro_smtp</choice>
+        <default value="sguild">sguild</default>
+-->
+    </input>
+    <input type="time" searchWhenChanged="false">
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <html>
+        <h2>Dendrogram</h2>
+        <div id="dendrogram_search" class="splunk-manager" data-require="splunkjs/mvc/searchmanager" data-options='{
+          "search": {
+            "type": "token_safe",
+            "value": "sourcetype=$$sourcetype$$ $$search_term$$ | stats count by seen_indicator_type seen_where src_ip"
+          },
+          "preview": true,
+          "earliest_time": {
+            "type": "token_safe",
+            "value": "$$earliest$$"
+          },
+          "latest_time": {
+            "type": "token_safe",
+            "value": "$$latest$$"
+          }
+        }'>
+        </div>
+        <div id="dendrogram" class="splunk-view" data-require="app/custom_vizs/dendrogram/dendrogram" data-options='{
+          "managerid": "dendrogram_search",
+          "root_label": "src_ip",
+          "margin_left": 200,
+          "margin_right": 0
+        }'>
+        </div>
+      </html>
+    </panel>
+  </row>
+</form>
